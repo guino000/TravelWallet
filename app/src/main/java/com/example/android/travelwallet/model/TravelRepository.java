@@ -24,6 +24,14 @@ public class TravelRepository {
         new insertAsyncTask(mTravelDao).execute(travel);
     }
 
+    public void update(Travel travel){
+        new updateAsyncTask(mTravelDao).execute(travel);
+    }
+
+    public void delete(Travel travel){
+        new deleteAsyncTask(mTravelDao).execute(travel);
+    }
+
     private static class insertAsyncTask extends AsyncTask<Travel, Void, Void>{
         private TravelDao mAsyncTaskDao;
 
@@ -34,6 +42,34 @@ public class TravelRepository {
         @Override
         protected Void doInBackground(Travel... travels) {
             mAsyncTaskDao.save(travels[0]);
+            return null;
+        }
+    }
+
+    private static class updateAsyncTask extends AsyncTask<Travel, Void, Void>{
+        private TravelDao mAsyncTaskDao;
+
+        updateAsyncTask(TravelDao dao){
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Travel... travels) {
+            mAsyncTaskDao.update(travels[0]);
+            return null;
+        }
+    }
+
+    private static class deleteAsyncTask extends AsyncTask<Travel, Void, Void>{
+        private TravelDao mAsyncTaskDao;
+
+        deleteAsyncTask(TravelDao dao){
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Travel... travels) {
+            mAsyncTaskDao.delete(travels[0]);
             return null;
         }
     }

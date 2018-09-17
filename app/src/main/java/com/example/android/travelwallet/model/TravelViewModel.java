@@ -17,7 +17,11 @@ public class TravelViewModel extends AndroidViewModel {
         mAllTravels = mRepository.getAllTravels();
     }
 
-    LiveData<List<Travel>> getAllTravels(){return mAllTravels;}
+    public LiveData<List<Travel>> getAllTravels(){return mAllTravels;}
 
     public void insert(Travel travel){mRepository.insert(travel);}
+
+    public void update(Travel travel){mRepository.update(travel);}
+
+    public void delete(Travel travel){mRepository.delete(travel);}
 }

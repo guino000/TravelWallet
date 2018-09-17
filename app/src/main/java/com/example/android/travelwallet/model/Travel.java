@@ -28,9 +28,16 @@ public class Travel {
         mEndDate = endDate;
     }
 
+    public int getId(){return mId;}
+    public void setId(int id){mId = id;}
     public String getName(){return mName;}
+    public void setName(String name){mName = name;}
     public String getDestination(){return mDestination;}
+    public void setDestination(String dest){mDestination = dest;}
     public BigDecimal getBudget(){return mBudget;}
+    public void setBudget(BigDecimal budget){mBudget = budget;}
     public String getStartDate(){return mStartDate;}
+    public void setStartDate(String startDate){mStartDate = startDate;}
     public String getEndDate(){return mEndDate;}
+    public void setEndDate(String endDate){mEndDate = endDate;}
 }

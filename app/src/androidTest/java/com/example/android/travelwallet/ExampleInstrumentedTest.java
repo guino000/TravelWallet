@@ -66,4 +66,30 @@ public class ExampleInstrumentedTest {
         viewModel.insert(travel);
         viewModel.delete(travel);
     }
+
+    @Test
+    public void testExpenseDatabase(){
+        Application application = mActivityRule.getActivity().getApplication();
+        final TravelViewModel viewModel = ViewModelProvider.AndroidViewModelFactory
+                .getInstance(application).create(TravelViewModel.class);
+        final Travel travel = new Travel("Test travel",
+                "Rome",
+                new BigDecimal("100"),
+                "09/16/18",
+                "09/17/18");
+
+        viewModel.getAllTravels().observe(mActivityRule.getActivity(), new Observer<List<Travel>>() {
+            @Override
+            public void onChanged(@Nullable List<Travel> travels) {
+                if(travels.size() > 0){
+                    assertEquals(travels.get(0).getName(), travel.getName());
+                }else{
+                    assertEquals(viewModel.getAllTravels().getValue().size(),0);
+                }
+            }
+        });
+
+        viewModel.insert(travel);
+        viewModel.delete(travel);
+    }
 }

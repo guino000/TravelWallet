@@ -11,11 +11,12 @@ import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-@Database(entities = {Travel.class}, version = 1)
+@Database(entities = {Travel.class, TravelExpense.class}, version = 2)
 @TypeConverters({Converters.class})
 public abstract class TravelDatabase extends RoomDatabase {
     private static volatile TravelDatabase INSTANCE;
     public abstract TravelDao travelDao();
+    public abstract TravelExpenseDao expenseDao();
 
     public static TravelDatabase getInstance(Context context){
         synchronized (TravelDatabase.class){

@@ -1,6 +1,7 @@
 package com.example.android.travelwallet.model;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
@@ -9,6 +10,7 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
+@Dao
 public interface TravelExpenseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void saveAll(List<TravelExpense> expenses);
@@ -26,5 +28,5 @@ public interface TravelExpenseDao {
     LiveData<List<TravelExpense>> findAll();
 
     @Query("SELECT * FROM TravelExpense WHERE mTravelID = :travelID")
-    LiveData<List<TravelExpense>> findAllOfTravel(int travelID);
+    List<TravelExpense> findAllOfTravel(long travelID);
 }

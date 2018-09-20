@@ -1,6 +1,5 @@
 package com.example.android.travelwallet;
 
-import android.app.Activity;
 import android.app.Application;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
@@ -10,7 +9,9 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.example.android.travelwallet.model.ExpenseViewModel;
 import com.example.android.travelwallet.model.Travel;
+import com.example.android.travelwallet.model.TravelExpense;
 import com.example.android.travelwallet.model.TravelViewModel;
 
 import org.junit.Rule;
@@ -72,6 +73,8 @@ public class ExampleInstrumentedTest {
         Application application = mActivityRule.getActivity().getApplication();
         final TravelViewModel viewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(application).create(TravelViewModel.class);
+        final ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
+                .getInstance(application).create(ExpenseViewModel.class);
         final Travel travel = new Travel("Test travel",
                 "Rome",
                 new BigDecimal("100"),
@@ -81,15 +84,30 @@ public class ExampleInstrumentedTest {
         viewModel.getAllTravels().observe(mActivityRule.getActivity(), new Observer<List<Travel>>() {
             @Override
             public void onChanged(@Nullable List<Travel> travels) {
-                if(travels.size() > 0){
-                    assertEquals(travels.get(0).getName(), travel.getName());
-                }else{
-                    assertEquals(viewModel.getAllTravels().getValue().size(),0);
+                if(travels != null) {
+                    final Travel queryTravel = travels.get(0);
+                    final TravelExpense expense = new TravelExpense(
+                            queryTravel.getId(),
+                            "Test expense",
+                            new BigDecimal("100.00"),
+                            "Test Category",
+                            "09/20/18"
+                    );
+                    expenseViewModel.insert(expense);
                 }
             }
         });
 
         viewModel.insert(travel);
-        viewModel.delete(travel);
+
+        expenseViewModel.getAllExpenses().observe(mActivityRule.getActivity(), new Observer<List<TravelExpense>>() {
+            @Override
+            public void onChanged(@Nullable List<TravelExpense> expenses) {
+                if(expenses != null){
+                    assertNotEquals(expenses.get(0).getTravelID(), 0);
+                    viewModel.delete(travel);
+                }
+            }
+        });
     }
 }

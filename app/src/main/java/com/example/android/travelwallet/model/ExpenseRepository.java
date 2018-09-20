@@ -11,30 +11,35 @@ public class ExpenseRepository {
     private LiveData<List<TravelExpense>> mAllExpenses;
     private LiveData<List<TravelExpense>> mAllExpensesOfTravel;
 
-    ExpenseRepository(Application application, int travelID){
+    ExpenseRepository(Application application){
         TravelDatabase db = TravelDatabase.getInstance(application);
         mExpenseDao = db.expenseDao();
         mAllExpenses = mExpenseDao.findAll();
-        mAllExpensesOfTravel = mExpenseDao.findAllOfTravel(travelID);
     }
 
     public LiveData<List<TravelExpense>> getAllExpenses(){
         return mAllExpenses;
     }
-    public LiveData<List<TravelExpense>> getmAllExpensesOfTravel(){
-        return mAllExpensesOfTravel;
+
+    public List<TravelExpense> getTravelExpenses(Travel travel){
+        try {
+            return new queryExpensesAsyncTask(mExpenseDao).execute(travel).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    public void insert(TravelExpense travel){
-        new ExpenseRepository.insertAsyncTask(mExpenseDao).execute(travel);
+    public void insert(TravelExpense expense){
+        new ExpenseRepository.insertAsyncTask(mExpenseDao).execute(expense);
     }
 
-    public void update(TravelExpense travel){
-        new ExpenseRepository.updateAsyncTask(mExpenseDao).execute(travel);
+    public void update(TravelExpense expense){
+        new ExpenseRepository.updateAsyncTask(mExpenseDao).execute(expense);
     }
 
-    public void delete(TravelExpense travel){
-        new ExpenseRepository.deleteAsyncTask(mExpenseDao).execute(travel);
+    public void delete(TravelExpense expense){
+        new ExpenseRepository.deleteAsyncTask(mExpenseDao).execute(expense);
     }
 
     private static class insertAsyncTask extends AsyncTask<TravelExpense, Void, Void> {
@@ -76,6 +81,19 @@ public class ExpenseRepository {
         protected Void doInBackground(TravelExpense... expenses) {
             mAsyncTaskDao.delete(expenses[0]);
             return null;
+        }
+    }
+
+    private static class queryExpensesAsyncTask extends AsyncTask<Travel, Void, List<TravelExpense>>{
+        private TravelExpenseDao mAsyncTaskDao;
+
+        queryExpensesAsyncTask(TravelExpenseDao dao){
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected List<TravelExpense> doInBackground(Travel... travels) {
+            return mAsyncTaskDao.findAllOfTravel (travels[0].getId());
         }
     }
 }

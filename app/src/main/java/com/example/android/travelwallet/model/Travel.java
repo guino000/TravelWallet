@@ -2,14 +2,17 @@ package com.example.android.travelwallet.model;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.Relation;
 
 import java.math.BigDecimal;
+import java.util.List;
 
-@Entity
+@Entity(indices = {@Index("mId")})
 public class Travel {
     @PrimaryKey(autoGenerate = true)
-    private int mId;
+    private long mId;
     private String mName;
     private String mDestination;
     private BigDecimal mBudget;
@@ -28,8 +31,8 @@ public class Travel {
         mEndDate = endDate;
     }
 
-    public int getId(){return mId;}
-    public void setId(int id){mId = id;}
+    public long getId(){return mId;}
+    public void setId(long id){mId = id;}
     public String getName(){return mName;}
     public void setName(String name){mName = name;}
     public String getDestination(){return mDestination;}

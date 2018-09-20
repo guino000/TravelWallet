@@ -12,15 +12,14 @@ public class ExpenseViewModel extends AndroidViewModel {
     private LiveData<List<TravelExpense>> mAllExpenses;
     private LiveData<List<TravelExpense>> mAllExpensesOfTravel;
 
-    public ExpenseViewModel(@NonNull Application application, int travelID) {
+    public ExpenseViewModel(@NonNull Application application) {
         super(application);
-        mRepository = new ExpenseRepository(application, travelID);
+        mRepository = new ExpenseRepository(application);
         mAllExpenses = mRepository.getAllExpenses();
-        mAllExpensesOfTravel = mRepository.getmAllExpensesOfTravel();
     }
 
     public LiveData<List<TravelExpense>> getAllExpenses(){return mAllExpenses;}
-    public LiveData<List<TravelExpense>> getAllExpensesOfTravel(){return mAllExpensesOfTravel;}
+    public List<TravelExpense> getAllExpensesOfTravel(Travel travel){return mRepository.getTravelExpenses(travel);}
 
     public void insert(TravelExpense expense){mRepository.insert(expense);}
 

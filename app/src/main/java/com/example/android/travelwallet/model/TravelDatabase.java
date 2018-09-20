@@ -23,6 +23,7 @@ public abstract class TravelDatabase extends RoomDatabase {
             if(INSTANCE == null){
                 INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                         TravelDatabase.class, "travel_database.db")
+                        .fallbackToDestructiveMigration()
                         .build();
             }
             return INSTANCE;

@@ -105,7 +105,7 @@
         app:layout_constraintTop_toBottomOf="@+id/et_start_date" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/bt_create_travel"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

@@ -1,3 +1,16 @@
 <resources>
+    <!--App-->
     <string name="app_name">Travel Wallet</string>
+
+    <!--Main Activity-->
+    <string name="main_travel_image_content_description">Travel Image</string>
+
+    <!--Insert Travel Activity-->
+    <string name="insert_activity_header_description">Let\'s create a new travel! Fill in the form below and we will take care of the rest.</string>
+    <string name="travel_name_label">Travel Name</string>
+    <string name="total_budget_label">Total Budget</string>
+    <string name="destination_label">Destination</string>
+    <string name="start_date_label">Start Date</string>
+    <string name="end_date_label">End Date</string>
+    <string name="button_add_travel">Create Travel</string>
 </resources>

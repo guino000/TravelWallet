@@ -6,56 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".InsertTravelFormActivity">
 
-    <EditText
-        android:id="@+id/et_destination"
-        style="@style/Widget.AppCompat.EditText"
-        android:layout_width="379dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="@string/destination_label"
-        android:inputType="textPersonName"
-        android:singleLine="true"
-        android:text="@string/destination_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/et_total_budget"
-        app:layout_constraintTop_toBottomOf="@+id/et_total_budget" />
-
-    <EditText
-        android:id="@+id/et_start_date"
-        style="@style/Widget.AppCompat.EditText"
+    <TextView
+        android:id="@+id/tv_insert_travel_header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="@string/start_date_label"
-        android:inputType="textPersonName"
-        android:singleLine="true"
-        android:text="@string/start_date_label"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/insert_activity_header_description"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/et_destination"
-        app:layout_constraintTop_toBottomOf="@+id/et_destination" />
-
-    <EditText
-        android:id="@+id/et_end_date"
-        style="@style/Widget.AppCompat.EditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="@string/end_date_label"
-        android:inputType="textPersonName"
-        android:singleLine="true"
-        android:text="@string/end_date_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/et_start_date"
-        app:layout_constraintTop_toBottomOf="@+id/et_start_date" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/et_travel_name"
@@ -71,7 +35,6 @@
         android:hint="@string/travel_name_label"
         android:inputType="textPersonName"
         android:singleLine="true"
-        android:text="@string/travel_name_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,10 +52,57 @@
         android:hint="@string/total_budget_label"
         android:inputType="textPersonName"
         android:singleLine="true"
-        android:text="@string/total_budget_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/et_travel_name"
         app:layout_constraintTop_toBottomOf="@+id/et_travel_name" />
+
+    <EditText
+        android:id="@+id/et_destination"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="379dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/destination_label"
+        android:inputType="textPersonName"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/et_total_budget"
+        app:layout_constraintTop_toBottomOf="@+id/et_total_budget" />
+
+    <EditText
+        android:id="@+id/et_start_date"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/start_date_label"
+        android:inputType="textPersonName"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/et_destination"
+        app:layout_constraintTop_toBottomOf="@+id/et_destination" />
+
+    <EditText
+        android:id="@+id/et_end_date"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/end_date_label"
+        android:inputType="textPersonName"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/et_start_date"
+        app:layout_constraintTop_toBottomOf="@+id/et_start_date" />
 
     <Button
         android:id="@+id/button"
@@ -105,18 +115,4 @@
         app:layout_constraintStart_toStartOf="@+id/et_end_date"
         app:layout_constraintTop_toBottomOf="@+id/et_end_date" />
 
-    <TextView
-        android:id="@+id/tv_insert_travel_header"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/insert_activity_header_description"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

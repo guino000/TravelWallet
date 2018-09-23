@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_travel_miniature"
@@ -14,7 +13,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -26,7 +24,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/img_travel_miniature"
+                android:id="@+id/img_miniature_travel_miniature"
                 android:layout_width="match_parent"
                 android:layout_height="224dp"
                 android:contentDescription="@string/main_travel_image_content_description"
@@ -36,17 +34,17 @@
                 app:srcCompat="@android:color/darker_gray" />
 
             <TextView
-                android:id="@+id/tv_expenses_overview"
+                android:id="@+id/tv_miniature_expenses_overview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                app:layout_constraintStart_toStartOf="@+id/tv_travel_name"
-                app:layout_constraintTop_toBottomOf="@+id/tv_travel_name"
+                app:layout_constraintStart_toStartOf="@+id/tv_miniature_travel_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_miniature_travel_name"
                 tools:text="$0.00 - $100.00" />
 
             <TextView
-                android:id="@+id/tv_travel_name"
+                android:id="@+id/tv_miniature_travel_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
@@ -54,16 +52,19 @@
                 android:layout_marginTop="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/img_travel_miniature"
+                app:layout_constraintTop_toBottomOf="@+id/img_miniature_travel_miniature"
                 tools:text="Travel Name" />
 
             <TextView
-                android:id="@+id/tv_travel_destination"
+                android:id="@+id/tv_miniature_travel_destination"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintStart_toStartOf="@+id/tv_travel_name"
-                tools:layout_editor_absoluteY="310dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tv_miniature_travel_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_miniature_expenses_overview"
                 tools:text="Destination" />
 
         </android.support.constraint.ConstraintLayout>

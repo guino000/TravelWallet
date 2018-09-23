@@ -1,5 +1,6 @@
 package com.example.android.travelwallet.adapters;
 
+import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.model.Travel;
+import com.example.android.travelwallet.utils.TravelUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +41,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
         Travel travel = mTravels.get(i);
         travelViewHolder.mTravelNameTextView.setText(travel.getName());
         travelViewHolder.mDestinationTextView.setText(travel.getDestination());
-        travelViewHolder.mExpensesTextView.setText(String.valueOf(travel.getBudget()));
+        travelViewHolder.mExpensesTextView.setText(TravelUtils.getBudgetExpenseComparison((Application) mContext.getApplicationContext(),travel));
     }
 
     @Override

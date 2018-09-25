@@ -38,7 +38,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_insert_travel_header" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_insert_travel_header"
+        tools:ignore="Autofill" />
 
     <EditText
         android:id="@+id/et_total_budget"
@@ -54,32 +55,37 @@
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/et_travel_name"
-        app:layout_constraintTop_toBottomOf="@+id/et_travel_name" />
+        app:layout_constraintTop_toBottomOf="@+id/et_travel_name"
+        tools:ignore="Autofill" />
 
     <EditText
         android:id="@+id/et_destination"
         style="@style/Widget.AppCompat.EditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
+        android:drawableEnd="@drawable/ic_place_grey_24dp"
         android:ems="10"
         android:hint="@string/destination_label"
         android:inputType="text"
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/et_total_budget"
-        app:layout_constraintTop_toBottomOf="@+id/et_total_budget" />
+        app:layout_constraintTop_toBottomOf="@+id/et_total_budget"
+        tools:ignore="Autofill"
+        android:drawableRight="@drawable/ic_place_grey_24dp" />
 
     <EditText
         android:id="@+id/et_start_date"
         style="@style/Widget.AppCompat.EditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
+        android:drawableEnd="@drawable/ic_date_range_grey_24dp"
         android:ems="10"
         android:focusable="false"
         android:hint="@string/start_date_label"
@@ -87,16 +93,19 @@
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/et_destination"
-        app:layout_constraintTop_toBottomOf="@+id/et_destination" />
+        app:layout_constraintTop_toBottomOf="@+id/et_destination"
+        tools:ignore="Autofill"
+        android:drawableRight="@drawable/ic_date_range_grey_24dp" />
 
     <EditText
         android:id="@+id/et_end_date"
         style="@style/Widget.AppCompat.EditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
+        android:drawableEnd="@drawable/ic_date_range_grey_24dp"
         android:ems="10"
         android:focusable="false"
         android:hint="@string/end_date_label"
@@ -104,7 +113,9 @@
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/et_start_date"
-        app:layout_constraintTop_toBottomOf="@+id/et_start_date" />
+        app:layout_constraintTop_toBottomOf="@+id/et_start_date"
+        tools:ignore="Autofill"
+        android:drawableRight="@drawable/ic_date_range_grey_24dp" />
 
     <Button
         android:id="@+id/bt_create_travel"

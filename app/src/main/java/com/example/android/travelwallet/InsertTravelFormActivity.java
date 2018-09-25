@@ -16,6 +16,8 @@ import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
 
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -43,45 +45,82 @@ public class InsertTravelFormActivity extends AppCompatActivity {
     @BindView(R.id.bt_create_travel)
     Button mAddTravelButton;
 
-    Calendar mCalendar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_travel_form);
         ButterKnife.bind(this);
 
-        mCalendar = Calendar.getInstance();
-        final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+//        Create calendars for date pickers
+        final Calendar calendar = Calendar.getInstance();
+        final Calendar minDate = Calendar.getInstance();
+        final Calendar maxDate = Calendar.getInstance();
+        maxDate.set(Calendar.YEAR, minDate.get(Calendar.YEAR) + 99);
+
+//        Create dateSetListeners for date picker
+        final DatePickerDialog.OnDateSetListener startDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                mCalendar.set(Calendar.YEAR, year);
-                mCalendar.set(Calendar.MONTH, month);
-                mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                mStartDateEditText.setText(String.format("%s/%s/%s", month + 1, dayOfMonth, year));
+                minDate.set(Calendar.YEAR,year);
+                minDate.set(Calendar.MONTH,month);
+                minDate.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+            }
+        };
+
+        final DatePickerDialog.OnDateSetListener endDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                mEndDateEditText.setText(String.format("%s/%s/%s", month + 1, dayOfMonth, year));
+                maxDate.set(Calendar.YEAR,year);
+                maxDate.set(Calendar.MONTH,month);
+                maxDate.set(Calendar.DAY_OF_MONTH,dayOfMonth);
             }
         };
 
         mStartDateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(InsertTravelFormActivity.this, dateSetListener,
-                        mCalendar.get(Calendar.YEAR),
-                        mCalendar.get(Calendar.MONTH),
-                        mCalendar.get(Calendar.DAY_OF_MONTH))
-                        .show();
-                updateLabel(mStartDateEditText);
+                DatePickerDialog startDatePickerDialog = new DatePickerDialog(InsertTravelFormActivity.this, startDateSetListener,
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH));
+
+                startDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                startDatePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
+
+                startDatePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        mStartDateEditText.setText("");
+                        minDate.setTimeInMillis(System.currentTimeMillis() - 1000);
+                    }
+                });
+
+                startDatePickerDialog.show();
             }
         });
 
         mEndDateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(InsertTravelFormActivity.this, dateSetListener,
-                        mCalendar.get(Calendar.YEAR),
-                        mCalendar.get(Calendar.MONTH),
-                        mCalendar.get(Calendar.DAY_OF_MONTH))
-                        .show();
-                updateLabel(mEndDateEditText);
+                DatePickerDialog endDatePickerDialog = new DatePickerDialog(InsertTravelFormActivity.this, endDateSetListener,
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH));
+
+                endDatePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+
+                endDatePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        mEndDateEditText.setText("");
+                        maxDate.setTimeInMillis(System.currentTimeMillis());
+                        maxDate.set(Calendar.YEAR, maxDate.get(Calendar.YEAR) + 99);
+                    }
+                });
+
+                endDatePickerDialog.show();
             }
         });
 
@@ -149,11 +188,5 @@ public class InsertTravelFormActivity extends AppCompatActivity {
                 throw  new UnsupportedOperationException();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void updateLabel(EditText dateEditText){
-        String format = "MM/dd/yy";
-        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
-        dateEditText.setText(sdf.format(mCalendar.getTime()));
     }
 }

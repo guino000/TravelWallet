@@ -18,4 +18,8 @@
     <string name="error_travel_destination_required">Travel destination is required!</string>
     <string name="error_travel_start_date_required">Travel start date is required!</string>
     <string name="error_travel_end_date_required">Travel end date is required!</string>
+
+    <!--Travel Details Activity-->
+    <string name="travel_detail_total_budget_label">Total Budget:</string>
+    <string name="travel_detail_total_expenses_label">Total Spent:</string>
 </resources>

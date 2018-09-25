@@ -13,4 +13,9 @@
     <string name="start_date_label">Start Date</string>
     <string name="end_date_label">End Date</string>
     <string name="button_add_travel">Create Travel</string>
+    <string name="error_travel_name_required">Travel name is required!</string>
+    <string name="error_travel_budget_required">Travel budget is required!</string>
+    <string name="error_travel_destination_required">Travel destination is required!</string>
+    <string name="error_travel_start_date_required">Travel start date is required!</string>
+    <string name="error_travel_end_date_required">Travel end date is required!</string>
 </resources>

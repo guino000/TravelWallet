@@ -86,11 +86,43 @@ public class InsertTravelFormActivity extends AppCompatActivity {
         });
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if(actionBar != null)
+            actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @OnClick(R.id.bt_create_travel)
     public void AddTravel(){
+
+//        Check if form was filled correctly
+        boolean flagError = false;
+        if(mTravelNameEditText.getText().toString().trim().equals("")){
+            mTravelNameEditText.setError(getString(R.string.error_travel_name_required));
+            flagError = true;
+        }
+
+        if(mTotalBudgetEditText.getText().toString().trim().equals("")){
+            mTotalBudgetEditText.setError(getString(R.string.error_travel_budget_required));
+            flagError = true;
+        }
+
+        if(mDestinationEditText.getText().toString().trim().equals("")){
+            mDestinationEditText.setError(getString(R.string.error_travel_destination_required));
+            flagError = true;
+        }
+
+        if(mStartDateEditText.getText().toString().trim().equals("")){
+            mStartDateEditText.setError(getString(R.string.error_travel_start_date_required));
+            flagError = true;
+        }
+
+        if(mEndDateEditText.getText().toString().trim().equals("")){
+            mEndDateEditText.setError(getString(R.string.error_travel_end_date_required));
+            flagError = true;
+        }
+
+        if(flagError) return;
+
+//        Insert travel if form is correct
         Travel travel = new Travel(
                 mTravelNameEditText.getText().toString(),
                 mDestinationEditText.getText().toString(),

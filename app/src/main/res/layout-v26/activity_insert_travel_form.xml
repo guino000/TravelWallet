@@ -27,10 +27,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="9dp"
-        android:layout_marginRight="9dp"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/travel_name_label"
         android:inputType="text"
@@ -46,7 +45,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/total_budget_label"
@@ -54,7 +52,8 @@
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/et_travel_name"
-        app:layout_constraintTop_toBottomOf="@+id/et_travel_name" />
+        app:layout_constraintTop_toBottomOf="@+id/et_travel_name"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/et_destination"
@@ -62,7 +61,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/destination_label"
@@ -70,7 +68,8 @@
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/et_total_budget"
-        app:layout_constraintTop_toBottomOf="@+id/et_total_budget" />
+        app:layout_constraintTop_toBottomOf="@+id/et_total_budget"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/et_start_date"
@@ -78,7 +77,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
         android:focusable="false"
@@ -87,7 +85,8 @@
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/et_destination"
-        app:layout_constraintTop_toBottomOf="@+id/et_destination" />
+        app:layout_constraintTop_toBottomOf="@+id/et_destination"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/et_end_date"
@@ -95,7 +94,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
         android:focusable="false"
@@ -104,7 +102,8 @@
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/et_start_date"
-        app:layout_constraintTop_toBottomOf="@+id/et_start_date" />
+        app:layout_constraintTop_toBottomOf="@+id/et_start_date"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/bt_create_travel"

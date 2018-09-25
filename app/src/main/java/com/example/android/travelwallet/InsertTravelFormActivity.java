@@ -133,7 +133,9 @@ public class InsertTravelFormActivity extends AppCompatActivity {
         TravelViewModel travelViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())
                 .create(TravelViewModel.class);
         travelViewModel.insert(travel);
-        Toast.makeText(this,"Travel " + travel.getName() + " created!", Toast.LENGTH_LONG).show();
+
+//        Return to main activity
+        finish();
     }
 
     @Override

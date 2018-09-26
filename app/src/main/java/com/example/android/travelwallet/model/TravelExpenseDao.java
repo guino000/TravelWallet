@@ -29,4 +29,7 @@ public interface TravelExpenseDao {
 
     @Query("SELECT * FROM TravelExpense WHERE mTravelID = :travelID")
     LiveData<List<TravelExpense>> findAllOfTravel(long travelID);
+
+    @Query("SELECT SUM(mExpenseTotal) as total FROM TravelExpense WHERE mTravelID = :travelID")
+    TravelValues getTotalExpensesOfTravel(long travelID);
 }

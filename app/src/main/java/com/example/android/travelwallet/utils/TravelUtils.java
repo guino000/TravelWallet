@@ -11,7 +11,10 @@ import com.example.android.travelwallet.model.TravelExpense;
 import com.example.android.travelwallet.model.TravelViewModel;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 public abstract class TravelUtils {
     public static String getBudgetExpenseComparison(Application application, Travel travel){
@@ -27,5 +30,12 @@ public abstract class TravelUtils {
         }
 
         return String.format("%s - %s", expenseTotal.toString(), travel.getBudget().toString());
+    }
+
+    public static String getCurrencyFormattedValue(BigDecimal value){
+//        TODO: Create preferences screen to select desired currency
+        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
+//        format.setCurrency(Currency.getInstance("USD"));
+        return format.format(value);
     }
 }

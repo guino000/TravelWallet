@@ -57,10 +57,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:text="@string/travel_detail_total_budget_label"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintStart_toStartOf="@+id/tv_detail_total_expenses_label"
-        app:layout_constraintTop_toBottomOf="@+id/tv_detail_total_expenses_label"
-        tools:text="@string/travel_detail_total_budget_label" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_detail_total_expenses_label" />
 
     <ProgressBar
         android:id="@+id/pb_budget_spent"

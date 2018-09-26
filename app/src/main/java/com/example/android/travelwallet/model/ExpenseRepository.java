@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ExpenseRepository {
     private TravelExpenseDao mExpenseDao;
@@ -39,6 +40,15 @@ public class ExpenseRepository {
 
     public void delete(TravelExpense expense){
         new ExpenseRepository.deleteAsyncTask(mExpenseDao).execute(expense);
+    }
+
+    public TravelValues getTotalExpenses(long travelID){
+        try {
+            return new queryExpensesTotalAsyncTask(mExpenseDao).execute(travelID).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private static class insertAsyncTask extends AsyncTask<TravelExpense, Void, Void> {
@@ -93,6 +103,19 @@ public class ExpenseRepository {
         @Override
         protected LiveData<List<TravelExpense>> doInBackground(Long... longs) {
             return mAsyncTaskDao.findAllOfTravel (longs[0]);
+        }
+    }
+
+    private static class queryExpensesTotalAsyncTask extends AsyncTask<Long, Void, TravelValues>{
+        private TravelExpenseDao mAsyncTaskDao;
+
+        queryExpensesTotalAsyncTask(TravelExpenseDao dao){
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected TravelValues doInBackground(Long... longs) {
+            return mAsyncTaskDao.getTotalExpensesOfTravel (longs[0]);
         }
     }
 }

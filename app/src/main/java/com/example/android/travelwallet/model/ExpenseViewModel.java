@@ -21,6 +21,8 @@ public class ExpenseViewModel extends AndroidViewModel {
     public LiveData<List<TravelExpense>> getAllExpenses(){return mAllExpenses;}
     public LiveData<List<TravelExpense>> getAllExpensesOfTravel(long travelID){return mRepository.getTravelExpenses(travelID);}
 
+    public TravelValues getTotalExpensesOfTravel(long travelID){return mRepository.getTotalExpenses(travelID);}
+
     public void insert(TravelExpense expense){mRepository.insert(expense);}
 
     public void update(TravelExpense expense){mRepository.update(expense);}

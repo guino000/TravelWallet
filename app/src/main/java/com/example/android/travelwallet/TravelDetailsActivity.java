@@ -17,10 +17,13 @@ import com.example.android.travelwallet.adapters.ExpenseAdapter;
 import com.example.android.travelwallet.model.ExpenseViewModel;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelExpense;
+import com.example.android.travelwallet.model.TravelValues;
 import com.example.android.travelwallet.model.TravelViewModel;
+import com.example.android.travelwallet.utils.TravelUtils;
 
 import org.parceler.Parcels;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import butterknife.BindView;
@@ -62,6 +65,8 @@ public class TravelDetailsActivity extends AppCompatActivity {
 //        Get incoming intent
         Intent intent = getIntent();
         Travel travel = Parcels.unwrap(intent.getParcelableExtra(KEY_INTENT_EXTRA_TRAVEL));
+
+//        Get LiveData for expenses
         ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(ExpenseViewModel.class);
         expenseViewModel.getAllExpensesOfTravel(travel.getId()).observe(this, new Observer<List<TravelExpense>>() {
@@ -71,6 +76,18 @@ public class TravelDetailsActivity extends AppCompatActivity {
             }
         });
 
+//        Configure Activity
+        mTravelNameTextView.setText(travel.getName());
+        mTotalBudgetTextView.setText(TravelUtils.getCurrencyFormattedValue(travel.getBudget()));
+        TravelValues totalExpenses = expenseViewModel.getTotalExpensesOfTravel(travel.getId());
+        if(totalExpenses != null) {
+            mTotalExpensesTextView.setText(
+                    TravelUtils.getCurrencyFormattedValue(new BigDecimal(totalExpenses.total)));
+        }else{
+            mTotalExpensesTextView.setText(TravelUtils.getCurrencyFormattedValue(new BigDecimal(0)));
+        }
+
+//        Configure Back Button
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if(actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);

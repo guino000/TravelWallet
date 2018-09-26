@@ -22,4 +22,6 @@
     <!--Travel Details Activity-->
     <string name="travel_detail_total_budget_label">Total Budget:</string>
     <string name="travel_detail_total_expenses_label">Total Spent:</string>
+    <string name="travel_detail_expense_category_icon_description">Expense Category Icon</string>
+
 </resources>

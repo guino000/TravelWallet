@@ -1,13 +1,63 @@
 package com.example.android.travelwallet;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.example.android.travelwallet.adapters.ExpenseAdapter;
+import com.example.android.travelwallet.model.ExpenseViewModel;
+import com.example.android.travelwallet.model.Travel;
+import com.example.android.travelwallet.model.TravelViewModel;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class TravelDetailsActivity extends AppCompatActivity {
+    public static final String KEY_INTENT_EXTRA_TRAVEL_ID = "travel_id";
+
+    @BindView(R.id.tv_detail_travel_name)
+    TextView mTravelNameTextView;
+    @BindView(R.id.tv_detail_total_expenses)
+    TextView mTotalExpensesTextView;
+    @BindView(R.id.tv_detail_total_budget)
+    TextView mTotalBudgetTextView;
+    @BindView(R.id.pb_budget_spent)
+    ProgressBar mBudgetSpentProgressBar;
+    @BindView(R.id.rv_detail_expenses)
+    RecyclerView mExpensesRecyclerView;
+    @BindView(R.id.fab_add_expense)
+    FloatingActionButton mAddExpenseFAB;
+
+    ExpenseAdapter mExpenseAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travel_details);
+        ButterKnife.bind(this);
+
+//        Configure Recycler View
+        mExpenseAdapter = new ExpenseAdapter(this);
+        mExpensesRecyclerView.setAdapter(mExpenseAdapter);
+        mExpensesRecyclerView.setLayoutManager(new LinearLayoutManager(
+                this, LinearLayoutManager.VERTICAL,
+                false
+        ));
+        mExpensesRecyclerView.setHasFixedSize(true);
+
+//        Get incoming intent
+        Intent intent = getIntent();
+        long selectedTravelID = intent.getLongExtra(KEY_INTENT_EXTRA_TRAVEL_ID, -1);
+        if(selectedTravelID<0) {
+            throw new IllegalStateException("No travel ID found!");
+        }
+        ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
+                .getInstance(getApplication()).create(ExpenseViewModel.class);
     }
 }

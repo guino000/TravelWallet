@@ -42,10 +42,10 @@ public class MainActivity extends AppCompatActivity implements
         mTravelAdapter = new TravelAdapter(this, this);
         mTravelsRecyclerView.setAdapter(mTravelAdapter);
         if(getResources().getConfiguration().screenWidthDp < 600) {
-            mTravelsRecyclerView.setLayoutManager(new GridLayoutManager(this, 1,
+            mTravelsRecyclerView.setLayoutManager(new GridLayoutManager(this, 2,
                     GridLayoutManager.VERTICAL, false));
         }else{
-            mTravelsRecyclerView.setLayoutManager(new GridLayoutManager(this, 1,
+            mTravelsRecyclerView.setLayoutManager(new GridLayoutManager(this, 2,
                     GridLayoutManager.VERTICAL, false));
             ViewTreeObserver viewTreeObserver = mTravelsRecyclerView.getViewTreeObserver();
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {

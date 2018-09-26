@@ -15,6 +15,8 @@ import com.example.android.travelwallet.adapters.TravelAdapter;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
 
+import org.parceler.Parcels;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -78,9 +80,9 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onClick(long clickedTravelID) {
+    public void onClick(Travel clickedTravel) {
         Intent intent = new Intent(this, TravelDetailsActivity.class);
-        intent.putExtra(TravelDetailsActivity.KEY_INTENT_EXTRA_TRAVEL_ID, clickedTravelID);
+        intent.putExtra(TravelDetailsActivity.KEY_INTENT_EXTRA_TRAVEL, Parcels.wrap(clickedTravel));
         startActivity(intent);
     }
 }

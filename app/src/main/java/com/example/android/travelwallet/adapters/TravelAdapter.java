@@ -26,7 +26,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
     private final TravelAdapterOnClickHandler mClickHandler;
 
     public interface TravelAdapterOnClickHandler{
-        void onClick(long clickedTravelID);
+        void onClick(Travel clickedTravel);
     }
 
     public TravelAdapter(Context context, TravelAdapterOnClickHandler clickHandler){
@@ -84,7 +84,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            mClickHandler.onClick(mTravels.get(position).getId());
+            mClickHandler.onClick(mTravels.get(position));
         }
     }
 }

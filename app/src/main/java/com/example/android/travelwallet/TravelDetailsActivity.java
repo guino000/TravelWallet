@@ -19,13 +19,15 @@ import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelExpense;
 import com.example.android.travelwallet.model.TravelViewModel;
 
+import org.parceler.Parcels;
+
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TravelDetailsActivity extends AppCompatActivity {
-    public static final String KEY_INTENT_EXTRA_TRAVEL_ID = "travel_id";
+    public static final String KEY_INTENT_EXTRA_TRAVEL = "extra_travel";
 
     @BindView(R.id.tv_detail_travel_name)
     TextView mTravelNameTextView;
@@ -59,13 +61,10 @@ public class TravelDetailsActivity extends AppCompatActivity {
 
 //        Get incoming intent
         Intent intent = getIntent();
-        long selectedTravelID = intent.getLongExtra(KEY_INTENT_EXTRA_TRAVEL_ID, -1);
-        if(selectedTravelID<0) {
-            throw new IllegalStateException("No travel ID found!");
-        }
+        Travel travel = Parcels.unwrap(intent.getParcelableExtra(KEY_INTENT_EXTRA_TRAVEL));
         ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(ExpenseViewModel.class);
-        expenseViewModel.getAllExpensesOfTravel(selectedTravelID).observe(this, new Observer<List<TravelExpense>>() {
+        expenseViewModel.getAllExpensesOfTravel(travel.getId()).observe(this, new Observer<List<TravelExpense>>() {
             @Override
             public void onChanged(@Nullable List<TravelExpense> travelExpenses) {
                 mExpenseAdapter.setData(travelExpenses);

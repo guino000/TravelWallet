@@ -6,9 +6,12 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.Relation;
 
+import org.parceler.Parcel;
+
 import java.math.BigDecimal;
 import java.util.List;
 
+@Parcel
 @Entity(indices = {@Index("mId")})
 public class Travel {
     @PrimaryKey(autoGenerate = true)

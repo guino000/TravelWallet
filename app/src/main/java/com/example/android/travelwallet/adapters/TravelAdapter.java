@@ -23,9 +23,15 @@ import butterknife.ButterKnife;
 public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelViewHolder> {
     private Context mContext;
     private List<Travel> mTravels;
+    private final TravelAdapterOnClickHandler mClickHandler;
 
-    public TravelAdapter(Context context){
+    public interface TravelAdapterOnClickHandler{
+        void onClick(long clickedTravelID);
+    }
+
+    public TravelAdapter(Context context, TravelAdapterOnClickHandler clickHandler){
         mContext = context;
+        mClickHandler = clickHandler;
     }
 
     @NonNull
@@ -56,7 +62,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
         notifyDataSetChanged();
     }
 
-    class TravelViewHolder extends RecyclerView.ViewHolder{
+    class TravelViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         @BindView(R.id.tv_miniature_travel_name)
         TextView mTravelNameTextView;
 
@@ -72,6 +78,13 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
         public TravelViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            mClickHandler.onClick(mTravels.get(position).getId());
         }
     }
 }

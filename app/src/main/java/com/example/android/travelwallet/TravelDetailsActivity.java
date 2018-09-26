@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -70,5 +71,22 @@ public class TravelDetailsActivity extends AppCompatActivity {
                 mExpenseAdapter.setData(travelExpenses);
             }
         });
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null)
+            actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int selectedID = item.getItemId();
+        switch (selectedID){
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            default:
+                throw  new UnsupportedOperationException();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

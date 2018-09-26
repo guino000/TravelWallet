@@ -21,7 +21,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        TravelAdapter.TravelAdapterOnClickHandler {
     @BindView(R.id.rv_travels)
     RecyclerView mTravelsRecyclerView;
     TravelAdapter mTravelAdapter;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
 //        Configure Travel Recycler View
-        mTravelAdapter = new TravelAdapter(this);
+        mTravelAdapter = new TravelAdapter(this, this);
         mTravelsRecyclerView.setAdapter(mTravelAdapter);
         if(getResources().getConfiguration().screenWidthDp < 600) {
             mTravelsRecyclerView.setLayoutManager(new GridLayoutManager(this, 1,
@@ -74,5 +75,12 @@ public class MainActivity extends AppCompatActivity {
         int spanCount = (int) Math.floor(mTravelsRecyclerView.getWidth() /
                 getResources().getDimension(R.dimen.travel_miniature_width));
         ((GridLayoutManager) mTravelsRecyclerView.getLayoutManager()).setSpanCount(spanCount);
+    }
+
+    @Override
+    public void onClick(long clickedTravelID) {
+        Intent intent = new Intent(this, TravelDetailsActivity.class);
+        intent.putExtra(TravelDetailsActivity.KEY_INTENT_EXTRA_TRAVEL_ID, clickedTravelID);
+        startActivity(intent);
     }
 }

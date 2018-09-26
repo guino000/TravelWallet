@@ -1,6 +1,7 @@
 package com.example.android.travelwallet.utils;
 
 import android.app.Application;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProvider;
 import android.view.View;
 
@@ -17,9 +18,11 @@ public abstract class TravelUtils {
         BigDecimal expenseTotal = new BigDecimal(0);
         ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(application).create(ExpenseViewModel.class);
-        List<TravelExpense> expenses = expenseViewModel.getAllExpensesOfTravel(travel);
+        LiveData<List<TravelExpense>> expenses = expenseViewModel.getAllExpensesOfTravel(travel.getId());
 
-        for (TravelExpense expense : expenses){
+        if(expenses.getValue() == null) return "";
+
+        for (TravelExpense expense : expenses.getValue()){
             expenseTotal = expenseTotal.add(expense.getExpenseTotal());
         }
 

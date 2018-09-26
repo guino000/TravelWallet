@@ -9,7 +9,6 @@ import java.util.List;
 public class ExpenseRepository {
     private TravelExpenseDao mExpenseDao;
     private LiveData<List<TravelExpense>> mAllExpenses;
-    private LiveData<List<TravelExpense>> mAllExpensesOfTravel;
 
     ExpenseRepository(Application application){
         TravelDatabase db = TravelDatabase.getInstance(application);
@@ -21,9 +20,9 @@ public class ExpenseRepository {
         return mAllExpenses;
     }
 
-    public List<TravelExpense> getTravelExpenses(Travel travel){
+    public LiveData<List<TravelExpense>> getTravelExpenses(long travelID){
         try {
-            return new queryExpensesAsyncTask(mExpenseDao).execute(travel).get();
+            return new queryExpensesAsyncTask(mExpenseDao).execute(travelID).get();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -84,7 +83,7 @@ public class ExpenseRepository {
         }
     }
 
-    private static class queryExpensesAsyncTask extends AsyncTask<Travel, Void, List<TravelExpense>>{
+    private static class queryExpensesAsyncTask extends AsyncTask<Long, Void, LiveData<List<TravelExpense>>>{
         private TravelExpenseDao mAsyncTaskDao;
 
         queryExpensesAsyncTask(TravelExpenseDao dao){
@@ -92,8 +91,8 @@ public class ExpenseRepository {
         }
 
         @Override
-        protected List<TravelExpense> doInBackground(Travel... travels) {
-            return mAsyncTaskDao.findAllOfTravel (travels[0].getId());
+        protected LiveData<List<TravelExpense>> doInBackground(Long... longs) {
+            return mAsyncTaskDao.findAllOfTravel (longs[0]);
         }
     }
 }

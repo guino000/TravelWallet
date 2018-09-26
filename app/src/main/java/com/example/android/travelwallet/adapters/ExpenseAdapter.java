@@ -26,6 +26,11 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         mContext = context;
     }
 
+    public void setData(List<TravelExpense> newData){
+        mExpenses = newData;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ExpenseViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {

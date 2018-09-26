@@ -28,5 +28,5 @@ public interface TravelExpenseDao {
     LiveData<List<TravelExpense>> findAll();
 
     @Query("SELECT * FROM TravelExpense WHERE mTravelID = :travelID")
-    List<TravelExpense> findAllOfTravel(long travelID);
+    LiveData<List<TravelExpense>> findAllOfTravel(long travelID);
 }

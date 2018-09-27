@@ -81,11 +81,12 @@ public class TravelDetailsActivity extends AppCompatActivity {
         mTotalBudgetTextView.setText(TravelUtils.getCurrencyFormattedValue(travel.getBudget()));
         TravelValues totalExpenses = expenseViewModel.getTotalExpensesOfTravel(travel.getId());
         if(totalExpenses != null) {
-            mTotalExpensesTextView.setText(
-                    TravelUtils.getCurrencyFormattedValue(new BigDecimal(totalExpenses.total)));
+                mTotalExpensesTextView.setText(
+                        TravelUtils.getCurrencyFormattedValue(totalExpenses.total));
         }else{
             mTotalExpensesTextView.setText(TravelUtils.getCurrencyFormattedValue(new BigDecimal(0)));
         }
+        mBudgetSpentProgressBar.setProgress(TravelUtils.getBudgetSpentPercentage(getApplication(),travel));
 
 //        Configure Back Button
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();

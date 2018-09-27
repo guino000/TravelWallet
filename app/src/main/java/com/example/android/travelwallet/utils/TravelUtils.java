@@ -26,14 +26,25 @@ public abstract class TravelUtils {
         if(expenses == null) return "";
 
         return String.format("%s - %s",
-                getCurrencyFormattedValue(new BigDecimal(expenses.total)),
+                getCurrencyFormattedValue(expenses.total),
                 getCurrencyFormattedValue(travel.getBudget()));
+    }
+
+    public static int getBudgetSpentPercentage(Application application, Travel travel){
+        ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
+                .getInstance(application).create(ExpenseViewModel.class);
+        TravelValues expenses = expenseViewModel.getTotalExpensesOfTravel(travel.getId());
+
+        if(expenses.total == null || travel.getBudget() == null) return 0;
+
+        return expenses.total.divide(travel.getBudget(),BigDecimal.ROUND_DOWN).intValue() * 100;
     }
 
     public static String getCurrencyFormattedValue(BigDecimal value){
 //        TODO: Create preferences screen to select desired currency
         NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
 //        format.setCurrency(Currency.getInstance("USD"));
+        if (value == null) return format.format(0);
         return format.format(value);
     }
 }

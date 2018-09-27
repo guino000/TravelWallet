@@ -24,4 +24,18 @@
     <string name="travel_detail_total_expenses_label">Total Spent:</string>
     <string name="travel_detail_expense_category_icon_description">Expense Category Icon</string>
 
+    <!--Insert Expense Form Activity-->
+    <string name="insert_expense_description_label">Expense Description</string>
+    <string name="insert_expense_amount_label">Expense Amount</string>
+    <string name="insert_expense_category_label">Category</string>
+    <string name="insert_expense_date_label">Date</string>
+    <string name="insert_expense_button_label">Create Expense</string>
+    <string-array name="expense_categories_array">
+        <item>Hotel</item>
+        <item>Food &amp; Drink</item>
+        <item>Shopping</item>
+        <item>Transport</item>
+        <item>Entertainment</item>
+        <item>Others</item>
+    </string-array>
 </resources>

@@ -28,6 +28,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class TravelDetailsActivity extends AppCompatActivity {
     public static final String KEY_INTENT_EXTRA_TRAVEL = "extra_travel";
@@ -92,6 +93,12 @@ public class TravelDetailsActivity extends AppCompatActivity {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if(actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    @OnClick(R.id.fab_add_expense)
+    public void showAddExpenseForm(){
+        Intent intent = new Intent(this, InsertExpenseFormActivity.class);
+        startActivity(intent);
     }
 
     @Override

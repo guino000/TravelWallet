@@ -3,6 +3,7 @@ package com.example.android.travelwallet;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import com.example.android.travelwallet.utils.TravelUtils;
 import org.parceler.Parcels;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.List;
 
 import butterknife.BindView;
@@ -39,6 +41,8 @@ public class TravelDetailsActivity extends AppCompatActivity {
     TextView mTotalExpensesTextView;
     @BindView(R.id.tv_detail_total_budget)
     TextView mTotalBudgetTextView;
+    @BindView(R.id.tv_current_percentage)
+    TextView mCurrentPercentageTextView;
     @BindView(R.id.pb_budget_spent)
     ProgressBar mBudgetSpentProgressBar;
     @BindView(R.id.rv_detail_expenses)
@@ -102,18 +106,28 @@ public class TravelDetailsActivity extends AppCompatActivity {
     public void updateBudgetOverview(Travel travel){
         ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(ExpenseViewModel.class);
-
+//        Update Total Budget and Total Expenses text views
         mTotalBudgetTextView.setText(TravelUtils.getCurrencyFormattedValue(travel.getBudget()));
         TravelValues totalExpenses = expenseViewModel.getTotalExpensesOfTravel(travel.getId());
+        if(totalExpenses == null){
+            totalExpenses = new TravelValues();
+            totalExpenses.total = new BigDecimal(0);
+        }
+        mTotalExpensesTextView.setText(
+                TravelUtils.getCurrencyFormattedValue(totalExpenses.total));
 
-        if(totalExpenses != null) {
-            mTotalExpensesTextView.setText(
-                    TravelUtils.getCurrencyFormattedValue(totalExpenses.total));
+//        Update progress bar
+        mBudgetSpentProgressBar.setProgress(TravelUtils.getBudgetSpentPercentage(getApplication(),travel));
+        if(travel.getBudget().compareTo(totalExpenses.total) >= 0){
+            mBudgetSpentProgressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_green));
         }else{
-            mTotalExpensesTextView.setText(TravelUtils.getCurrencyFormattedValue(new BigDecimal(0)));
+            mBudgetSpentProgressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_red));
         }
 
-        mBudgetSpentProgressBar.setProgress(TravelUtils.getBudgetSpentPercentage(getApplication(),travel));
+//        Update progress bar percentage text view
+        NumberFormat numberFormat = NumberFormat.getPercentInstance();
+        numberFormat.setMinimumFractionDigits(1);
+        mCurrentPercentageTextView.setText(numberFormat.format(mBudgetSpentProgressBar.getProgress()));
     }
 
     @Override

@@ -62,6 +62,17 @@
         app:layout_constraintStart_toStartOf="@+id/tv_detail_total_expenses_label"
         app:layout_constraintTop_toBottomOf="@+id/tv_detail_total_expenses_label" />
 
+    <TextView
+        android:id="@+id/tv_current_percentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintBottom_toTopOf="@+id/pb_budget_spent"
+        app:layout_constraintEnd_toEndOf="@+id/pb_budget_spent"
+        app:layout_constraintStart_toStartOf="@+id/pb_budget_spent"
+        app:layout_constraintTop_toBottomOf="@+id/pb_budget_spent"
+        tools:text="40%" />
+
     <ProgressBar
         android:id="@+id/pb_budget_spent"
         style="?android:attr/progressBarStyleHorizontal"
@@ -72,9 +83,9 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:indeterminate="false"
         android:max="100"
         android:progress="0"
-        android:indeterminate="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_detail_total_budget_label2" />

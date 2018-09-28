@@ -109,9 +109,9 @@ public class TravelDetailsActivity extends AppCompatActivity {
 //        Update Total Budget and Total Expenses text views
         mTotalBudgetTextView.setText(TravelUtils.getCurrencyFormattedValue(travel.getBudget()));
         TravelValues totalExpenses = expenseViewModel.getTotalExpensesOfTravel(travel.getId());
-        if(totalExpenses == null){
+        if(totalExpenses.getTotal() == null){
             totalExpenses = new TravelValues();
-            totalExpenses.total = new BigDecimal(0);
+            totalExpenses.setTotal(new BigDecimal(0));
         }
         mTotalExpensesTextView.setText(
                 TravelUtils.getCurrencyFormattedValue(totalExpenses.total));

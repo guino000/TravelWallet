@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.model.TravelExpense;
+import com.example.android.travelwallet.utils.TravelUtils;
 
 import org.w3c.dom.Text;
 
@@ -45,7 +46,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         expenseViewHolder.mExpenseDescriptionTextView.setText(expense.getExpenseDescription());
         expenseViewHolder.mExpenseCategoryTextView.setText(expense.getCategory());
         expenseViewHolder.mExpenseDateTextView.setText(expense.getExpenseDate());
-        expenseViewHolder.mExpenseAmountTextView.setText(String.valueOf(expense.getExpenseTotal()));
+        expenseViewHolder.mExpenseAmountTextView.setText(
+                String.valueOf(TravelUtils.getCurrencyFormattedValue(expense.getExpenseTotal())));
     }
 
     @Override

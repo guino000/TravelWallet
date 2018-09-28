@@ -27,12 +27,12 @@ public class TravelExpense {
 
     }
 
-    public TravelExpense(long travelID, String description, BigDecimal total, String category, String date){
-        mTravelID = travelID;
+    public TravelExpense(String description, BigDecimal total, String category, String date, long travelID){
         mExpenseDescription = description;
         mExpenseTotal = total;
         mCategory = category;
         mExpenseDate = date;
+        mTravelID = travelID;
     }
 
     public long getID(){return mID;}

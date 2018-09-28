@@ -48,6 +48,8 @@ public class TravelDetailsActivity extends AppCompatActivity {
 
     ExpenseAdapter mExpenseAdapter;
 
+    private long mTravelID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +67,8 @@ public class TravelDetailsActivity extends AppCompatActivity {
 
 //        Get incoming intent
         Intent intent = getIntent();
-        Travel travel = Parcels.unwrap(intent.getParcelableExtra(KEY_INTENT_EXTRA_TRAVEL));
+        final Travel travel = Parcels.unwrap(intent.getParcelableExtra(KEY_INTENT_EXTRA_TRAVEL));
+        mTravelID = travel.getId();
 
 //        Get LiveData for expenses
         ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
@@ -74,20 +77,13 @@ public class TravelDetailsActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable List<TravelExpense> travelExpenses) {
                 mExpenseAdapter.setData(travelExpenses);
+                updateBudgetOverview(travel);
             }
         });
 
 //        Configure Activity
         mTravelNameTextView.setText(travel.getName());
-        mTotalBudgetTextView.setText(TravelUtils.getCurrencyFormattedValue(travel.getBudget()));
-        TravelValues totalExpenses = expenseViewModel.getTotalExpensesOfTravel(travel.getId());
-        if(totalExpenses != null) {
-                mTotalExpensesTextView.setText(
-                        TravelUtils.getCurrencyFormattedValue(totalExpenses.total));
-        }else{
-            mTotalExpensesTextView.setText(TravelUtils.getCurrencyFormattedValue(new BigDecimal(0)));
-        }
-        mBudgetSpentProgressBar.setProgress(TravelUtils.getBudgetSpentPercentage(getApplication(),travel));
+        updateBudgetOverview(travel);
 
 //        Configure Back Button
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
@@ -98,7 +94,26 @@ public class TravelDetailsActivity extends AppCompatActivity {
     @OnClick(R.id.fab_add_expense)
     public void showAddExpenseForm(){
         Intent intent = new Intent(this, InsertExpenseFormActivity.class);
+        intent.putExtra(InsertExpenseFormActivity.KEY_INTENT_EXTRA_TRAVEL_ID, mTravelID);
         startActivity(intent);
+    }
+
+//    Update budget overview components: Progress bar and text boxes
+    public void updateBudgetOverview(Travel travel){
+        ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
+                .getInstance(getApplication()).create(ExpenseViewModel.class);
+
+        mTotalBudgetTextView.setText(TravelUtils.getCurrencyFormattedValue(travel.getBudget()));
+        TravelValues totalExpenses = expenseViewModel.getTotalExpensesOfTravel(travel.getId());
+
+        if(totalExpenses != null) {
+            mTotalExpensesTextView.setText(
+                    TravelUtils.getCurrencyFormattedValue(totalExpenses.total));
+        }else{
+            mTotalExpensesTextView.setText(TravelUtils.getCurrencyFormattedValue(new BigDecimal(0)));
+        }
+
+        mBudgetSpentProgressBar.setProgress(TravelUtils.getBudgetSpentPercentage(getApplication(),travel));
     }
 
     @Override

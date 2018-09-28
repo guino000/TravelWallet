@@ -3,6 +3,7 @@ package com.example.android.travelwallet.utils;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProvider;
+import android.util.Log;
 import android.view.View;
 
 import com.example.android.travelwallet.model.ExpenseViewModel;
@@ -37,7 +38,7 @@ public abstract class TravelUtils {
 
         if(expenses.total == null || travel.getBudget() == null) return 0;
 
-        return expenses.total.divide(travel.getBudget(),BigDecimal.ROUND_DOWN).intValue() * 100;
+        return expenses.total.divide(travel.getBudget()).multiply(new BigDecimal("100")).intValue();
     }
 
     public static String getCurrencyFormattedValue(BigDecimal value){

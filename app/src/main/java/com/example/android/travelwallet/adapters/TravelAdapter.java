@@ -55,7 +55,8 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
         Travel travel = mTravels.get(i);
         travelViewHolder.mTravelNameTextView.setText(travel.getName());
         travelViewHolder.mDestinationTextView.setText(travel.getDestination());
-        travelViewHolder.mExpensesTextView.setText(TravelUtils.getBudgetExpenseComparison((Application) mContext.getApplicationContext(),travel));
+        travelViewHolder.mExpensesTextView.setText(
+                TravelUtils.getBudgetExpenseComparison((Application) mContext.getApplicationContext(),travel));
         travelViewHolder.mPopupImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

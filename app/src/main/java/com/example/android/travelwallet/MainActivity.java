@@ -75,6 +75,12 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mTravelAdapter.notifyDataSetChanged();
+    }
+
     @OnClick(R.id.bt_add_travel)
     public void callAddTravelActivity(){
         Intent intent = new Intent(this, InsertTravelFormActivity.class);

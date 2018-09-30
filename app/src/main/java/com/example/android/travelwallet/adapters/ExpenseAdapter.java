@@ -6,8 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.model.TravelExpense;
 import com.example.android.travelwallet.utils.TravelUtils;
@@ -48,6 +51,19 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         expenseViewHolder.mExpenseDateTextView.setText(expense.getExpenseDate());
         expenseViewHolder.mExpenseAmountTextView.setText(
                 String.valueOf(TravelUtils.getCurrencyFormattedValue(expense.getExpenseTotal())));
+
+        int categoryIconID = TravelUtils.getExpenseIconIDByCategory(expense.getCategory(), mContext);
+        if(categoryIconID != 0) {
+            Glide.with(mContext)
+                    .load(mContext.getResources().getDrawable(categoryIconID))
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(expenseViewHolder.mCategoryIconImageView);
+        }else{
+            Glide.with(mContext)
+                    .load(mContext.getResources().getDrawable(R.drawable.ic_error_red_24dp))
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(expenseViewHolder.mCategoryIconImageView);
+        }
     }
 
     @Override
@@ -66,6 +82,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         TextView mExpenseDateTextView;
         @BindView(R.id.tv_expense_amount)
         TextView mExpenseAmountTextView;
+        @BindView(R.id.img_category)
+        ImageView mCategoryIconImageView;
 
         public ExpenseViewHolder(@NonNull View itemView) {
             super(itemView);

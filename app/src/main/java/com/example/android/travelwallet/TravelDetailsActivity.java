@@ -117,7 +117,7 @@ public class TravelDetailsActivity extends AppCompatActivity {
                 TravelUtils.getCurrencyFormattedValue(totalExpenses.total));
 
 //        Update progress bar
-        mBudgetSpentProgressBar.setProgress(TravelUtils.getBudgetSpentPercentage(getApplication(),travel));
+        mBudgetSpentProgressBar.setProgress((int) (TravelUtils.getBudgetSpentPercentage(getApplication(),travel) * 100));
         if(travel.getBudget().compareTo(totalExpenses.total) >= 0){
             mBudgetSpentProgressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_green));
         }else{
@@ -127,7 +127,7 @@ public class TravelDetailsActivity extends AppCompatActivity {
 //        Update progress bar percentage text view
         NumberFormat numberFormat = NumberFormat.getPercentInstance();
         numberFormat.setMinimumFractionDigits(1);
-        mCurrentPercentageTextView.setText(numberFormat.format(mBudgetSpentProgressBar.getProgress()));
+        mCurrentPercentageTextView.setText(numberFormat.format(TravelUtils.getBudgetSpentPercentage(getApplication(),travel)));
     }
 
     @Override

@@ -31,14 +31,14 @@ public abstract class TravelUtils {
                 getCurrencyFormattedValue(travel.getBudget()));
     }
 
-    public static int getBudgetSpentPercentage(Application application, Travel travel){
+    public static float getBudgetSpentPercentage(Application application, Travel travel){
         ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(application).create(ExpenseViewModel.class);
         TravelValues expenses = expenseViewModel.getTotalExpensesOfTravel(travel.getId());
 
         if(expenses.total == null || travel.getBudget() == null) return 0;
 
-        return expenses.total.divide(travel.getBudget()).multiply(new BigDecimal("100")).intValue();
+        return expenses.total.divide(travel.getBudget()).floatValue();
     }
 
     public static String getCurrencyFormattedValue(BigDecimal value){

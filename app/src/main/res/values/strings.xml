@@ -4,6 +4,7 @@
 
     <!--Main Activity-->
     <string name="main_travel_image_content_description">Travel Image</string>
+    <string name="menu_item_delete">Delete</string>
 
     <!--Insert Travel Activity-->
     <string name="insert_activity_header_description">Let\'s create a new travel! Fill in the form below and we will take care of the rest.</string>

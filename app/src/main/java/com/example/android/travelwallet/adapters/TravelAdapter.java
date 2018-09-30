@@ -5,12 +5,18 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.example.android.travelwallet.R;
+import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.utils.TravelUtils;
 
@@ -24,14 +30,16 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
     private Context mContext;
     private List<Travel> mTravels;
     private final TravelAdapterOnClickHandler mClickHandler;
+    private final CardPopupMenuListener mPopupListener;
 
     public interface TravelAdapterOnClickHandler{
         void onClick(Travel clickedTravel);
     }
 
-    public TravelAdapter(Context context, TravelAdapterOnClickHandler clickHandler){
+    public TravelAdapter(Context context, TravelAdapterOnClickHandler clickHandler, CardPopupMenuListener popupListener){
         mContext = context;
         mClickHandler = clickHandler;
+        mPopupListener = popupListener;
     }
 
     @NonNull
@@ -43,11 +51,17 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TravelViewHolder travelViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final TravelViewHolder travelViewHolder, int i) {
         Travel travel = mTravels.get(i);
         travelViewHolder.mTravelNameTextView.setText(travel.getName());
         travelViewHolder.mDestinationTextView.setText(travel.getDestination());
         travelViewHolder.mExpensesTextView.setText(TravelUtils.getBudgetExpenseComparison((Application) mContext.getApplicationContext(),travel));
+        travelViewHolder.mPopupImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPopupListener.onPopupMenuClick(travelViewHolder.itemView, travelViewHolder.getAdapterPosition());
+            }
+        });
     }
 
     @Override
@@ -55,6 +69,10 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
         if(mTravels == null)
             return 0;
         return mTravels.size();
+    }
+
+    public List<Travel> getData(){
+        return mTravels;
     }
 
     public void setData(List<Travel> newData){
@@ -74,6 +92,9 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
 
         @BindView(R.id.img_miniature_travel_miniature)
         ImageView mTravelPhotoImageView;
+
+        @BindView(R.id.img_popup_menu_button)
+        ImageButton mPopupImageButton;
 
         public TravelViewHolder(@NonNull View itemView) {
             super(itemView);

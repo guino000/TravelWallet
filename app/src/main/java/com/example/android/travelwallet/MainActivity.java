@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements
                         return true;
                     case R.id.item_edit :
                         startTravelFormActivityAsEditMode(mTravelAdapter.getData().get(pos));
+                        return true;
                     default:
                         return false;
                 }

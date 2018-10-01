@@ -149,6 +149,12 @@ public class TravelDetailsActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public void startExpenseFormActivityAsEditMode(TravelExpense expense){
+        Intent intent = new Intent(this, InsertExpenseFormActivity.class);
+        intent.putExtra(InsertExpenseFormActivity.KEY_INTENT_EXTRA_EXPENSE_EDIT, Parcels.wrap(expense));
+        startActivity(intent);
+    }
+
     @Override
     public void onPopupMenuClick(View view, final int pos) {
         //        Create Card popup menu
@@ -161,6 +167,9 @@ public class TravelDetailsActivity extends AppCompatActivity
                 switch (item.getItemId()){
                     case R.id.item_delete :
                         mExpenseViewModel.delete(mExpenseAdapter.getData().get(pos));
+                        return true;
+                    case R.id.item_edit :
+                        startExpenseFormActivityAsEditMode(mExpenseAdapter.getData().get(pos));
                         return true;
                     default:
                         return false;

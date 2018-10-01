@@ -36,6 +36,7 @@
     <string name="insert_expense_category_label">Category</string>
     <string name="insert_expense_date_label">Date</string>
     <string name="insert_expense_button_label">Create Expense</string>
+    <string name="edit_expense_button_label">Save Changes</string>
     <string name="error_expense_description_required">Expense description required!</string>
     <string name="error_expense_amount_required">Expense amount required!</string>
     <string name="error_expense_amount_invalid">Invalid number!</string>

@@ -91,42 +91,4 @@ public abstract class TravelUtils {
     public static NumberFormat getCurrencyNumberFormat() {
         return NumberFormat.getCurrencyInstance(Locale.getDefault());
     }
-
-    public static void loadPlacePhoto(String placeID, final Context context, final ImageView imageView){
-        final GeoDataClient geoDataClient = Places.getGeoDataClient(context);
-        final Task<PlacePhotoMetadataResponse> photoMetadataResponseTask = geoDataClient.getPlacePhotos(placeID);
-
-        photoMetadataResponseTask.addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
-            @Override
-            public void onComplete(@NonNull Task<PlacePhotoMetadataResponse> task) {
-                if(!task.isSuccessful()) {
-                    Glide.with(context)
-                            .load(R.drawable.img_placeholder)
-                            .apply(RequestOptions.centerCropTransform())
-                            .into(imageView);
-                    return;
-                }
-                PlacePhotoMetadataResponse photos = task.getResult();
-                PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
-                if(photoMetadataBuffer.getCount() <= 0)
-                    return;
-                PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
-                CharSequence attribution = photoMetadata.getAttributions();
-                Task<PlacePhotoResponse> photoResponseTask = geoDataClient.getPhoto(photoMetadata);
-                photoResponseTask.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
-                    @Override
-                    public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
-                        PlacePhotoResponse photo = task.getResult();
-                        Bitmap bitmap = photo.getBitmap();
-                        Glide.with(context)
-                                .load(bitmap)
-                                .apply(RequestOptions.centerCropTransform())
-                                .apply(RequestOptions.placeholderOf(R.drawable.img_placeholder))
-                                .into(imageView);
-                    }
-                });
-            }
-        });
-
-    }
 }

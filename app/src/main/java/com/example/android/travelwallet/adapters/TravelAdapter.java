@@ -2,6 +2,7 @@ package com.example.android.travelwallet.adapters;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.constraint.Placeholder;
 import android.support.v7.widget.RecyclerView;
@@ -17,10 +18,14 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
+import com.example.android.travelwallet.interfaces.LoadPlacePhotoListener;
 import com.example.android.travelwallet.model.Travel;
+import com.example.android.travelwallet.utils.LoadPlacePhotoAsyncTask;
 import com.example.android.travelwallet.utils.TravelUtils;
+import com.google.android.gms.location.places.Places;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +71,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
             }
         });
         if(!travel.getPlaceID().equals("")) {
-            TravelUtils.loadPlacePhoto(travel.getPlaceID(), mContext, travelViewHolder.mTravelPhotoImageView);
+            new LoadPlacePhotoAsyncTask(Places.getGeoDataClient(mContext) ,travelViewHolder).execute(travel.getPlaceID());
         }
     }
 
@@ -86,7 +91,9 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
         notifyDataSetChanged();
     }
 
-    class TravelViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class TravelViewHolder extends RecyclerView.ViewHolder implements
+            View.OnClickListener,
+            LoadPlacePhotoListener {
         @BindView(R.id.tv_miniature_travel_name)
         TextView mTravelNameTextView;
 
@@ -112,6 +119,14 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
         public void onClick(View v) {
             int position = getAdapterPosition();
             mClickHandler.onClick(mTravels.get(position));
+        }
+
+        @Override
+        public void onLoadPlacePhoto(Bitmap bitmap) {
+            Glide.with(itemView)
+                    .load(bitmap)
+                    .apply(RequestOptions.placeholderOf(mContext.getResources().getDrawable(R.drawable.img_placeholder)))
+                    .into(mTravelPhotoImageView);
         }
     }
 }

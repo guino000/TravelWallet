@@ -23,6 +23,8 @@
                 android:id="@+id/img_miniature_travel_miniature"
                 android:layout_width="0dp"
                 android:layout_height="112dp"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
                 android:contentDescription="@string/main_travel_image_content_description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

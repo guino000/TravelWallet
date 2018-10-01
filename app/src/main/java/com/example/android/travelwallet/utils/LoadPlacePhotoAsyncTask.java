@@ -30,6 +30,7 @@ public class LoadPlacePhotoAsyncTask extends AsyncTask<String, Void, Void> {
 
     @Override
     protected Void doInBackground(String... strings) {
+        if(strings[0] == null) return null;
         if (strings[0].equals("")) return null;
 
         final Task<PlacePhotoMetadataResponse> photoMetadataResponseTask = mGeoDataClient.getPlacePhotos(strings[0]);

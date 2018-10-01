@@ -33,13 +33,13 @@
 
             <TextView
                 android:id="@+id/tv_miniature_expenses_overview"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:ellipsize="end"
                 android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 app:layout_constraintEnd_toStartOf="@+id/img_popup_menu_button"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/tv_miniature_travel_name"

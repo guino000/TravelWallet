@@ -31,6 +31,7 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity implements
         TravelAdapter.TravelAdapterOnClickHandler,
         CardPopupMenuListener {
+
     @BindView(R.id.rv_travels)
     RecyclerView mTravelsRecyclerView;
     TravelAdapter mTravelAdapter;
@@ -74,12 +75,6 @@ public class MainActivity extends AppCompatActivity implements
                 mTravelAdapter.setData(travels);
             }
         });
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        mTravelAdapter.notifyDataSetChanged();
     }
 
     @OnClick(R.id.bt_add_travel)

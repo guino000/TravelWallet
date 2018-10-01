@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
+import java.lang.annotation.Target;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -19,6 +20,18 @@ public class TravelRepository {
 
     LiveData<List<Travel>> getAllTravels(){
         return mAllTravels;
+    }
+
+    public Travel getTravel(long travelID){
+        try {
+            return new queryTravelAsyncTask(mTravelDao).execute(travelID).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            return null;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void insert(Travel travel){
@@ -74,4 +87,18 @@ public class TravelRepository {
             return null;
         }
     }
+
+    private static class queryTravelAsyncTask extends AsyncTask<Long, Void, Travel>{
+        private TravelDao mAsyncTaskDao;
+
+        queryTravelAsyncTask(TravelDao dao){
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Travel doInBackground(Long... longs) {
+            return mAsyncTaskDao.getTravel(longs[0]);
+        }
+    }
+
 }

@@ -19,6 +19,7 @@ import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.model.ExpenseViewModel;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelExpense;
+import com.example.android.travelwallet.model.TravelViewModel;
 import com.example.android.travelwallet.utils.TravelUtils;
 
 import org.parceler.Parcels;
@@ -189,9 +190,12 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
 
         if(flagError) return;
 
-//        Get expense ViewModel instance
+//        Get expense ViewModel instances
         ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(ExpenseViewModel.class);
+
+        TravelViewModel travelViewModel = ViewModelProvider.AndroidViewModelFactory
+                .getInstance(getApplication()).create(TravelViewModel.class);
 
 //        Check form mode
         if(mEditMode){
@@ -208,6 +212,8 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
             }
 
             expenseViewModel.update(mEditExpense);
+            Travel travel = travelViewModel.getTravel(mEditExpense.getTravelID());
+            travelViewModel.update(travel);
         }else{
 //        Insert expense if form is correct
             try {
@@ -220,6 +226,8 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
                         mTravelID);
 
                 expenseViewModel.insert(expense);
+                Travel travel = travelViewModel.getTravel(expense.getTravelID());
+                travelViewModel.update(travel);
             }catch (ParseException e){
                 e.printStackTrace();
                 mExpenseAmountEditText.setError(getString(R.string.error_expense_amount_invalid));

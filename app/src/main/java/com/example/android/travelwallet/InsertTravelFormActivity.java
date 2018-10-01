@@ -80,7 +80,6 @@ public class InsertTravelFormActivity extends AppCompatActivity {
 
     private boolean mEditMode;
     private Travel mEditTravel;
-    private GeoDataClient mGeoDataClient;
     private String mSelectedPlaceID;
 
     @Override
@@ -88,9 +87,6 @@ public class InsertTravelFormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_travel_form);
         ButterKnife.bind(this);
-
-//        Configure Places API
-        mGeoDataClient = Places.getGeoDataClient(this);
 
 //        Create calendars for date pickers
         final Calendar calendar = Calendar.getInstance();
@@ -299,7 +295,7 @@ public class InsertTravelFormActivity extends AppCompatActivity {
 
         if(flagError) return;
 
-//        Get view model instance
+//        Get view model instances
         TravelViewModel travelViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())
                 .create(TravelViewModel.class);
 

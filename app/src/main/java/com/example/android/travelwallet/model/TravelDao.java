@@ -24,6 +24,9 @@ public interface TravelDao {
     @Delete
     void delete(Travel travel);
 
+    @Query("SELECT * FROM Travel WHERE mId = :travelID")
+    Travel getTravel(long travelID);
+
     @Query("SELECT * FROM Travel")
     LiveData<List<Travel>> findAll();
 }

@@ -3,6 +3,7 @@ package com.example.android.travelwallet.adapters;
 import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.constraint.Placeholder;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -15,6 +16,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
 import com.example.android.travelwallet.model.Travel;
@@ -63,6 +65,9 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
                 mPopupListener.onPopupMenuClick(travelViewHolder.itemView, travelViewHolder.getAdapterPosition());
             }
         });
+        if(!travel.getPlaceID().equals("")) {
+            TravelUtils.loadPlacePhoto(travel.getPlaceID(), mContext, travelViewHolder.mTravelPhotoImageView);
+        }
     }
 
     @Override

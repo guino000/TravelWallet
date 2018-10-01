@@ -4,15 +4,30 @@ import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.model.ExpenseViewModel;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelExpense;
+import com.example.android.travelwallet.model.TravelExpenseDao;
 import com.example.android.travelwallet.model.TravelValues;
 import com.example.android.travelwallet.model.TravelViewModel;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.PlacePhotoMetadata;
+import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
+import com.google.android.gms.location.places.PlacePhotoMetadataResponse;
+import com.google.android.gms.location.places.PlacePhotoResponse;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -73,7 +88,45 @@ public abstract class TravelUtils {
         return format.format(value);
     }
 
-    public static NumberFormat getCurrencyNumberFormat(){
+    public static NumberFormat getCurrencyNumberFormat() {
         return NumberFormat.getCurrencyInstance(Locale.getDefault());
+    }
+
+    public static void loadPlacePhoto(String placeID, final Context context, final ImageView imageView){
+        final GeoDataClient geoDataClient = Places.getGeoDataClient(context);
+        final Task<PlacePhotoMetadataResponse> photoMetadataResponseTask = geoDataClient.getPlacePhotos(placeID);
+
+        photoMetadataResponseTask.addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
+            @Override
+            public void onComplete(@NonNull Task<PlacePhotoMetadataResponse> task) {
+                if(!task.isSuccessful()) {
+                    Glide.with(context)
+                            .load(R.drawable.img_placeholder)
+                            .apply(RequestOptions.centerCropTransform())
+                            .into(imageView);
+                    return;
+                }
+                PlacePhotoMetadataResponse photos = task.getResult();
+                PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
+                if(photoMetadataBuffer.getCount() <= 0)
+                    return;
+                PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
+                CharSequence attribution = photoMetadata.getAttributions();
+                Task<PlacePhotoResponse> photoResponseTask = geoDataClient.getPhoto(photoMetadata);
+                photoResponseTask.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
+                    @Override
+                    public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
+                        PlacePhotoResponse photo = task.getResult();
+                        Bitmap bitmap = photo.getBitmap();
+                        Glide.with(context)
+                                .load(bitmap)
+                                .apply(RequestOptions.centerCropTransform())
+                                .apply(RequestOptions.placeholderOf(R.drawable.img_placeholder))
+                                .into(imageView);
+                    }
+                });
+            }
+        });
+
     }
 }

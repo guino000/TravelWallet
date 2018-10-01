@@ -21,17 +21,19 @@ public class Travel {
     private BigDecimal mBudget;
     private String mStartDate;
     private String mEndDate;
+    private String mPlaceID;
 
     public Travel(){}
 
     @Ignore
     public Travel(String name, String destination, BigDecimal budget,
-                  String startDate, String endDate){
+                  String startDate, String endDate, String placeID){
         mName = name;
         mDestination = destination;
         mBudget = budget;
         mStartDate = startDate;
         mEndDate = endDate;
+        mPlaceID = placeID;
     }
 
     public long getId(){return mId;}
@@ -46,4 +48,10 @@ public class Travel {
     public void setStartDate(String startDate){mStartDate = startDate;}
     public String getEndDate(){return mEndDate;}
     public void setEndDate(String endDate){mEndDate = endDate;}
+    public String getPlaceID(){
+        return mPlaceID;
+    }
+    public void setPlaceID(String mPlaceID) {
+        this.mPlaceID = mPlaceID;
+    }
 }

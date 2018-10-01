@@ -5,20 +5,25 @@
     <!--Main Activity-->
     <string name="main_travel_image_content_description">Travel Image</string>
     <string name="menu_item_delete">Delete</string>
+    <string name="menu_item_edit">Edit</string>
 
     <!--Insert Travel Activity-->
-    <string name="insert_activity_header_description">Let\'s create a new travel! Fill in the form below and we will take care of the rest.</string>
+    <string name="insert_activity_header_description">Let\'s create a new travel! Fill in the form below to start planning.</string>
     <string name="travel_name_label">Travel Name</string>
     <string name="total_budget_label">Total Budget</string>
     <string name="destination_label">Destination</string>
     <string name="start_date_label">Start Date</string>
     <string name="end_date_label">End Date</string>
     <string name="button_add_travel">Create Travel</string>
+    <string name="button_edit_travel">Save Changes</string>
     <string name="error_travel_name_required">Travel name is required!</string>
     <string name="error_travel_budget_required">Travel budget is required!</string>
+    <string name="error_travel_budget_invalid">Invalid number!</string>
     <string name="error_travel_destination_required">Travel destination is required!</string>
     <string name="error_travel_start_date_required">Travel start date is required!</string>
     <string name="error_travel_end_date_required">Travel end date is required!</string>
+    <string name="toast_confirm_successful_travel_change">Changes saved!</string>
+    <string name="toast_confirm_successful_travel_creation">New travel created!</string>
 
     <!--Travel Details Activity-->
     <string name="travel_detail_total_budget_label">Total Budget:</string>
@@ -33,8 +38,11 @@
     <string name="insert_expense_button_label">Create Expense</string>
     <string name="error_expense_description_required">Expense description required!</string>
     <string name="error_expense_amount_required">Expense amount required!</string>
+    <string name="error_expense_amount_invalid">Invalid number!</string>
     <string name="error_expense_category_required">Expense category required!</string>
     <string name="error_expense_date_required">Expense date required!</string>
+    <string name="toast_confirm_successful_expense_change">Changes saved!</string>
+    <string name="toast_confirm_successful_expense_creation">New expense created!</string>
     <string name="category_item_hotel">Hotel</string>
     <string name="category_item_food_drink">Food &amp; Drink</string>
     <string name="category_item_shopping">Shopping</string>

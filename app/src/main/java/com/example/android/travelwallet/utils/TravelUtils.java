@@ -67,9 +67,13 @@ public abstract class TravelUtils {
 
     public static String getCurrencyFormattedValue(BigDecimal value){
 //        TODO: Create preferences screen to select desired currency
-        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
+        NumberFormat format = getCurrencyNumberFormat();
 //        format.setCurrency(Currency.getInstance("USD"));
         if (value == null) return format.format(0);
         return format.format(value);
+    }
+
+    public static NumberFormat getCurrencyNumberFormat(){
+        return NumberFormat.getCurrencyInstance(Locale.getDefault());
     }
 }

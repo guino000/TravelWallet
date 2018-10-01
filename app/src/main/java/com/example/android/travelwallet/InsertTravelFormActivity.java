@@ -3,23 +3,32 @@ package com.example.android.travelwallet;
 import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
+import com.example.android.travelwallet.utils.TravelUtils;
+
+import org.parceler.Parcels;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Currency;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -27,6 +36,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class InsertTravelFormActivity extends AppCompatActivity {
+    public static final String KEY_INTENT_EXTRA_TRAVEL = "extra_travel";
+
+    @BindView(R.id.tv_insert_travel_header)
+    TextView mAddTravelHeaderTextView;
+
     @BindView(R.id.et_travel_name)
     EditText mTravelNameEditText;
 
@@ -44,6 +58,9 @@ public class InsertTravelFormActivity extends AppCompatActivity {
 
     @BindView(R.id.bt_create_travel)
     Button mAddTravelButton;
+
+    private boolean mEditMode;
+    private Travel mEditTravel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,14 +141,73 @@ public class InsertTravelFormActivity extends AppCompatActivity {
             }
         });
 
+//        Create a text listener to format currency on budget edit text
+        mTotalBudgetEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                NumberFormat format = TravelUtils.getCurrencyNumberFormat();
+                if(hasFocus){
+                    try {
+                        mTotalBudgetEditText.setText(
+                                format.parse(mTotalBudgetEditText.getText().toString().trim()).toString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        mTotalBudgetEditText.setText("");
+                    }
+                }else{
+                    if(!mTotalBudgetEditText.getText().toString().trim().equals("")) {
+                        try {
+                            mTotalBudgetEditText.setText(TravelUtils.getCurrencyFormattedValue(
+                                    new BigDecimal((mTotalBudgetEditText.getText().toString().trim()))
+                            ));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            mTotalBudgetEditText.setText("");
+                            mTotalBudgetEditText.setError(getString(R.string.error_travel_budget_invalid));
+                        }
+                    }
+                }
+            }
+        });
+
+//        Check if there is an incoming travel object for edit mode
+        Intent intent = getIntent();
+        if(intent.hasExtra(KEY_INTENT_EXTRA_TRAVEL)){
+            mEditMode = true;
+            mEditTravel = Parcels.unwrap(intent.getParcelableExtra(KEY_INTENT_EXTRA_TRAVEL));
+            enableEditMode(mEditTravel);
+        }else{
+            mEditMode = false;
+            disableEditMode();
+        }
+
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if(actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    @OnClick(R.id.bt_create_travel)
-    public void AddTravel(){
+    private void enableEditMode(Travel travel){
+        mTravelNameEditText.setText(travel.getName());
+        mTotalBudgetEditText.setText(TravelUtils.getCurrencyFormattedValue(travel.getBudget()));
+        mDestinationEditText.setText(travel.getDestination());
+        mStartDateEditText.setText(travel.getStartDate());
+        mEndDateEditText.setText(travel.getEndDate());
+        mAddTravelButton.setText(R.string.button_edit_travel);
+        mAddTravelHeaderTextView.setVisibility(View.GONE);
+    }
 
+    private void disableEditMode(){
+        mTravelNameEditText.setText("");
+        mTotalBudgetEditText.setText("");
+        mDestinationEditText.setText("");
+        mStartDateEditText.setText("");
+        mEndDateEditText.setText("");
+        mAddTravelButton.setText(R.string.button_add_travel);
+        mAddTravelHeaderTextView.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.bt_create_travel)
+    public void AddOrEditTravel(){
 //        Check if form was filled correctly
         boolean flagError = false;
         if(mTravelNameEditText.getText().toString().trim().equals("")){
@@ -161,17 +237,56 @@ public class InsertTravelFormActivity extends AppCompatActivity {
 
         if(flagError) return;
 
-//        Insert travel if form is correct
-        Travel travel = new Travel(
-                mTravelNameEditText.getText().toString(),
-                mDestinationEditText.getText().toString(),
-                new BigDecimal(mTotalBudgetEditText.getText().toString()),
-                mStartDateEditText.getText().toString(),
-                mEndDateEditText.getText().toString());
-
+//        Get view model instance
         TravelViewModel travelViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())
                 .create(TravelViewModel.class);
-        travelViewModel.insert(travel);
+
+//        Check form mode
+        if(mEditMode){
+//            Save changes to travel if form is correct
+            mEditTravel.setName(mTravelNameEditText.getText().toString().trim());
+            try {
+                mEditTravel.setBudget(
+                        new BigDecimal(TravelUtils.getCurrencyNumberFormat().parse(
+                                mTotalBudgetEditText.getText().toString().trim()).doubleValue()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+                mTotalBudgetEditText.setError(getString(R.string.error_travel_budget_invalid));
+                return;
+            }
+            mEditTravel.setDestination(mDestinationEditText.getText().toString().trim());
+            mEditTravel.setStartDate(mStartDateEditText.getText().toString().trim());
+            mEditTravel.setEndDate(mEndDateEditText.getText().toString().trim());
+
+            travelViewModel.update(mEditTravel);
+        }else{
+//            Insert travel if form is correct
+            try{
+                Travel travel = new Travel(
+                    mTravelNameEditText.getText().toString().trim(),
+                    mDestinationEditText.getText().toString().trim(),
+                    new BigDecimal(TravelUtils.getCurrencyNumberFormat().parse(
+                            mTotalBudgetEditText.getText().toString().trim()).doubleValue()),
+                    mStartDateEditText.getText().toString().trim(),
+                    mEndDateEditText.getText().toString().trim());
+
+                travelViewModel.insert(travel);
+            }catch (ParseException e){
+                e.printStackTrace();
+                mTotalBudgetEditText.setError(getString(R.string.error_travel_budget_invalid));
+                return;
+            }
+        }
+
+//        Toast to tell user about success
+        if(mEditMode)
+            Toast.makeText(this,
+                    getString(R.string.toast_confirm_successful_travel_change),
+                    Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(this,
+                    getString(R.string.toast_confirm_successful_travel_creation),
+                    Toast.LENGTH_LONG).show();
 
 //        Return to main activity
         finish();

@@ -100,6 +100,12 @@ public class MainActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
+    public void startTravelFormActivityAsEditMode(Travel travel){
+        Intent intent = new Intent(this, InsertTravelFormActivity.class);
+        intent.putExtra(InsertTravelFormActivity.KEY_INTENT_EXTRA_TRAVEL, Parcels.wrap(travel));
+        startActivity(intent);
+    }
+
     @Override
     public void onPopupMenuClick(View view, final int pos) {
         //        Create Card popup menu
@@ -113,6 +119,8 @@ public class MainActivity extends AppCompatActivity implements
                     case R.id.item_delete :
                         mTravelViewModel.delete(mTravelAdapter.getData().get(pos));
                         return true;
+                    case R.id.item_edit :
+                        startTravelFormActivityAsEditMode(mTravelAdapter.getData().get(pos));
                     default:
                         return false;
                 }

@@ -65,6 +65,7 @@
         android:autofillHints=""
         android:drawableEnd="@drawable/ic_place_grey_24dp"
         android:ems="10"
+        android:focusable="false"
         android:hint="@string/destination_label"
         android:inputType="text"
         android:singleLine="true"

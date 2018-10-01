@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,6 +21,13 @@ import android.widget.Toast;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
 import com.example.android.travelwallet.utils.TravelUtils;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import org.parceler.Parcels;
 
@@ -35,8 +44,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class InsertTravelFormActivity extends AppCompatActivity {
+public class InsertTravelFormActivity extends AppCompatActivity
+    implements GoogleApiClient.OnConnectionFailedListener {
     public static final String KEY_INTENT_EXTRA_TRAVEL = "extra_travel";
+    public static final int PLACE_PICKER_REQUEST = 1;
 
     @BindView(R.id.tv_insert_travel_header)
     TextView mAddTravelHeaderTextView;
@@ -61,12 +72,21 @@ public class InsertTravelFormActivity extends AppCompatActivity {
 
     private boolean mEditMode;
     private Travel mEditTravel;
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_travel_form);
         ButterKnife.bind(this);
+
+//        Configure Places API
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(this, this)
+                .build();
 
 //        Create calendars for date pickers
         final Calendar calendar = Calendar.getInstance();
@@ -206,6 +226,36 @@ public class InsertTravelFormActivity extends AppCompatActivity {
         mAddTravelHeaderTextView.setVisibility(View.VISIBLE);
     }
 
+    @OnClick(R.id.et_destination)
+    public void startPlacePickerActivity(){
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+            Toast.makeText(this,
+                    getString(R.string.error_google_play_services_not_available),
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        switch (requestCode){
+            case PLACE_PICKER_REQUEST :
+                if(data != null && resultCode == RESULT_OK) {
+                    Place place = PlacePicker.getPlace(this, data);
+                    String toastMsg = String.format("Place: %s", place.getName());
+                    Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException("Not implemented yet!");
+        }
+    }
+
     @OnClick(R.id.bt_create_travel)
     public void AddOrEditTravel(){
 //        Check if form was filled correctly
@@ -303,5 +353,10 @@ public class InsertTravelFormActivity extends AppCompatActivity {
                 throw  new UnsupportedOperationException();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }

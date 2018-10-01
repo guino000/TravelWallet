@@ -267,6 +267,9 @@ public class InsertTravelFormActivity extends AppCompatActivity {
 
     @OnClick(R.id.bt_create_travel)
     public void AddOrEditTravel(){
+        if(getCurrentFocus() != null)
+            getCurrentFocus().clearFocus();
+
 //        Check if form was filled correctly
         boolean flagError = false;
         if(mTravelNameEditText.getText().toString().trim().equals("")){

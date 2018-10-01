@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements
 
 //        Configure Travel Recycler View
         mTravelAdapter = new TravelAdapter(this, this, this);
+        mTravelAdapter.setHasStableIds(true);
         mTravelsRecyclerView.setAdapter(mTravelAdapter);
         if(getResources().getConfiguration().screenWidthDp < 600) {
             mTravelsRecyclerView.setLayoutManager(new GridLayoutManager(this, 2,

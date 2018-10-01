@@ -170,6 +170,8 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
 
     @OnClick(R.id.bt_create_expense)
     public void createExpense(){
+        if(getCurrentFocus() != null)
+            getCurrentFocus().clearFocus();
 //        Check if inputs are OK
         boolean flagError = false;
         if(mExpenseDescriptionEditText.getText().toString().trim().equals("")){

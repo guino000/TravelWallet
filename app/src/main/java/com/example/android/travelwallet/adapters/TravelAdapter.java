@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.Placeholder;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +19,10 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
 import com.example.android.travelwallet.interfaces.LoadPlacePhotoListener;
@@ -74,6 +78,12 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
     }
 
     @Override
+    public long getItemId(int position) {
+        if(mTravels == null) return 0;
+        return mTravels.get(position).getId();
+    }
+
+    @Override
     public int getItemCount() {
         if(mTravels == null)
             return 0;
@@ -124,6 +134,8 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
             Glide.with(itemView)
                     .load(bitmap)
                     .apply(RequestOptions.placeholderOf(mContext.getResources().getDrawable(R.drawable.img_placeholder)))
+                    .apply(RequestOptions.noTransformation())
+                    .apply(RequestOptions.noAnimation())
                     .into(mTravelPhotoImageView);
         }
     }

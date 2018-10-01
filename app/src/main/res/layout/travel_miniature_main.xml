@@ -23,13 +23,13 @@
                 android:id="@+id/img_miniature_travel_miniature"
                 android:layout_width="0dp"
                 android:layout_height="112dp"
-                android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/main_travel_image_content_description"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@android:color/darker_gray" />
+                app:srcCompat="@drawable/img_placeholder" />
 
             <TextView
                 android:id="@+id/tv_miniature_expenses_overview"

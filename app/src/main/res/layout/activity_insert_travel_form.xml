@@ -64,16 +64,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:drawableEnd="@drawable/ic_place_grey_24dp"
-        android:drawableRight="@drawable/ic_place_grey_24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:ems="10"
-        android:focusable="false"
         android:hint="@string/destination_label"
         android:inputType="text"
         android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/bt_select_place_map"
         app:layout_constraintStart_toStartOf="@+id/et_total_budget"
         app:layout_constraintTop_toBottomOf="@+id/et_total_budget"
         tools:ignore="Autofill" />
@@ -128,5 +125,17 @@
         app:layout_constraintEnd_toEndOf="@+id/et_end_date"
         app:layout_constraintStart_toStartOf="@+id/et_end_date"
         app:layout_constraintTop_toBottomOf="@+id/et_end_date" />
+
+    <ImageButton
+        android:id="@+id/bt_select_place_map"
+        style="@style/Widget.AppCompat.ImageButton"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/et_destination"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_destination"
+        app:srcCompat="@drawable/ic_place_grey_24dp" />
 
 </android.support.constraint.ConstraintLayout>

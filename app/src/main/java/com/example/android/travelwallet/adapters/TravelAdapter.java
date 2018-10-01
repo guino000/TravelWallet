@@ -70,9 +70,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
                 mPopupListener.onPopupMenuClick(travelViewHolder.itemView, travelViewHolder.getAdapterPosition());
             }
         });
-        if(!travel.getPlaceID().equals("")) {
-            new LoadPlacePhotoAsyncTask(Places.getGeoDataClient(mContext) ,travelViewHolder).execute(travel.getPlaceID());
-        }
+        new LoadPlacePhotoAsyncTask(Places.getGeoDataClient(mContext) ,travelViewHolder).execute(travel.getPlaceID());
     }
 
     @Override

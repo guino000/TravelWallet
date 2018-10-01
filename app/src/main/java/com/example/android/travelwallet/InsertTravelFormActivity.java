@@ -230,24 +230,21 @@ public class InsertTravelFormActivity extends AppCompatActivity {
         mAddTravelHeaderTextView.setVisibility(View.VISIBLE);
     }
 
-    @OnClick(R.id.et_destination)
+    @OnClick(R.id.bt_select_place_map)
     public void startPlacePickerActivity(){
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
         try {
             startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
-            mDestinationEditText.setFocusable(false);
         } catch (GooglePlayServicesRepairableException e) {
             e.printStackTrace();
-            mDestinationEditText.setFocusable(true);
-            mDestinationEditText.requestFocus();
         } catch (GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
             Toast.makeText(this,
                     getString(R.string.error_google_play_services_not_available),
                     Toast.LENGTH_LONG).show();
-            mDestinationEditText.setFocusable(true);
-            mDestinationEditText.requestFocus();
         }
+
+        mDestinationEditText.requestFocus();
     }
 
     @Override

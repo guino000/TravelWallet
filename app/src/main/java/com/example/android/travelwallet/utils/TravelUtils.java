@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.List;
@@ -77,7 +78,7 @@ public abstract class TravelUtils {
 
         if(expenses.total == null || travel.getBudget() == null) return 0;
 
-        return expenses.total.divide(travel.getBudget()).floatValue();
+        return expenses.total.divide(travel.getBudget(),2,RoundingMode.HALF_EVEN).floatValue();
     }
 
     public static String getCurrencyFormattedValue(BigDecimal value){

@@ -306,7 +306,7 @@ public class InsertTravelFormActivity extends AppCompatActivity {
             try {
                 mEditTravel.setBudget(
                         new BigDecimal(TravelUtils.getCurrencyNumberFormat().parse(
-                                mTotalBudgetEditText.getText().toString().trim()).doubleValue()));
+                                mTotalBudgetEditText.getText().toString().trim()).toString()));
             } catch (ParseException e) {
                 e.printStackTrace();
                 mTotalBudgetEditText.setError(getString(R.string.error_travel_budget_invalid));
@@ -324,7 +324,7 @@ public class InsertTravelFormActivity extends AppCompatActivity {
                     mTravelNameEditText.getText().toString().trim(),
                     mDestinationEditText.getText().toString().trim(),
                     new BigDecimal(TravelUtils.getCurrencyNumberFormat().parse(
-                            mTotalBudgetEditText.getText().toString().trim()).doubleValue()),
+                            mTotalBudgetEditText.getText().toString().trim()).toString()),
                     mStartDateEditText.getText().toString().trim(),
                     mEndDateEditText.getText().toString().trim(),
                     mSelectedPlaceID);

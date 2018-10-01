@@ -204,7 +204,7 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
             try {
                 mEditExpense.setExpenseTotal(
                         new BigDecimal(TravelUtils.getCurrencyNumberFormat().parse(
-                                mExpenseAmountEditText.getText().toString().trim()).doubleValue()));
+                                mExpenseAmountEditText.getText().toString().trim()).toString()));
             }catch (ParseException e){
                 e.printStackTrace();
                 mExpenseAmountEditText.setError(getString(R.string.error_expense_amount_invalid));
@@ -220,7 +220,7 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
                 TravelExpense expense = new TravelExpense(
                         mExpenseDescriptionEditText.getText().toString().trim(),
                         new BigDecimal(TravelUtils.getCurrencyNumberFormat().parse(
-                                mExpenseAmountEditText.getText().toString().trim()).doubleValue()),
+                                mExpenseAmountEditText.getText().toString().trim()).toString()),
                         mExpenseCategorySpinner.getSelectedItem().toString().trim(),
                         mExpenseDateEditText.getText().toString().trim(),
                         mTravelID);

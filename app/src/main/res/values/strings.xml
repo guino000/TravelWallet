@@ -59,4 +59,8 @@
         <item>@string/category_item_entertainment</item>
         <item>@string/category_item_others</item>
     </string-array>
+
+    <!--Widget-->
+    <string name="add_widget">Add widget</string>
+    <string name="widget_empty_string">No travels yet!</string>
 </resources>

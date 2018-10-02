@@ -2,7 +2,9 @@ package com.example.android.travelwallet;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +33,9 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity implements
         TravelAdapter.TravelAdapterOnClickHandler,
         CardPopupMenuListener {
+
+    public static final String KEY_SHARED_PREFS_LAST_VIEWED_TRAVEL_ID = "last_viewed_travel";
+    public static final String SHARED_PREFS_NAME = "com.example.android.travelwallet";
 
     @BindView(R.id.rv_travels)
     RecyclerView mTravelsRecyclerView;
@@ -91,6 +96,13 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(Travel clickedTravel) {
+        //        Writes to shared preferences the ID of the last clicked recipe
+        SharedPreferences preferences = getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
+        preferences.edit()
+                .putLong(KEY_SHARED_PREFS_LAST_VIEWED_TRAVEL_ID, clickedTravel.getId())
+                .apply();
+
+//        Calls details activity
         Intent intent = new Intent(this, TravelDetailsActivity.class);
         intent.putExtra(TravelDetailsActivity.KEY_INTENT_EXTRA_TRAVEL, Parcels.wrap(clickedTravel));
         startActivity(intent);

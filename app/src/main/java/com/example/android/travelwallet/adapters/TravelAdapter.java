@@ -131,7 +131,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
 
         @Override
         public void onLoadPlacePhoto(Bitmap bitmap) {
-            Glide.with(itemView)
+            Glide.with(mContext.getApplicationContext())
                     .load(bitmap)
                     .apply(RequestOptions.placeholderOf(mContext.getResources().getDrawable(R.drawable.img_placeholder)))
                     .apply(RequestOptions.noTransformation())

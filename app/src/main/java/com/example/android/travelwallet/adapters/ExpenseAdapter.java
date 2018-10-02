@@ -68,12 +68,12 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
 
         int categoryIconID = TravelUtils.getExpenseIconIDByCategory(expense.getCategory(), mContext);
         if(categoryIconID != 0) {
-            Glide.with(mContext)
+            Glide.with(mContext.getApplicationContext())
                     .load(mContext.getResources().getDrawable(categoryIconID))
                     .apply(RequestOptions.circleCropTransform())
                     .into(expenseViewHolder.mCategoryIconImageView);
         }else{
-            Glide.with(mContext)
+            Glide.with(mContext.getApplicationContext())
                     .load(mContext.getResources().getDrawable(R.drawable.ic_error_red_24dp))
                     .apply(RequestOptions.circleCropTransform())
                     .into(expenseViewHolder.mCategoryIconImageView);

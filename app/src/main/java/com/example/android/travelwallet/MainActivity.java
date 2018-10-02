@@ -1,7 +1,9 @@
 package com.example.android.travelwallet;
 
+import android.appwidget.AppWidgetManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -96,11 +98,20 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(Travel clickedTravel) {
-        //        Writes to shared preferences the ID of the last clicked recipe
+//        Writes to shared preferences the ID of the last clicked recipe
         SharedPreferences preferences = getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
         preferences.edit()
                 .putLong(KEY_SHARED_PREFS_LAST_VIEWED_TRAVEL_ID, clickedTravel.getId())
                 .apply();
+
+//        Notify widget that data changed
+        AppWidgetManager widgetManager = AppWidgetManager.getInstance(this);
+        int[] ids = widgetManager.getAppWidgetIds(
+                new ComponentName(this, TravelBudgetWidget.class));
+        Intent updateIntent = new Intent();
+        updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        updateIntent.putExtra(TravelBudgetWidget.WIDGET_EXTRA_IDS, ids);
+        sendBroadcast(updateIntent);
 
 //        Calls details activity
         Intent intent = new Intent(this, TravelDetailsActivity.class);

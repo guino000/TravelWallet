@@ -1,5 +1,8 @@
 package com.example.android.travelwallet;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
@@ -7,8 +10,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -40,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements
 
     public static final String KEY_SHARED_PREFS_LAST_VIEWED_TRAVEL_ID = "last_viewed_travel";
     public static final String SHARED_PREFS_NAME = "com.example.android.travelwallet";
+    public static final String NOTIFICATION_CHANNEL_ID = "travel_notifications";
+    public static final int NOTIFICATION_ID = 11;
 
     @BindView(R.id.rv_travels)
     RecyclerView mTravelsRecyclerView;
@@ -52,12 +60,29 @@ public class MainActivity extends AppCompatActivity implements
     AdView mAdView;
 
     TravelViewModel mTravelViewModel;
+    NotificationCompat.Builder mTravelBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+//        Configure Travel Notification
+        createNotificationChannel();
+
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        mTravelBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_flight_grey_24dp)
+                .setContentTitle(getString(R.string.travel_notification_title))
+                .setContentText(getString(R.string.travel_notification_text))
+                .setStyle(new NotificationCompat.BigTextStyle()
+                    .bigText(getString(R.string.travel_notification_text)))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
 
 //        Configure AdView
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -156,5 +181,25 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
         popupMenu.show();
+    }
+
+    @OnClick(R.id.bt_show_notification)
+    public void showNotification(){
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+        notificationManagerCompat.notify(NOTIFICATION_ID, mTravelBuilder.build());
+    }
+
+    private void createNotificationChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            CharSequence name = getString(R.string.travel_notification_channel_name);
+            String description = getString(R.string.travel_notification_channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
     }
 }

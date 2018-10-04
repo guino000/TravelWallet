@@ -63,4 +63,10 @@
     <!--Widget-->
     <string name="add_widget">Add widget</string>
     <string name="widget_empty_string">No travels yet!</string>
+
+    <!--Notification-->
+    <string name="travel_notification_title">Let\'s Travel!</string>
+    <string name="travel_notification_text">Your scheduled travel starts now. Don\'t forget to keep track of your expenses!</string>
+    <string name="travel_notification_channel_name">travel_wallet_notifications</string>
+    <string name="travel_notification_channel_description">Notifications from Travel Wallet App</string>
 </resources>

@@ -23,6 +23,8 @@ import com.example.android.travelwallet.adapters.TravelAdapter;
 import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.parceler.Parcels;
 
@@ -46,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements
     @BindView(R.id.bt_add_travel)
     FloatingActionButton mAddTravelButton;
 
+    @BindView(R.id.adView)
+    AdView mAdView;
+
     TravelViewModel mTravelViewModel;
 
     @Override
@@ -53,6 +58,10 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+//        Configure AdView
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
 //        Configure Travel Recycler View
         mTravelAdapter = new TravelAdapter(this, this, this);

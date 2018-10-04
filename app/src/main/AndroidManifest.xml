@@ -37,6 +37,9 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/travel_budget_widget_info" />
+            <meta-data
+                android:name="com.google.android.gms.ads.APPLICATION_ID"
+                android:value="@string/GoogleAdMobAppID"/>
         </receiver>
     </application>
 

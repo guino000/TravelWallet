@@ -8,6 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 import org.parceler.Parcel;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -24,13 +25,13 @@ public class TravelExpense {
     private String mExpenseDescription;
     private BigDecimal mExpenseTotal;
     private String mCategory;
-    private String mExpenseDate;
+    private Date mExpenseDate;
 
     public TravelExpense(){
 
     }
 
-    public TravelExpense(String description, BigDecimal total, String category, String date, long travelID){
+    public TravelExpense(String description, BigDecimal total, String category, Date date, long travelID){
         mExpenseDescription = description;
         mExpenseTotal = total;
         mCategory = category;
@@ -58,11 +59,11 @@ public class TravelExpense {
         this.mCategory = mCategory;
     }
 
-    public String getExpenseDate() {
+    public Date getExpenseDate() {
         return mExpenseDate;
     }
 
-    public void setExpenseDate(String mExpenseDate) {
+    public void setExpenseDate(Date mExpenseDate) {
         this.mExpenseDate = mExpenseDate;
     }
 }

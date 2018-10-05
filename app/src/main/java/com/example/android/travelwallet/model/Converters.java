@@ -27,21 +27,27 @@ public class Converters {
     }
 
     @TypeConverter
-    public static Date fromTimestamp(String value) {
-        if (value != null) {
-            try {
-                return df.parse(value);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            return null;
-        } else {
+    public static String dateToString(Date value) {
+        return value == null ? "" : df.format(value);
+    }
+
+    @TypeConverter
+    public static Date stringToDate(String value) {
+        try {
+            return value.equals("") ? null : df.parse(value);
+        } catch (ParseException e) {
+            e.printStackTrace();
             return null;
         }
     }
 
     @TypeConverter
-    public static String toTimestamp(Date value) {
-        return value.toString();
+    public static Date fromTimestamp(Long value) {
+        return value == null ? null : new Date(value);
+    }
+
+    @TypeConverter
+    public static Long dateToTimestamp(Date date) {
+        return date == null ? null : date.getTime();
     }
 }

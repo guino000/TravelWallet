@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.android.travelwallet.R;
+import com.example.android.travelwallet.model.Converters;
 import com.example.android.travelwallet.model.ExpenseViewModel;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelExpense;
@@ -149,7 +150,7 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
             mExpenseCategorySpinner.setSelection(categoryPosition);
         else
             mExpenseCategorySpinner.setSelection(0);
-        mExpenseDateEditText.setText(expense.getExpenseDate());
+        mExpenseDateEditText.setText(Converters.dateToString(expense.getExpenseDate()));
         mCreateExpenseButton.setText(getString(R.string.edit_expense_button_label));
     }
 
@@ -222,7 +223,7 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
                         new BigDecimal(TravelUtils.getCurrencyNumberFormat().parse(
                                 mExpenseAmountEditText.getText().toString().trim()).toString()),
                         mExpenseCategorySpinner.getSelectedItem().toString().trim(),
-                        mExpenseDateEditText.getText().toString().trim(),
+                        Converters.stringToDate(mExpenseDateEditText.getText().toString().trim()),
                         mTravelID);
 
                 expenseViewModel.insert(expense);

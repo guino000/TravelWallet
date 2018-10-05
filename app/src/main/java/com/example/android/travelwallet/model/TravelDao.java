@@ -30,6 +30,6 @@ public interface TravelDao {
     @Query("SELECT * FROM Travel")
     LiveData<List<Travel>> findAll();
 
-    @Query("SELECT * FROM Travel WHERE date('now') = date(mStartDate)")
+    @Query("SELECT * FROM Travel WHERE date('now') = mStartDate")
     List<Travel> getCurrentTravels();
 }

@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.travelwallet.model.Converters;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
 import com.example.android.travelwallet.utils.TravelUtils;
@@ -98,20 +99,20 @@ public class InsertTravelFormActivity extends AppCompatActivity {
         final DatePickerDialog.OnDateSetListener startDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                mStartDateEditText.setText(String.format("%s/%s/%s", month + 1, dayOfMonth, year));
                 minDate.set(Calendar.YEAR,year);
                 minDate.set(Calendar.MONTH,month);
                 minDate.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                mStartDateEditText.setText(SimpleDateFormat.getDateInstance().format(minDate.getTime()));
             }
         };
 
         final DatePickerDialog.OnDateSetListener endDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                mEndDateEditText.setText(String.format("%s/%s/%s", month + 1, dayOfMonth, year));
                 maxDate.set(Calendar.YEAR,year);
                 maxDate.set(Calendar.MONTH,month);
                 maxDate.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                mEndDateEditText.setText(SimpleDateFormat.getDateInstance().format(maxDate.getTime()));
             }
         };
 
@@ -210,8 +211,8 @@ public class InsertTravelFormActivity extends AppCompatActivity {
         mTravelNameEditText.setText(travel.getName());
         mTotalBudgetEditText.setText(TravelUtils.getCurrencyFormattedValue(travel.getBudget()));
         mDestinationEditText.setText(travel.getDestination());
-        mStartDateEditText.setText(travel.getStartDate());
-        mEndDateEditText.setText(travel.getEndDate());
+        mStartDateEditText.setText(Converters.dateToString(travel.getStartDate()));
+        mEndDateEditText.setText(Converters.dateToString(travel.getEndDate()));
         mAddTravelButton.setText(R.string.button_edit_travel);
         mAddTravelHeaderTextView.setVisibility(View.GONE);
     }
@@ -313,8 +314,10 @@ public class InsertTravelFormActivity extends AppCompatActivity {
                 return;
             }
             mEditTravel.setDestination(mDestinationEditText.getText().toString().trim());
-            mEditTravel.setStartDate(mStartDateEditText.getText().toString().trim());
-            mEditTravel.setEndDate(mEndDateEditText.getText().toString().trim());
+            mEditTravel.setStartDate(
+                    Converters.stringToDate(mStartDateEditText.getText().toString().trim()));
+            mEditTravel.setEndDate(
+                    Converters.stringToDate(mEndDateEditText.getText().toString().trim()));
             mEditTravel.setPlaceID(mSelectedPlaceID);
             travelViewModel.update(mEditTravel);
         }else{
@@ -325,8 +328,8 @@ public class InsertTravelFormActivity extends AppCompatActivity {
                     mDestinationEditText.getText().toString().trim(),
                     new BigDecimal(TravelUtils.getCurrencyNumberFormat().parse(
                             mTotalBudgetEditText.getText().toString().trim()).toString()),
-                    mStartDateEditText.getText().toString().trim(),
-                    mEndDateEditText.getText().toString().trim(),
+                    Converters.stringToDate(mStartDateEditText.getText().toString().trim()),
+                    Converters.stringToDate(mEndDateEditText.getText().toString().trim()),
                     mSelectedPlaceID);
 
                 travelViewModel.insert(travel);

@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
+import com.example.android.travelwallet.model.Converters;
 import com.example.android.travelwallet.model.TravelExpense;
 import com.example.android.travelwallet.utils.TravelUtils;
 
@@ -56,7 +57,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         TravelExpense expense = mExpenses.get(i);
         expenseViewHolder.mExpenseDescriptionTextView.setText(expense.getExpenseDescription());
         expenseViewHolder.mExpenseCategoryTextView.setText(expense.getCategory());
-        expenseViewHolder.mExpenseDateTextView.setText(expense.getExpenseDate());
+        expenseViewHolder.mExpenseDateTextView.setText(Converters.dateToString(expense.getExpenseDate()));
         expenseViewHolder.mExpenseAmountTextView.setText(
                 String.valueOf(TravelUtils.getCurrencyFormattedValue(expense.getExpenseTotal())));
         expenseViewHolder.mPopupMenuImageButton.setOnClickListener(new View.OnClickListener() {

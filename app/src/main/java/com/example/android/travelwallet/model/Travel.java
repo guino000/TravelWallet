@@ -9,6 +9,7 @@ import android.arch.persistence.room.Relation;
 import org.parceler.Parcel;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Parcel
@@ -19,15 +20,15 @@ public class Travel {
     private String mName;
     private String mDestination;
     private BigDecimal mBudget;
-    private String mStartDate;
-    private String mEndDate;
+    private Date mStartDate;
+    private Date mEndDate;
     private String mPlaceID;
 
     public Travel(){}
 
     @Ignore
     public Travel(String name, String destination, BigDecimal budget,
-                  String startDate, String endDate, String placeID){
+                  Date startDate, Date endDate, String placeID){
         mName = name;
         mDestination = destination;
         mBudget = budget;
@@ -44,10 +45,10 @@ public class Travel {
     public void setDestination(String dest){mDestination = dest;}
     public BigDecimal getBudget(){return mBudget;}
     public void setBudget(BigDecimal budget){mBudget = budget;}
-    public String getStartDate(){return mStartDate;}
-    public void setStartDate(String startDate){mStartDate = startDate;}
-    public String getEndDate(){return mEndDate;}
-    public void setEndDate(String endDate){mEndDate = endDate;}
+    public Date getStartDate(){return mStartDate;}
+    public void setStartDate(Date startDate){mStartDate = startDate;}
+    public Date getEndDate(){return mEndDate;}
+    public void setEndDate(Date endDate){mEndDate = endDate;}
     public String getPlaceID(){
         return mPlaceID;
     }

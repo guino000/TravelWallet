@@ -5,6 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
+import java.util.Date;
 import java.util.List;
 
 public class TravelViewModel extends AndroidViewModel {
@@ -27,5 +28,5 @@ public class TravelViewModel extends AndroidViewModel {
 
     public Travel getTravel(long travelID){return mRepository.getTravel(travelID);}
 
-    public List<Travel> getCurrentTravels(){return mRepository.getCurrentTravels();}
+    public List<Travel> getCurrentTravels(Date currentDate){return mRepository.getCurrentTravels(currentDate);}
 }

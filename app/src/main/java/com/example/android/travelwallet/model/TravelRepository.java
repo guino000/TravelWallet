@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import java.lang.annotation.Target;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -25,18 +26,15 @@ public class TravelRepository {
     public Travel getTravel(long travelID){
         try {
             return new queryTravelAsyncTask(mTravelDao).execute(travelID).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-            return null;
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public List<Travel> getCurrentTravels(){
+    public List<Travel> getCurrentTravels(Date currentDate){
         try {
-            return new queryCurrentTravelsAsyncTask(mTravelDao).execute().get();
+            return new queryCurrentTravelsAsyncTask(mTravelDao).execute(currentDate).get();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -110,7 +108,7 @@ public class TravelRepository {
         }
     }
 
-    private static class queryCurrentTravelsAsyncTask extends AsyncTask<Void, Void, List<Travel>>{
+    private static class queryCurrentTravelsAsyncTask extends AsyncTask<Date, Void, List<Travel>>{
         private TravelDao mAsyncTaskDao;
 
         queryCurrentTravelsAsyncTask(TravelDao dao){
@@ -118,8 +116,8 @@ public class TravelRepository {
         }
 
         @Override
-        protected List<Travel> doInBackground(Void... voids) {
-            return mAsyncTaskDao.getCurrentTravels();
+        protected List<Travel> doInBackground(Date... dates) {
+            return mAsyncTaskDao.getCurrentTravels(dates[0]);
         }
     }
 

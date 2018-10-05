@@ -8,6 +8,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import java.util.Date;
 import java.util.List;
 
 @Dao
@@ -30,6 +31,6 @@ public interface TravelDao {
     @Query("SELECT * FROM Travel")
     LiveData<List<Travel>> findAll();
 
-    @Query("SELECT * FROM Travel WHERE date('now') = mStartDate")
-    List<Travel> getCurrentTravels();
+    @Query("SELECT * FROM Travel WHERE :currentDate = mStartDate")
+    List<Travel> getCurrentTravels(Date currentDate);
 }

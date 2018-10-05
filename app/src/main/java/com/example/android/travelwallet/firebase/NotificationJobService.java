@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.example.android.travelwallet.MainActivity;
 import com.example.android.travelwallet.R;
+import com.example.android.travelwallet.model.Converters;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
 import com.firebase.jobdispatcher.JobParameters;
@@ -30,7 +31,7 @@ public class NotificationJobService extends JobService {
 //        Check if there are travels ongoing on the current date
         mTravelViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(TravelViewModel.class);
-        List<Travel> mCurrentTravels = mTravelViewModel.getCurrentTravels();
+        List<Travel> mCurrentTravels = mTravelViewModel.getCurrentTravels(Converters.fromTimestamp(System.currentTimeMillis()));
         if(mCurrentTravels == null) return false;
         if(mCurrentTravels.size() == 0) return false;
 

@@ -43,7 +43,7 @@ public class LoadPlacePhotoAsyncTask extends AsyncTask<String, Void, Void> {
                     return;
                 }
                 PlacePhotoMetadataResponse photos = task.getResult();
-                PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
+                final PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
                 if(photoMetadataBuffer.getCount() <= 0) {
                     mLoadPlacePhotoListener.onLoadPlacePhoto(null);
                     return;
@@ -57,6 +57,7 @@ public class LoadPlacePhotoAsyncTask extends AsyncTask<String, Void, Void> {
                         PlacePhotoResponse photo = task.getResult();
                         Bitmap bitmap = photo.getBitmap();
                         mLoadPlacePhotoListener.onLoadPlacePhoto(bitmap);
+                        photoMetadataBuffer.release();
                     }
                 });
             }

@@ -26,9 +26,17 @@ import android.view.ViewTreeObserver;
 import android.widget.PopupMenu;
 
 import com.example.android.travelwallet.adapters.TravelAdapter;
+import com.example.android.travelwallet.firebase.NotificationJobService;
 import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
+import com.firebase.jobdispatcher.Constraint;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.RetryStrategy;
+import com.firebase.jobdispatcher.Trigger;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -47,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements
     public static final String KEY_SHARED_PREFS_LAST_VIEWED_TRAVEL_ID = "last_viewed_travel";
     public static final String SHARED_PREFS_NAME = "com.example.android.travelwallet";
     public static final String NOTIFICATION_CHANNEL_ID = "travel_notifications";
-    public static final int NOTIFICATION_ID = 11;
+    public static final String NOTIFICATION_JOB_TAG = "notification_job";
 
     @BindView(R.id.rv_travels)
     RecyclerView mTravelsRecyclerView;
@@ -68,21 +76,22 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-//        Configure Travel Notification
+//        Configure Travel Notification Channel
         createNotificationChannel();
 
-        Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+//        Schedule Firebase Job for notifications
+        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
+        Job job = dispatcher.newJobBuilder()
+                .setService(NotificationJobService.class)
+                .setTag(NOTIFICATION_JOB_TAG)
+                .setRecurring(true)
+                .setLifetime(Lifetime.FOREVER)
+                .setTrigger(Trigger.executionWindow(0,60))
+                .setReplaceCurrent(true)
+                .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
+                .build();
 
-        mTravelBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_flight_grey_24dp)
-                .setContentTitle(getString(R.string.travel_notification_title))
-                .setContentText(getString(R.string.travel_notification_text))
-                .setStyle(new NotificationCompat.BigTextStyle()
-                    .bigText(getString(R.string.travel_notification_text)))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
+        dispatcher.mustSchedule(job);
 
 //        Configure AdView
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -181,12 +190,6 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
         popupMenu.show();
-    }
-
-    @OnClick(R.id.bt_show_notification)
-    public void showNotification(){
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-        notificationManagerCompat.notify(NOTIFICATION_ID, mTravelBuilder.build());
     }
 
     private void createNotificationChannel(){

@@ -34,6 +34,15 @@ public class TravelRepository {
         }
     }
 
+    public List<Travel> getCurrentTravels(){
+        try {
+            return new queryCurrentTravelsAsyncTask(mTravelDao).execute().get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public void insert(Travel travel){
         new insertAsyncTask(mTravelDao).execute(travel);
     }
@@ -98,6 +107,19 @@ public class TravelRepository {
         @Override
         protected Travel doInBackground(Long... longs) {
             return mAsyncTaskDao.getTravel(longs[0]);
+        }
+    }
+
+    private static class queryCurrentTravelsAsyncTask extends AsyncTask<Void, Void, List<Travel>>{
+        private TravelDao mAsyncTaskDao;
+
+        queryCurrentTravelsAsyncTask(TravelDao dao){
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected List<Travel> doInBackground(Void... voids) {
+            return mAsyncTaskDao.getCurrentTravels();
         }
     }
 

@@ -26,4 +26,6 @@ public class TravelViewModel extends AndroidViewModel {
     public void delete(Travel travel){mRepository.delete(travel);}
 
     public Travel getTravel(long travelID){return mRepository.getTravel(travelID);}
+
+    public List<Travel> getCurrentTravels(){return mRepository.getCurrentTravels();}
 }

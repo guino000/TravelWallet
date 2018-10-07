@@ -3,7 +3,6 @@ package com.example.android.travelwallet.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,15 +18,13 @@ import com.example.android.travelwallet.model.Converters;
 import com.example.android.travelwallet.model.TravelExpense;
 import com.example.android.travelwallet.utils.TravelUtils;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder> {
-    private Context mContext;
+    private final Context mContext;
     private List<TravelExpense> mExpenses;
     private final CardPopupMenuListener mPopupListener;
 
@@ -96,6 +93,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         return mExpenses.size();
     }
 
+    @SuppressWarnings("WeakerAccess")
     class ExpenseViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.tv_expense_description)
         TextView mExpenseDescriptionTextView;

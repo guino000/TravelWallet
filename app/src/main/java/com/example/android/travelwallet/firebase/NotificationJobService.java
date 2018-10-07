@@ -19,6 +19,7 @@ import java.util.List;
 
 import static com.example.android.travelwallet.MainActivity.NOTIFICATION_CHANNEL_ID;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class NotificationJobService extends JobService {
     public static final String TAG = NotificationJobService.class.getSimpleName();
     public static final int NOTIFICATION_ID = 11;
@@ -39,7 +40,7 @@ public class NotificationJobService extends JobService {
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
         mTravelBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_flight_grey_24dp)
+                .setSmallIcon(R.drawable.ic_stat_travel)
                 .setContentTitle(getString(R.string.travel_notification_title))
                 .setContentText(getString(R.string.travel_notification_text))
                 .setStyle(new NotificationCompat.BigTextStyle()

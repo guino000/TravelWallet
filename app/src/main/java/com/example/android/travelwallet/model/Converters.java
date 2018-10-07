@@ -3,14 +3,13 @@ package com.example.android.travelwallet.model;
 import android.arch.persistence.room.TypeConverter;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Converters {
-    private static DateFormat df = SimpleDateFormat.getDateInstance();
+    private static final DateFormat df = SimpleDateFormat.getDateInstance();
 
     @TypeConverter
     public static BigDecimal fromDouble(Double value){

@@ -42,7 +42,6 @@
     <string name="error_expense_description_required">Expense description required!</string>
     <string name="error_expense_amount_required">Expense amount required!</string>
     <string name="error_expense_amount_invalid">Invalid number!</string>
-    <string name="error_expense_category_required">Expense category required!</string>
     <string name="error_expense_date_required">Expense date required!</string>
     <string name="toast_confirm_successful_expense_change">Changes saved!</string>
     <string name="toast_confirm_successful_expense_creation">New expense created!</string>
@@ -62,7 +61,6 @@
     </string-array>
 
     <!--Widget-->
-    <string name="add_widget">Add widget</string>
     <string name="widget_empty_string">No travels yet!</string>
 
     <!--Notification-->
@@ -70,4 +68,7 @@
     <string name="travel_notification_text">Your scheduled travel starts now. Don\'t forget to keep track of your expenses!</string>
     <string name="travel_notification_channel_name">travel_wallet_notifications</string>
     <string name="travel_notification_channel_description">Notifications from Travel Wallet App</string>
+
+    <!--Misc-->
+    <string name="content_description_popup_menu_button">Popup Menu</string>
 </resources>

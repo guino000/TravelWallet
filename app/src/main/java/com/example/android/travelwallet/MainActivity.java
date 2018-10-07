@@ -2,7 +2,6 @@ package com.example.android.travelwallet;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
@@ -14,7 +13,6 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -30,7 +28,6 @@ import com.example.android.travelwallet.firebase.NotificationJobService;
 import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
-import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
@@ -69,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements
     AdView mAdView;
 
     TravelViewModel mTravelViewModel;
-    NotificationCompat.Builder mTravelBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements
     private void calculateSize() {
         int spanCount = (int) Math.floor(mTravelsRecyclerView.getWidth() /
                 getResources().getDimension(R.dimen.travel_miniature_width));
+        //noinspection ConstantConditions
         ((GridLayoutManager) mTravelsRecyclerView.getLayoutManager()).setSpanCount(spanCount);
     }
 

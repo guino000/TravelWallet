@@ -114,7 +114,6 @@
         app:layout_constraintTop_toBottomOf="@+id/pb_budget_spent">
 
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/ConstraintLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">

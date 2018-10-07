@@ -15,8 +15,6 @@ import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
 import com.example.android.travelwallet.utils.TravelUtils;
 
-import icepick.Injector;
-
 /**
  * Implementation of App Widget functionality.
  */
@@ -81,7 +79,7 @@ public class TravelBudgetWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         if(intent.hasExtra(WIDGET_EXTRA_IDS)){
-            int[] ids = intent.getExtras().getIntArray(WIDGET_EXTRA_IDS);
+            @SuppressWarnings("ConstantConditions") int[] ids = intent.getExtras().getIntArray(WIDGET_EXTRA_IDS);
             this.onUpdate(context, AppWidgetManager.getInstance(context), ids);
         }else {
             super.onReceive(context, intent);

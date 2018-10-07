@@ -5,11 +5,10 @@ import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class ExpenseRepository {
-    private TravelExpenseDao mExpenseDao;
-    private LiveData<List<TravelExpense>> mAllExpenses;
+    private final TravelExpenseDao mExpenseDao;
+    private final LiveData<List<TravelExpense>> mAllExpenses;
 
     ExpenseRepository(Application application){
         TravelDatabase db = TravelDatabase.getInstance(application);
@@ -52,7 +51,7 @@ public class ExpenseRepository {
     }
 
     private static class insertAsyncTask extends AsyncTask<TravelExpense, Void, Void> {
-        private TravelExpenseDao mAsyncTaskDao;
+        private final TravelExpenseDao mAsyncTaskDao;
 
         insertAsyncTask(TravelExpenseDao dao){
             mAsyncTaskDao = dao;
@@ -66,7 +65,7 @@ public class ExpenseRepository {
     }
 
     private static class updateAsyncTask extends AsyncTask<TravelExpense, Void, Void>{
-        private TravelExpenseDao mAsyncTaskDao;
+        private final TravelExpenseDao mAsyncTaskDao;
 
         updateAsyncTask(TravelExpenseDao dao){
             mAsyncTaskDao = dao;
@@ -80,7 +79,7 @@ public class ExpenseRepository {
     }
 
     private static class deleteAsyncTask extends AsyncTask<TravelExpense, Void, Void>{
-        private TravelExpenseDao mAsyncTaskDao;
+        private final TravelExpenseDao mAsyncTaskDao;
 
         deleteAsyncTask(TravelExpenseDao dao){
             mAsyncTaskDao = dao;
@@ -94,7 +93,7 @@ public class ExpenseRepository {
     }
 
     private static class queryExpensesAsyncTask extends AsyncTask<Long, Void, LiveData<List<TravelExpense>>>{
-        private TravelExpenseDao mAsyncTaskDao;
+        private final TravelExpenseDao mAsyncTaskDao;
 
         queryExpensesAsyncTask(TravelExpenseDao dao){
             mAsyncTaskDao = dao;
@@ -107,7 +106,7 @@ public class ExpenseRepository {
     }
 
     private static class queryExpensesTotalAsyncTask extends AsyncTask<Long, Void, TravelValues>{
-        private TravelExpenseDao mAsyncTaskDao;
+        private final TravelExpenseDao mAsyncTaskDao;
 
         queryExpensesTotalAsyncTask(TravelExpenseDao dao){
             mAsyncTaskDao = dao;

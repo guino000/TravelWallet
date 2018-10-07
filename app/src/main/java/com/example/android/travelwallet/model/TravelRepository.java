@@ -4,14 +4,12 @@ import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
-import java.lang.annotation.Target;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class TravelRepository {
-    private TravelDao mTravelDao;
-    private LiveData<List<Travel>> mAllTravels;
+    private final TravelDao mTravelDao;
+    private final LiveData<List<Travel>> mAllTravels;
 
     TravelRepository(Application application){
         TravelDatabase db = TravelDatabase.getInstance(application);
@@ -54,7 +52,7 @@ public class TravelRepository {
     }
 
     private static class insertAsyncTask extends AsyncTask<Travel, Void, Void>{
-        private TravelDao mAsyncTaskDao;
+        private final TravelDao mAsyncTaskDao;
 
         insertAsyncTask(TravelDao dao){
             mAsyncTaskDao = dao;
@@ -68,7 +66,7 @@ public class TravelRepository {
     }
 
     private static class updateAsyncTask extends AsyncTask<Travel, Void, Void>{
-        private TravelDao mAsyncTaskDao;
+        private final TravelDao mAsyncTaskDao;
 
         updateAsyncTask(TravelDao dao){
             mAsyncTaskDao = dao;
@@ -82,7 +80,7 @@ public class TravelRepository {
     }
 
     private static class deleteAsyncTask extends AsyncTask<Travel, Void, Void>{
-        private TravelDao mAsyncTaskDao;
+        private final TravelDao mAsyncTaskDao;
 
         deleteAsyncTask(TravelDao dao){
             mAsyncTaskDao = dao;
@@ -96,7 +94,7 @@ public class TravelRepository {
     }
 
     private static class queryTravelAsyncTask extends AsyncTask<Long, Void, Travel>{
-        private TravelDao mAsyncTaskDao;
+        private final TravelDao mAsyncTaskDao;
 
         queryTravelAsyncTask(TravelDao dao){
             mAsyncTaskDao = dao;
@@ -109,7 +107,7 @@ public class TravelRepository {
     }
 
     private static class queryCurrentTravelsAsyncTask extends AsyncTask<Date, Void, List<Travel>>{
-        private TravelDao mAsyncTaskDao;
+        private final TravelDao mAsyncTaskDao;
 
         queryCurrentTravelsAsyncTask(TravelDao dao){
             mAsyncTaskDao = dao;

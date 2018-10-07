@@ -1,27 +1,21 @@
 package com.example.android.travelwallet.utils;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.request.RequestOptions;
-import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.interfaces.LoadPlacePhotoListener;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlacePhotoMetadata;
 import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
 import com.google.android.gms.location.places.PlacePhotoMetadataResponse;
 import com.google.android.gms.location.places.PlacePhotoResponse;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 public class LoadPlacePhotoAsyncTask extends AsyncTask<String, Void, Void> {
-    private GeoDataClient mGeoDataClient;
-    private LoadPlacePhotoListener mLoadPlacePhotoListener;
+    private final GeoDataClient mGeoDataClient;
+    private final LoadPlacePhotoListener mLoadPlacePhotoListener;
 
     public LoadPlacePhotoAsyncTask(GeoDataClient geoDataClient, LoadPlacePhotoListener listener){
         mGeoDataClient = geoDataClient;
@@ -49,7 +43,6 @@ public class LoadPlacePhotoAsyncTask extends AsyncTask<String, Void, Void> {
                     return;
                 }
                 PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
-                CharSequence attribution = photoMetadata.getAttributions();
                 Task<PlacePhotoResponse> photoResponseTask = mGeoDataClient.getPhoto(photoMetadata);
                 photoResponseTask.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
                     @Override

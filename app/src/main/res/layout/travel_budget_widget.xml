@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:background="@android:color/background_light"
     android:orientation="vertical"
-    android:padding="@dimen/widget_margin">
+    android:padding="@dimen/widget_margin"
+    tools:ignore="Overdraw">
 
     <TextView
         android:id="@+id/tv_widget_empty_view"
@@ -32,7 +33,6 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tv_widget_budget_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -59,7 +59,6 @@
         android:visibility="visible">
 
         <TextView
-            android:id="@+id/tv_widget_expenses_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

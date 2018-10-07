@@ -3,14 +3,12 @@ package com.example.android.travelwallet;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +22,6 @@ import com.example.android.travelwallet.model.ExpenseViewModel;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelExpense;
 import com.example.android.travelwallet.model.TravelValues;
-import com.example.android.travelwallet.model.TravelViewModel;
 import com.example.android.travelwallet.utils.TravelUtils;
 
 import org.parceler.Parcels;
@@ -178,10 +175,5 @@ public class TravelDetailsActivity extends AppCompatActivity
             }
         });
         popupMenu.show();
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        return super.onContextItemSelected(item);
     }
 }

@@ -4,25 +4,16 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.constraint.Placeholder;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
 import com.example.android.travelwallet.interfaces.LoadPlacePhotoListener;
@@ -31,14 +22,13 @@ import com.example.android.travelwallet.utils.LoadPlacePhotoAsyncTask;
 import com.example.android.travelwallet.utils.TravelUtils;
 import com.google.android.gms.location.places.Places;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelViewHolder> {
-    private Context mContext;
+    private final Context mContext;
     private List<Travel> mTravels;
     private final TravelAdapterOnClickHandler mClickHandler;
     private final CardPopupMenuListener mPopupListener;

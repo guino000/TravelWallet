@@ -8,9 +8,8 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 public class ExpenseViewModel extends AndroidViewModel {
-    private ExpenseRepository mRepository;
-    private LiveData<List<TravelExpense>> mAllExpenses;
-    private LiveData<List<TravelExpense>> mAllExpensesOfTravel;
+    private final ExpenseRepository mRepository;
+    private final LiveData<List<TravelExpense>> mAllExpenses;
 
     public ExpenseViewModel(@NonNull Application application) {
         super(application);

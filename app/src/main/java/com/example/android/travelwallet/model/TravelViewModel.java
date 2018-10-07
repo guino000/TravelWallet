@@ -9,8 +9,8 @@ import java.util.Date;
 import java.util.List;
 
 public class TravelViewModel extends AndroidViewModel {
-    private TravelRepository mRepository;
-    private LiveData<List<Travel>> mAllTravels;
+    private final TravelRepository mRepository;
+    private final LiveData<List<Travel>> mAllTravels;
 
     public TravelViewModel(@NonNull Application application) {
         super(application);

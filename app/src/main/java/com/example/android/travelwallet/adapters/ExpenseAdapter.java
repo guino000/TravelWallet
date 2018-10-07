@@ -3,6 +3,7 @@ package com.example.android.travelwallet.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,13 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
             @Override
             public void onClick(View v) {
                 mPopupListener.onPopupMenuClick(v, expenseViewHolder.getAdapterPosition());
+            }
+        });
+        expenseViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mPopupListener.onPopupMenuClick(v, expenseViewHolder.getAdapterPosition());
+                return true;
             }
         });
 

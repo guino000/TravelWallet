@@ -74,6 +74,13 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
                 mPopupListener.onPopupMenuClick(travelViewHolder.itemView, travelViewHolder.getAdapterPosition());
             }
         });
+        travelViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mPopupListener.onPopupMenuClick(travelViewHolder.itemView, travelViewHolder.getAdapterPosition());
+                return true;
+            }
+        });
         new LoadPlacePhotoAsyncTask(Places.getGeoDataClient(mContext) ,travelViewHolder).execute(travel.getPlaceID());
     }
 

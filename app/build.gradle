@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        debug {
+            keyAlias 'TravelWalletKey'
+            keyPassword 'chronos000'
+            storeFile file('../ks.jks')
+            storePassword 'chronos000'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.android.travelwallet"
@@ -21,6 +29,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
 

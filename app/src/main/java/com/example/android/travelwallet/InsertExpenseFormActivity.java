@@ -87,11 +87,15 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
 
 //        Configure Calendar Date picker
         final Calendar calendar = Calendar.getInstance();
+        final Calendar selectedDate = Calendar.getInstance();
 
         final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                mExpenseDateEditText.setText(String.format("%s/%s/%s", month + 1, dayOfMonth, year));
+                selectedDate.set(Calendar.YEAR,year);
+                selectedDate.set(Calendar.MONTH,month);
+                selectedDate.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                mExpenseDateEditText.setText(Converters.dateToString(calendar.getTime()));
             }
         };
 
@@ -224,6 +228,8 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
         if(mEditMode){
 //            Save changes to expense if form is correct
             mEditExpense.setExpenseDescription(mExpenseDescriptionEditText.getText().toString().trim());
+            mEditExpense.setExpenseDate(Converters.stringToDate(mExpenseDateEditText.getText().toString().trim()));
+            mEditExpense.setCategory(mExpenseCategorySpinner.getSelectedItem().toString());
             try {
                 mEditExpense.setExpenseTotal(
                         new BigDecimal(TravelUtils.getCurrencyNumberFormat().parse(
@@ -244,7 +250,7 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
                         mExpenseDescriptionEditText.getText().toString().trim(),
                         new BigDecimal(TravelUtils.getCurrencyNumberFormat().parse(
                                 mExpenseAmountEditText.getText().toString().trim()).toString()),
-                        mExpenseCategorySpinner.getSelectedItem().toString().trim(),
+                        mExpenseCategorySpinner.getSelectedItem().toString(),
                         Converters.stringToDate(mExpenseDateEditText.getText().toString().trim()),
                         mTravelID);
 

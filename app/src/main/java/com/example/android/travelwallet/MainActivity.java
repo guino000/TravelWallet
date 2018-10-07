@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements
     public static final String SHARED_PREFS_NAME = "com.example.android.travelwallet";
     public static final String NOTIFICATION_CHANNEL_ID = "travel_notifications";
     public static final String NOTIFICATION_JOB_TAG = "notification_job";
+    public static final int SECONDS_IN_DAY = 24*60*60;
 
     @BindView(R.id.rv_travels)
     RecyclerView mTravelsRecyclerView;
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements
                 .setTag(NOTIFICATION_JOB_TAG)
                 .setRecurring(true)
                 .setLifetime(Lifetime.FOREVER)
-                .setTrigger(Trigger.executionWindow(0,60))
+                .setTrigger(Trigger.executionWindow(0,SECONDS_IN_DAY))
                 .setReplaceCurrent(true)
                 .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
                 .build();

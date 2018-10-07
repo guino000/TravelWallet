@@ -1,134 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InsertTravelFormActivity">
-
-    <TextView
-        android:id="@+id/tv_insert_travel_header"
-        android:layout_width="0dp"
+    android:layout_width="match_parent">
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/insert_activity_header_description"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:context=".InsertTravelFormActivity">
 
-    <EditText
-        android:id="@+id/et_travel_name"
-        style="@style/Widget.AppCompat.EditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/travel_name_label"
-        android:inputType="text"
-        android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_insert_travel_header" />
+        <TextView
+            android:id="@+id/tv_insert_travel_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:text="@string/insert_activity_header_description"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/et_total_budget"
-        style="@style/Widget.AppCompat.EditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="@string/total_budget_label"
-        android:inputType="numberSigned|numberDecimal"
-        android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/et_travel_name"
-        app:layout_constraintTop_toBottomOf="@+id/et_travel_name"
-        android:autofillHints="" />
+        <EditText
+            android:id="@+id/et_travel_name"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/travel_name_label"
+            android:inputType="text"
+            android:singleLine="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_insert_travel_header" />
 
-    <EditText
-        android:id="@+id/et_destination"
-        style="@style/Widget.AppCompat.EditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/destination_label"
-        android:inputType="text"
-        android:singleLine="true"
-        app:layout_constraintEnd_toStartOf="@+id/bt_select_place_map"
-        app:layout_constraintStart_toStartOf="@+id/et_total_budget"
-        app:layout_constraintTop_toBottomOf="@+id/et_total_budget" />
+        <EditText
+            android:id="@+id/et_total_budget"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="@string/total_budget_label"
+            android:inputType="numberSigned|numberDecimal"
+            android:singleLine="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/et_travel_name"
+            app:layout_constraintTop_toBottomOf="@+id/et_travel_name"
+            android:autofillHints="" />
 
-    <EditText
-        android:id="@+id/et_start_date"
-        style="@style/Widget.AppCompat.EditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:autofillHints=""
-        android:drawableEnd="@drawable/ic_date_range_grey_24dp"
-        android:ems="10"
-        android:focusable="false"
-        android:hint="@string/start_date_label"
-        android:inputType="date"
-        android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/et_destination"
-        app:layout_constraintTop_toBottomOf="@+id/et_destination" />
+        <EditText
+            android:id="@+id/et_destination"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/destination_label"
+            android:inputType="text"
+            android:singleLine="true"
+            app:layout_constraintEnd_toStartOf="@+id/bt_select_place_map"
+            app:layout_constraintStart_toStartOf="@+id/et_total_budget"
+            app:layout_constraintTop_toBottomOf="@+id/et_total_budget" />
 
-    <EditText
-        android:id="@+id/et_end_date"
-        style="@style/Widget.AppCompat.EditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:autofillHints=""
-        android:drawableEnd="@drawable/ic_date_range_grey_24dp"
-        android:ems="10"
-        android:focusable="false"
-        android:hint="@string/end_date_label"
-        android:inputType="date"
-        android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/et_start_date"
-        app:layout_constraintTop_toBottomOf="@+id/et_start_date" />
+        <EditText
+            android:id="@+id/et_start_date"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:autofillHints=""
+            android:drawableEnd="@drawable/ic_date_range_grey_24dp"
+            android:ems="10"
+            android:focusable="false"
+            android:hint="@string/start_date_label"
+            android:inputType="date"
+            android:singleLine="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/et_destination"
+            app:layout_constraintTop_toBottomOf="@+id/et_destination" />
 
-    <Button
-        android:id="@+id/bt_create_travel"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/button_add_travel"
-        app:layout_constraintEnd_toEndOf="@+id/et_end_date"
-        app:layout_constraintStart_toStartOf="@+id/et_end_date"
-        app:layout_constraintTop_toBottomOf="@+id/et_end_date" />
+        <EditText
+            android:id="@+id/et_end_date"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:autofillHints=""
+            android:drawableEnd="@drawable/ic_date_range_grey_24dp"
+            android:ems="10"
+            android:focusable="false"
+            android:hint="@string/end_date_label"
+            android:inputType="date"
+            android:singleLine="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/et_start_date"
+            app:layout_constraintTop_toBottomOf="@+id/et_start_date" />
 
-    <ImageButton
-        android:id="@+id/bt_select_place_map"
-        style="@style/Widget.AppCompat.ImageButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/et_destination"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_destination"
-        app:srcCompat="@drawable/ic_place_grey_24dp" />
+        <Button
+            android:id="@+id/bt_create_travel"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/button_add_travel"
+            app:layout_constraintEnd_toEndOf="@+id/et_end_date"
+            app:layout_constraintStart_toStartOf="@+id/et_end_date"
+            app:layout_constraintTop_toBottomOf="@+id/et_end_date" />
 
-</android.support.constraint.ConstraintLayout>
+        <ImageButton
+            android:id="@+id/bt_select_place_map"
+            style="@style/Widget.AppCompat.ImageButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/content_description_map_button"
+            app:layout_constraintBottom_toTopOf="@+id/et_destination"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_destination"
+            app:srcCompat="@drawable/ic_place_grey_24dp" />
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

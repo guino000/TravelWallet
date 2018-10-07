@@ -25,6 +25,7 @@
     <string name="error_google_play_services_not_available">Google play services not available!!</string>
     <string name="toast_confirm_successful_travel_change">Changes saved!</string>
     <string name="toast_confirm_successful_travel_creation">New travel created!</string>
+    <string name="content_description_map_button">Google Maps Button</string>
 
     <!--Travel Details Activity-->
     <string name="travel_detail_total_budget_label">Total Budget:</string>

@@ -53,6 +53,8 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import icepick.Icepick;
+import icepick.State;
 
 public class InsertTravelFormActivity extends AppCompatActivity {
     public static final String KEY_INTENT_EXTRA_TRAVEL = "extra_travel";
@@ -60,34 +62,50 @@ public class InsertTravelFormActivity extends AppCompatActivity {
 
     @BindView(R.id.tv_insert_travel_header)
     TextView mAddTravelHeaderTextView;
-
     @BindView(R.id.et_travel_name)
     EditText mTravelNameEditText;
-
     @BindView(R.id.et_total_budget)
     EditText mTotalBudgetEditText;
-
     @BindView(R.id.et_destination)
     EditText mDestinationEditText;
-
     @BindView(R.id.et_start_date)
     EditText mStartDateEditText;
-
     @BindView(R.id.et_end_date)
     EditText mEndDateEditText;
-
     @BindView(R.id.bt_create_travel)
     Button mAddTravelButton;
 
-    private boolean mEditMode;
+    @State
+    String mCurrentTravelName;
+    @State
+    String mCurrentTravelBudget;
+    @State
+    String mCurrentTravelDestination;
+    @State
+    Date mCurrentTravelStartDate;
+    @State
+    Date mCurrentTravelEndDate;
+
+    @State
+    boolean mEditMode;
     private Travel mEditTravel;
-    private String mSelectedPlaceID;
+    @State
+    String mSelectedPlaceID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_travel_form);
         ButterKnife.bind(this);
+        Icepick.restoreInstanceState(this, savedInstanceState);
+        if(savedInstanceState != null){
+            mEditTravel = Parcels.unwrap(savedInstanceState.getParcelable(KEY_INTENT_EXTRA_TRAVEL));
+            mTravelNameEditText.setText(mCurrentTravelName);
+            mTotalBudgetEditText.setText(mCurrentTravelBudget);
+            mDestinationEditText.setText(mCurrentTravelDestination);
+            mStartDateEditText.setText(Converters.dateToString(mCurrentTravelStartDate));
+            mEndDateEditText.setText(Converters.dateToString(mCurrentTravelEndDate));
+        }
 
 //        Create calendars for date pickers
         final Calendar calendar = Calendar.getInstance();
@@ -365,5 +383,12 @@ public class InsertTravelFormActivity extends AppCompatActivity {
                 throw  new UnsupportedOperationException();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(KEY_INTENT_EXTRA_TRAVEL, Parcels.wrap(mEditTravel));
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
     }
 }

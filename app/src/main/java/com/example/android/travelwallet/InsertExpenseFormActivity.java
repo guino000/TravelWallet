@@ -29,10 +29,13 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import icepick.Icepick;
+import icepick.State;
 
 public class InsertExpenseFormActivity extends AppCompatActivity {
     public static final String KEY_INTENT_EXTRA_TRAVEL_ID = "extra_travel_id";
@@ -49,15 +52,34 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
     @BindView(R.id.bt_create_expense)
     Button mCreateExpenseButton;
 
-    private long mTravelID;
+    @State
+    String mCurrentExpenseDescr;
+    @State
+    String mCurrentExpenseAmount;
+    @State
+    int mCurrentSelectedCategory;
+    @State
+    Date mCurrentSelectedDate;
+
+    @State
+    long mTravelID;
     private TravelExpense mEditExpense;
-    private boolean mEditMode;
+    @State
+    boolean mEditMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_expense_form);
         ButterKnife.bind(this);
+        Icepick.restoreInstanceState(this, savedInstanceState);
+        if(savedInstanceState != null) {
+            mEditExpense = Parcels.unwrap(savedInstanceState.getParcelable(KEY_INTENT_EXTRA_EXPENSE_EDIT));
+            mExpenseDescriptionEditText.setText(mCurrentExpenseDescr);
+            mExpenseAmountEditText.setText(mCurrentExpenseAmount);
+            mExpenseCategorySpinner.setSelection(mCurrentSelectedCategory);
+            mExpenseDateEditText.setText(Converters.dateToString(mCurrentSelectedDate));
+        }
 
 //        Get incoming intent
         Intent intent = getIntent();
@@ -261,5 +283,12 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
                 throw  new UnsupportedOperationException();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(KEY_INTENT_EXTRA_EXPENSE_EDIT, Parcels.wrap(mEditExpense));
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
     }
 }

@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onChanged(@Nullable List<Travel> travels) {
                 mTravelAdapter.setData(travels);
+                updateWidget();
             }
         });
     }
@@ -146,13 +147,7 @@ public class MainActivity extends AppCompatActivity implements
                 .apply();
 
 //        Notify widget that data changed
-        AppWidgetManager widgetManager = AppWidgetManager.getInstance(this);
-        int[] ids = widgetManager.getAppWidgetIds(
-                new ComponentName(this, TravelBudgetWidget.class));
-        Intent updateIntent = new Intent();
-        updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        updateIntent.putExtra(TravelBudgetWidget.WIDGET_EXTRA_IDS, ids);
-        sendBroadcast(updateIntent);
+        updateWidget();
 
 //        Calls details activity
         Intent intent = new Intent(this, TravelDetailsActivity.class);
@@ -202,5 +197,15 @@ public class MainActivity extends AppCompatActivity implements
                 notificationManager.createNotificationChannel(channel);
             }
         }
+    }
+
+    private void updateWidget(){
+        AppWidgetManager widgetManager = AppWidgetManager.getInstance(this);
+        int[] ids = widgetManager.getAppWidgetIds(
+                new ComponentName(this, TravelBudgetWidget.class));
+        Intent updateIntent = new Intent();
+        updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        updateIntent.putExtra(TravelBudgetWidget.WIDGET_EXTRA_IDS, ids);
+        sendBroadcast(updateIntent);
     }
 }

@@ -19,10 +19,6 @@ import com.example.android.travelwallet.model.Converters;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
 import com.example.android.travelwallet.utils.TravelUtils;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
 
 import org.parceler.Parcels;
 
@@ -227,24 +223,6 @@ public class InsertTravelFormActivity extends AppCompatActivity {
         mEndDateEditText.setText("");
         mAddTravelButton.setText(R.string.button_add_travel);
         mAddTravelHeaderTextView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        switch (requestCode){
-            case PLACE_PICKER_REQUEST :
-                if(data != null && resultCode == RESULT_OK) {
-                    Place place = PlacePicker.getPlace(this, data);
-                    mDestinationEditText.setText(place.getName());
-                    mSelectedPlaceID = place.getId();
-                }else{
-                    mDestinationEditText.setText("");
-                    mSelectedPlaceID = "";
-                }
-                break;
-            default:
-                throw new UnsupportedOperationException("Not implemented yet!");
-        }
     }
 
     @OnClick(R.id.bt_create_travel)

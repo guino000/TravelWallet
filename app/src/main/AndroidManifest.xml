@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.travelwallet">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
     <application
@@ -24,10 +23,6 @@
         <activity android:name=".InsertTravelFormActivity" />
         <activity android:name=".TravelDetailsActivity" />
         <activity android:name=".InsertExpenseFormActivity" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/MyGooglePlacesAPIKey" />
 
         <receiver android:name=".TravelBudgetWidget">
             <intent-filter>

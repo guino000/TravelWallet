@@ -99,11 +99,14 @@ public class MainActivity extends AppCompatActivity implements
         mTravelAdapter.setHasStableIds(true);
         mTravelsRecyclerView.setAdapter(mTravelAdapter);
         if(getResources().getConfiguration().screenWidthDp < 600) {
-            mTravelsRecyclerView.setLayoutManager(new GridLayoutManager(this, 2,
+//            If screen width is small, the travel cards occupy the entire screen
+            mTravelsRecyclerView.setLayoutManager(new GridLayoutManager(this, 1,
                     GridLayoutManager.VERTICAL, false));
         }else{
+//            If screen width is big, the travel cards occupy half the screen
             mTravelsRecyclerView.setLayoutManager(new GridLayoutManager(this, 2,
                     GridLayoutManager.VERTICAL, false));
+//            Automatically calculate how many cards fit into the screen
             ViewTreeObserver viewTreeObserver = mTravelsRecyclerView.getViewTreeObserver();
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
@@ -132,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void calculateSize() {
-        int spanCount = (int) Math.floor(mTravelsRecyclerView.getWidth() /
+        int spanCount = (int) Math.ceil(mTravelsRecyclerView.getWidth() /
                 getResources().getDimension(R.dimen.travel_miniature_width));
         //noinspection ConstantConditions
         ((GridLayoutManager) mTravelsRecyclerView.getLayoutManager()).setSpanCount(spanCount);

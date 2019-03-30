@@ -229,23 +229,6 @@ public class InsertTravelFormActivity extends AppCompatActivity {
         mAddTravelHeaderTextView.setVisibility(View.VISIBLE);
     }
 
-    @OnClick(R.id.bt_select_place_map)
-    public void startPlacePickerActivity(){
-        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-        try {
-            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
-        } catch (GooglePlayServicesRepairableException e) {
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-            Toast.makeText(this,
-                    getString(R.string.error_google_play_services_not_available),
-                    Toast.LENGTH_LONG).show();
-        }
-
-        mDestinationEditText.requestFocus();
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode){
@@ -320,7 +303,6 @@ public class InsertTravelFormActivity extends AppCompatActivity {
                     Converters.stringToDate(mStartDateEditText.getText().toString().trim()));
             mEditTravel.setEndDate(
                     Converters.stringToDate(mEndDateEditText.getText().toString().trim()));
-            mEditTravel.setPlaceID(mSelectedPlaceID);
             travelViewModel.update(mEditTravel);
         }else{
 //            Insert travel if form is correct
@@ -331,8 +313,7 @@ public class InsertTravelFormActivity extends AppCompatActivity {
                     new BigDecimal(TravelUtils.getCurrencyNumberFormat().parse(
                             mTotalBudgetEditText.getText().toString().trim()).toString()),
                     Converters.stringToDate(mStartDateEditText.getText().toString().trim()),
-                    Converters.stringToDate(mEndDateEditText.getText().toString().trim()),
-                    mSelectedPlaceID);
+                    Converters.stringToDate(mEndDateEditText.getText().toString().trim()));
 
                 travelViewModel.insert(travel);
             }catch (ParseException e){

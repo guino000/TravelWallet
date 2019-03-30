@@ -18,9 +18,7 @@ import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
 import com.example.android.travelwallet.interfaces.LoadPlacePhotoListener;
 import com.example.android.travelwallet.model.Travel;
-import com.example.android.travelwallet.utils.LoadPlacePhotoAsyncTask;
 import com.example.android.travelwallet.utils.TravelUtils;
-import com.google.android.gms.location.places.Places;
 
 import java.util.List;
 
@@ -71,7 +69,6 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
                 return true;
             }
         });
-        new LoadPlacePhotoAsyncTask(Places.getGeoDataClient(mContext) ,travelViewHolder).execute(travel.getPlaceID());
     }
 
     @Override

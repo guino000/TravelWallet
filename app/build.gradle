@@ -34,8 +34,8 @@ android {
     }
 
     buildTypes.each{
-        it.resValue 'string', 'MyGooglePlacesAPIKey', MyGooglePlacesAPIKey
-        it.resValue 'string', 'GoogleAdMobAppID', GoogleAdMobAppID
+        it.resValue 'string', 'MyGooglePlacesAPIKey', 'AIzaSyBJEuLZvMVXbbIupwJ36goAa0IHzjiMFdE'
+        it.resValue 'string', 'GoogleAdMobAppID', 'ca-app-pub-1869529352770109~7425714329'
     }
 }
 

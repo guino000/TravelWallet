@@ -118,7 +118,7 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
             }
         });
 
-//        Load data into category spinner
+//        Load data into category
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.expense_categories_array, R.layout.support_simple_spinner_dropdown_item);
         mExpenseCategorySpinner.setAdapter(adapter);

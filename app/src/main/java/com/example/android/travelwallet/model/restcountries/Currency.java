@@ -1,4 +1,4 @@
-package com.example.android.travelwallet.model;
+package com.example.android.travelwallet.model.restcountries;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

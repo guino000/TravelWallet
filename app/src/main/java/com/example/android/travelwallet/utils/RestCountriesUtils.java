@@ -1,15 +1,12 @@
 package com.example.android.travelwallet.utils;
 
 import com.example.android.travelwallet.interfaces.RestCountriesService;
-import com.example.android.travelwallet.model.Country;
-import com.google.gson.Gson;
+import com.example.android.travelwallet.model.restcountries.Country;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

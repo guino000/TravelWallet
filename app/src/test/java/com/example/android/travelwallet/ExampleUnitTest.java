@@ -1,20 +1,14 @@
 package com.example.android.travelwallet;
 
-import android.util.Log;
-
-import com.example.android.travelwallet.model.Country;
-import com.example.android.travelwallet.model.UnsplashPhoto;
+import com.example.android.travelwallet.model.restcountries.Country;
+import com.example.android.travelwallet.model.unsplash.UnsplashPhoto;
 import com.example.android.travelwallet.utils.RestCountriesUtils;
 import com.example.android.travelwallet.utils.UnsplashUtils;
 
 import org.junit.Test;
 
-import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 import static org.junit.Assert.*;
@@ -45,7 +39,7 @@ public class ExampleUnitTest {
     @Test
     public void getRandomPhotoFromUnsplash_isCorrect(){
         try{
-            Response<UnsplashPhoto> response = UnsplashUtils.getRandomPhoto("Brazil country").execute();
+            Response<UnsplashPhoto> response = UnsplashUtils.getRandomPhoto("Brazil panorama").execute();
             assert response.body() != null;
         }catch (Exception e){
             e.printStackTrace();

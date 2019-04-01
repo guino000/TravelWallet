@@ -1,6 +1,6 @@
 package com.example.android.travelwallet.interfaces;
 
-import com.example.android.travelwallet.model.Country;
+import com.example.android.travelwallet.model.restcountries.Country;
 
 import java.util.List;
 

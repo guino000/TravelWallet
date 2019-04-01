@@ -1,6 +1,6 @@
-package com.example.android.travelwallet.model;
+package com.example.android.travelwallet.model.unsplash;
 
-import com.example.android.travelwallet.model.ArtistLinks;
+import com.example.android.travelwallet.model.unsplash.ArtistLinks;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

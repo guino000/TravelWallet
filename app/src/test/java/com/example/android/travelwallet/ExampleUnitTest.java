@@ -3,7 +3,9 @@ package com.example.android.travelwallet;
 import android.util.Log;
 
 import com.example.android.travelwallet.model.Country;
+import com.example.android.travelwallet.model.UnsplashPhoto;
 import com.example.android.travelwallet.utils.RestCountriesUtils;
+import com.example.android.travelwallet.utils.UnsplashUtils;
 
 import org.junit.Test;
 
@@ -35,6 +37,17 @@ public class ExampleUnitTest {
             assert response.body() != null;
             assertFalse(response.body().isEmpty());
         } catch (Exception e) {
+            e.printStackTrace();
+            assert false;
+        }
+    }
+
+    @Test
+    public void getRandomPhotoFromUnsplash_isCorrect(){
+        try{
+            Response<UnsplashPhoto> response = UnsplashUtils.getRandomPhoto("Brazil country").execute();
+            assert response.body() != null;
+        }catch (Exception e){
             e.printStackTrace();
             assert false;
         }

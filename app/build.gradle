@@ -35,6 +35,8 @@ android {
 
     buildTypes.each{
         it.resValue 'string', 'GoogleAdMobAppID', 'ca-app-pub-1869529352770109~7425714329'
+        it.buildConfigField 'String', 'UnsplashAccessKey', '"969cfcbb6ef94e65d35ea773e4865f6d919405f828d2f286878619d1002072b9"'
+        it.buildConfigField 'String', 'UnsplashSecretKey', '"9aa7cb55ccd2b387d6e1954cb8a991b23d87a16dd8315a9397e677bc50466b2e"'
     }
 }
 

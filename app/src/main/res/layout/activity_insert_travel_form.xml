@@ -10,39 +10,19 @@
         android:layout_height="wrap_content"
         tools:context=".InsertTravelFormActivity">
 
-        <TextView
-            android:id="@+id/tv_insert_travel_header"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/insert_activity_header_description"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
+        <android.support.v7.widget.AppCompatEditText
             android:id="@+id/et_travel_name"
             style="@style/Widget.AppCompat.EditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:ems="10"
-            android:hint="@string/travel_name_label"
+            android:hint="@string/travel_name_hint"
             android:inputType="text"
             android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_insert_travel_header"
+            app:layout_constraintStart_toStartOf="@+id/tv_travel_name_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_travel_name_label"
             tools:ignore="Autofill" />
 
         <EditText
@@ -50,31 +30,12 @@
             style="@style/Widget.AppCompat.EditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
             android:ems="10"
-            android:hint="@string/total_budget_label"
+            android:hint="@string/total_budget_hint"
             android:inputType="numberSigned|numberDecimal"
             android:singleLine="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/et_travel_name"
-            app:layout_constraintTop_toBottomOf="@+id/et_travel_name"
-            tools:ignore="Autofill" />
-
-        <EditText
-            android:id="@+id/et_destination"
-            style="@style/Widget.AppCompat.EditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:ems="10"
-            android:hint="@string/destination_label"
-            android:inputType="text"
-            android:singleLine="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/et_total_budget"
-            app:layout_constraintTop_toBottomOf="@+id/et_total_budget"
+            app:layout_constraintStart_toStartOf="@+id/tv_budget_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_budget_label"
             tools:ignore="Autofill" />
 
         <EditText
@@ -82,17 +43,16 @@
             style="@style/Widget.AppCompat.EditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:drawableEnd="@drawable/ic_date_range_grey_24dp"
             android:ems="10"
             android:focusable="false"
-            android:hint="@string/start_date_label"
+            android:hint="@string/start_date_hint"
             android:inputType="date"
             android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/et_destination"
-            app:layout_constraintTop_toBottomOf="@+id/et_destination"
+            app:layout_constraintStart_toStartOf="@+id/tv_travel_start_date_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_travel_start_date_label"
             tools:ignore="Autofill" />
 
         <EditText
@@ -100,17 +60,16 @@
             style="@style/Widget.AppCompat.EditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:drawableEnd="@drawable/ic_date_range_grey_24dp"
             android:ems="10"
             android:focusable="false"
-            android:hint="@string/end_date_label"
+            android:hint="@string/end_date_hint"
             android:inputType="date"
             android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/et_start_date"
-            app:layout_constraintTop_toBottomOf="@+id/et_start_date"
+            app:layout_constraintStart_toStartOf="@+id/tv_travel_end_date_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_travel_end_date_label"
             tools:ignore="Autofill" />
 
         <Button
@@ -123,6 +82,95 @@
             app:layout_constraintEnd_toEndOf="@+id/et_end_date"
             app:layout_constraintStart_toStartOf="@+id/et_end_date"
             app:layout_constraintTop_toBottomOf="@+id/et_end_date" />
+
+        <Spinner
+            android:id="@+id/sp_currency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:dropDownWidth="wrap_content"
+            android:spinnerMode="dropdown"
+            android:tooltipText="Test"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/et_total_budget"
+            app:layout_constraintTop_toTopOf="@+id/et_total_budget"
+            tools:tooltipText="I am a spinner" />
+
+        <Spinner
+            android:id="@+id/sp_destination"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:dropDownWidth="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/et_travel_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_destination_label" />
+
+        <TextView
+            android:id="@+id/tv_destination_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/destination_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            app:layout_constraintStart_toStartOf="@+id/sp_destination"
+            app:layout_constraintTop_toBottomOf="@+id/et_travel_name"
+            tools:text="Destination" />
+
+        <TextView
+            android:id="@+id/tv_currency_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/currency_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            app:layout_constraintBottom_toTopOf="@+id/sp_currency"
+            app:layout_constraintStart_toStartOf="@+id/sp_currency"
+            tools:text="Currency" />
+
+        <TextView
+            android:id="@+id/tv_travel_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/travel_name_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Travel Name" />
+
+        <TextView
+            android:id="@+id/tv_budget_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/total_budget_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            app:layout_constraintStart_toStartOf="@+id/sp_destination"
+            app:layout_constraintTop_toBottomOf="@+id/sp_destination"
+            tools:text="Budget" />
+
+        <TextView
+            android:id="@+id/tv_travel_start_date_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/start_date_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            app:layout_constraintStart_toStartOf="@+id/et_total_budget"
+            app:layout_constraintTop_toBottomOf="@+id/et_total_budget"
+            tools:text="Travel Start Date" />
+
+        <TextView
+            android:id="@+id/tv_travel_end_date_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/end_date_label"
+            app:layout_constraintStart_toStartOf="@+id/et_start_date"
+            app:layout_constraintTop_toBottomOf="@+id/et_start_date"
+            tools:text="Travel End Date" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

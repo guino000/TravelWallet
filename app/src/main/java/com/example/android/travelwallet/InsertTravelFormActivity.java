@@ -4,21 +4,29 @@ import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Parcel;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.travelwallet.model.Converters;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
+import com.example.android.travelwallet.model.restcountries.Country;
+import com.example.android.travelwallet.utils.RestCountriesUtils;
 import com.example.android.travelwallet.utils.TravelUtils;
+import com.google.gson.internal.bind.ArrayTypeAdapter;
 
 import org.parceler.Parcels;
 
@@ -28,25 +36,32 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.Icepick;
 import icepick.State;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class InsertTravelFormActivity extends AppCompatActivity {
+    private static final String TAG = InsertTravelFormActivity.class.getSimpleName();
     public static final String KEY_INTENT_EXTRA_TRAVEL = "extra_travel";
+    public static final String KEY_INTENT_EXTRA_COUNTRY_LIST = "extra_country_list";
     public static final int PLACE_PICKER_REQUEST = 1;
 
-    @BindView(R.id.tv_insert_travel_header)
-    TextView mAddTravelHeaderTextView;
     @BindView(R.id.et_travel_name)
     EditText mTravelNameEditText;
     @BindView(R.id.et_total_budget)
     EditText mTotalBudgetEditText;
-    @BindView(R.id.et_destination)
-    EditText mDestinationEditText;
+    @BindView(R.id.sp_destination)
+    Spinner mDestinationSpinner;
+    @BindView(R.id.sp_currency)
+    Spinner mCurrencySpinner;
     @BindView(R.id.et_start_date)
     EditText mStartDateEditText;
     @BindView(R.id.et_end_date)
@@ -65,12 +80,15 @@ public class InsertTravelFormActivity extends AppCompatActivity {
     Date mCurrentTravelStartDate;
     @State
     Date mCurrentTravelEndDate;
+    @State
+    int mCurrentDestinationPosition;
 
     @State
     boolean mEditMode;
     private Travel mEditTravel;
     @State
     String mSelectedPlaceID;
+    List<Country> mCountries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,12 +98,47 @@ public class InsertTravelFormActivity extends AppCompatActivity {
         Icepick.restoreInstanceState(this, savedInstanceState);
         if(savedInstanceState != null){
             mEditTravel = Parcels.unwrap(savedInstanceState.getParcelable(KEY_INTENT_EXTRA_TRAVEL));
+            mCountries = Parcels.unwrap(savedInstanceState.getParcelable(KEY_INTENT_EXTRA_COUNTRY_LIST));
             mTravelNameEditText.setText(mCurrentTravelName);
             mTotalBudgetEditText.setText(mCurrentTravelBudget);
-            mDestinationEditText.setText(mCurrentTravelDestination);
+            populateDestinationSpinner(mCountries);
+            mDestinationSpinner.setSelection(mCurrentDestinationPosition);
             mStartDateEditText.setText(Converters.dateToString(mCurrentTravelStartDate));
             mEndDateEditText.setText(Converters.dateToString(mCurrentTravelEndDate));
+        }else{
+//            Querz countries and load destination spinner
+            RestCountriesUtils.getAllCountries().enqueue(new Callback<List<Country>>() {
+                @Override
+                public void onResponse(Call<List<Country>> call, Response<List<Country>> response) {
+                    if(response.isSuccessful()) {
+                        mCountries = response.body();
+                        populateDestinationSpinner(mCountries);
+                    }else {
+                        mCountries = Collections.emptyList();
+                        Log.e(TAG, "Country API returned empty list");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Country>> call, Throwable t) {
+                    mCountries = Collections.emptyList();
+                    Log.e(TAG, "Failed to get countries from API!");
+                }
+            });
         }
+
+//        Save last clicked position for recovery
+        mDestinationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mCurrentDestinationPosition = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 //        Create calendars for date pickers
         final Calendar calendar = Calendar.getInstance();
@@ -208,21 +261,43 @@ public class InsertTravelFormActivity extends AppCompatActivity {
     private void enableEditMode(Travel travel){
         mTravelNameEditText.setText(travel.getName());
         mTotalBudgetEditText.setText(TravelUtils.getCurrencyFormattedValue(travel.getBudget()));
-        mDestinationEditText.setText(travel.getDestination());
+        mDestinationSpinner.setSelection(findItemPositionOnDestinationSpinner(travel.getDestination()));
         mStartDateEditText.setText(Converters.dateToString(travel.getStartDate()));
         mEndDateEditText.setText(Converters.dateToString(travel.getEndDate()));
         mAddTravelButton.setText(R.string.button_edit_travel);
-        mAddTravelHeaderTextView.setVisibility(View.GONE);
     }
 
     private void disableEditMode(){
         mTravelNameEditText.setText("");
         mTotalBudgetEditText.setText("");
-        mDestinationEditText.setText("");
+        mDestinationSpinner.setSelection(0);
         mStartDateEditText.setText("");
         mEndDateEditText.setText("");
         mAddTravelButton.setText(R.string.button_add_travel);
-        mAddTravelHeaderTextView.setVisibility(View.VISIBLE);
+    }
+
+    private void populateDestinationSpinner(List<Country> countries){
+        ArrayAdapter<String> countryArrayAdapter = new ArrayAdapter<>(this,
+                R.layout.support_simple_spinner_dropdown_item,
+                getCountryNamesFromList(countries));
+//        TODO: Create Array Adapter to avoid the loop
+        mDestinationSpinner.setAdapter(countryArrayAdapter);
+    }
+
+    private int findItemPositionOnDestinationSpinner(String item){
+        for(int i = 0; i < mDestinationSpinner.getCount(); i++){
+            if(mDestinationSpinner.getItemAtPosition(i).equals(item))
+                return i;
+        }
+        return -1;
+    }
+
+    private List<String> getCountryNamesFromList(List<Country> countries){
+        List<String> countryNames = Collections.emptyList();
+        for (Country country : countries){
+            countryNames.add(country.getName());
+        }
+        return countryNames;
     }
 
     @OnClick(R.id.bt_create_travel)
@@ -239,11 +314,6 @@ public class InsertTravelFormActivity extends AppCompatActivity {
 
         if(mTotalBudgetEditText.getText().toString().trim().equals("")){
             mTotalBudgetEditText.setError(getString(R.string.error_travel_budget_required));
-            flagError = true;
-        }
-
-        if(mDestinationEditText.getText().toString().trim().equals("")){
-            mDestinationEditText.setError(getString(R.string.error_travel_destination_required));
             flagError = true;
         }
 
@@ -276,7 +346,8 @@ public class InsertTravelFormActivity extends AppCompatActivity {
                 mTotalBudgetEditText.setError(getString(R.string.error_travel_budget_invalid));
                 return;
             }
-            mEditTravel.setDestination(mDestinationEditText.getText().toString().trim());
+
+            mEditTravel.setDestination(((Country) mDestinationSpinner.getSelectedItem()).getName());
             mEditTravel.setStartDate(
                     Converters.stringToDate(mStartDateEditText.getText().toString().trim()));
             mEditTravel.setEndDate(
@@ -287,7 +358,7 @@ public class InsertTravelFormActivity extends AppCompatActivity {
             try{
                 Travel travel = new Travel(
                     mTravelNameEditText.getText().toString().trim(),
-                    mDestinationEditText.getText().toString().trim(),
+                    ((Country) mDestinationSpinner.getSelectedItem()).getName(),
                     new BigDecimal(TravelUtils.getCurrencyNumberFormat().parse(
                             mTotalBudgetEditText.getText().toString().trim()).toString()),
                     Converters.stringToDate(mStartDateEditText.getText().toString().trim()),
@@ -331,6 +402,7 @@ public class InsertTravelFormActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(KEY_INTENT_EXTRA_TRAVEL, Parcels.wrap(mEditTravel));
+        outState.putParcelable(KEY_INTENT_EXTRA_COUNTRY_LIST, Parcels.wrap(mCountries));
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
     }

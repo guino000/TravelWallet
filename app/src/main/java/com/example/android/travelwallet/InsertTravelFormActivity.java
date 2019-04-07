@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.travelwallet.adapters.CountryArrayAdapter;
 import com.example.android.travelwallet.model.Converters;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
@@ -106,7 +107,7 @@ public class InsertTravelFormActivity extends AppCompatActivity {
             mStartDateEditText.setText(Converters.dateToString(mCurrentTravelStartDate));
             mEndDateEditText.setText(Converters.dateToString(mCurrentTravelEndDate));
         }else{
-//            Querz countries and load destination spinner
+//            Query countries and load destination spinner
             RestCountriesUtils.getAllCountries().enqueue(new Callback<List<Country>>() {
                 @Override
                 public void onResponse(Call<List<Country>> call, Response<List<Country>> response) {
@@ -277,11 +278,9 @@ public class InsertTravelFormActivity extends AppCompatActivity {
     }
 
     private void populateDestinationSpinner(List<Country> countries){
-        ArrayAdapter<String> countryArrayAdapter = new ArrayAdapter<>(this,
+        mDestinationSpinner.setAdapter(new CountryArrayAdapter(this,
                 R.layout.support_simple_spinner_dropdown_item,
-                getCountryNamesFromList(countries));
-//        TODO: Create Array Adapter to avoid the loop
-        mDestinationSpinner.setAdapter(countryArrayAdapter);
+                countries));
     }
 
     private int findItemPositionOnDestinationSpinner(String item){
@@ -290,14 +289,6 @@ public class InsertTravelFormActivity extends AppCompatActivity {
                 return i;
         }
         return -1;
-    }
-
-    private List<String> getCountryNamesFromList(List<Country> countries){
-        List<String> countryNames = Collections.emptyList();
-        for (Country country : countries){
-            countryNames.add(country.getName());
-        }
-        return countryNames;
     }
 
     @OnClick(R.id.bt_create_travel)

@@ -3,7 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingTop="8dp"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp">
+
+    <ImageView
+        android:id="@+id/img_country_flag"
+        android:layout_width="@dimen/country_spinner_flag_width"
+        android:layout_height="@dimen/country_spinner_flag_height"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/tv_country_name"

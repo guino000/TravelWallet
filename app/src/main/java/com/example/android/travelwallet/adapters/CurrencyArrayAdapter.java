@@ -14,11 +14,11 @@ import com.example.android.travelwallet.model.restcountries.Currency;
 
 import java.util.List;
 
-public class CurrencyAdapter extends ArrayAdapter<Currency> {
+public class CurrencyArrayAdapter extends ArrayAdapter<Currency> {
     private Context mContext;
     private List<Currency> mCurrencies;
 
-    public CurrencyAdapter(@NonNull Context context, int resource, @NonNull List<Currency> objects) {
+    public CurrencyArrayAdapter(@NonNull Context context, int resource, @NonNull List<Currency> objects) {
         super(context, resource, objects);
         mContext = context;
         mCurrencies = objects;

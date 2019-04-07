@@ -2,16 +2,22 @@ package com.example.android.travelwallet.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.caverock.androidsvg.SVG;
 import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.model.restcountries.Country;
+import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou;
 
 import java.util.List;
 
@@ -39,6 +45,15 @@ public class CountryArrayAdapter extends ArrayAdapter<Country>{
         TextView countryName = viewItem.findViewById(R.id.tv_country_name);
         countryName.setText(country.getName());
 
+        ImageView countryFlag = viewItem.findViewById(R.id.img_country_flag);
+        GlideToVectorYou
+                .init()
+                .with((Activity) mContext)
+                .getRequestBuilder()
+                .load(country.getFlag())
+                .apply(RequestOptions.centerCropTransform())
+                .into(countryFlag);
+
         return viewItem;
     }
 
@@ -53,6 +68,15 @@ public class CountryArrayAdapter extends ArrayAdapter<Country>{
 
         TextView countryName = viewItem.findViewById(R.id.tv_country_name);
         countryName.setText(country.getName());
+
+        ImageView countryFlag = viewItem.findViewById(R.id.img_country_flag);
+        GlideToVectorYou
+                .init()
+                .with((Activity) mContext)
+                .getRequestBuilder()
+                .load(country.getFlag())
+                .apply(RequestOptions.centerCropTransform())
+                .into(countryFlag);
 
         return viewItem;
     }

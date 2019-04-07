@@ -4,32 +4,26 @@ import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Parcel;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.travelwallet.adapters.CountryArrayAdapter;
-import com.example.android.travelwallet.adapters.CurrencyAdapter;
+import com.example.android.travelwallet.adapters.CurrencyArrayAdapter;
 import com.example.android.travelwallet.model.Converters;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
 import com.example.android.travelwallet.model.restcountries.Country;
-import com.example.android.travelwallet.model.restcountries.Currency;
 import com.example.android.travelwallet.utils.RestCountriesUtils;
 import com.example.android.travelwallet.utils.TravelUtils;
-import com.google.gson.internal.bind.ArrayTypeAdapter;
 
 import org.parceler.Parcels;
 
@@ -304,7 +298,7 @@ public class InsertTravelFormActivity extends AppCompatActivity {
     }
 
     private void populateCurrencySpinner(int selectedCountryPosition){
-        mCurrencySpinner.setAdapter(new CurrencyAdapter(this,
+        mCurrencySpinner.setAdapter(new CurrencyArrayAdapter(this,
                 R.layout.support_simple_spinner_dropdown_item,
                 mCountries.get(selectedCountryPosition).getCurrencies()));
     }

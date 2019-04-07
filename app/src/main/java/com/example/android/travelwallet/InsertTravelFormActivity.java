@@ -21,10 +21,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.travelwallet.adapters.CountryArrayAdapter;
+import com.example.android.travelwallet.adapters.CurrencyAdapter;
 import com.example.android.travelwallet.model.Converters;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
 import com.example.android.travelwallet.model.restcountries.Country;
+import com.example.android.travelwallet.model.restcountries.Currency;
 import com.example.android.travelwallet.utils.RestCountriesUtils;
 import com.example.android.travelwallet.utils.TravelUtils;
 import com.google.gson.internal.bind.ArrayTypeAdapter;
@@ -82,13 +84,14 @@ public class InsertTravelFormActivity extends AppCompatActivity {
     @State
     Date mCurrentTravelEndDate;
     @State
-    int mCurrentDestinationPosition;
-
-    @State
     boolean mEditMode;
     private Travel mEditTravel;
     @State
     String mSelectedPlaceID;
+    @State
+    int mCurrentCurrencyPosition;
+    @State
+    int mCurrentDestinationPosition;
     List<Country> mCountries;
 
     @Override
@@ -104,10 +107,12 @@ public class InsertTravelFormActivity extends AppCompatActivity {
             mTotalBudgetEditText.setText(mCurrentTravelBudget);
             populateDestinationSpinner(mCountries);
             mDestinationSpinner.setSelection(mCurrentDestinationPosition);
+            populateCurrencySpinner(mCurrentDestinationPosition);
+            mCurrencySpinner.setSelection(mCurrentCurrencyPosition);
             mStartDateEditText.setText(Converters.dateToString(mCurrentTravelStartDate));
             mEndDateEditText.setText(Converters.dateToString(mCurrentTravelEndDate));
         }else{
-//            Query countries and load destination spinner
+//            Query countries and load destination spinners
             RestCountriesUtils.getAllCountries().enqueue(new Callback<List<Country>>() {
                 @Override
                 public void onResponse(Call<List<Country>> call, Response<List<Country>> response) {
@@ -128,11 +133,26 @@ public class InsertTravelFormActivity extends AppCompatActivity {
             });
         }
 
-//        Save last clicked position for recovery
+//        Save last clicked position for destination recovery
         mDestinationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mCurrentDestinationPosition = position;
+                mCurrentCurrencyPosition = 0;
+                populateCurrencySpinner(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+//        Save last clicked position for currency recovery
+        mCurrencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mCurrentCurrencyPosition = position;
             }
 
             @Override
@@ -281,6 +301,12 @@ public class InsertTravelFormActivity extends AppCompatActivity {
         mDestinationSpinner.setAdapter(new CountryArrayAdapter(this,
                 R.layout.support_simple_spinner_dropdown_item,
                 countries));
+    }
+
+    private void populateCurrencySpinner(int selectedCountryPosition){
+        mCurrencySpinner.setAdapter(new CurrencyAdapter(this,
+                R.layout.support_simple_spinner_dropdown_item,
+                mCountries.get(selectedCountryPosition).getCurrencies()));
     }
 
     private int findItemPositionOnDestinationSpinner(String item){

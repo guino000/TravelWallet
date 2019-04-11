@@ -4,8 +4,8 @@ import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +22,7 @@ import com.example.android.travelwallet.model.Converters;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
 import com.example.android.travelwallet.model.restcountries.Country;
+import com.example.android.travelwallet.model.restcountries.Currency;
 import com.example.android.travelwallet.utils.RestCountriesUtils;
 import com.example.android.travelwallet.utils.TravelUtils;
 
@@ -35,6 +36,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -94,7 +97,7 @@ public class InsertTravelFormActivity extends AppCompatActivity {
         setContentView(R.layout.activity_insert_travel_form);
         ButterKnife.bind(this);
         Icepick.restoreInstanceState(this, savedInstanceState);
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             mEditTravel = Parcels.unwrap(savedInstanceState.getParcelable(KEY_INTENT_EXTRA_TRAVEL));
             mCountries = Parcels.unwrap(savedInstanceState.getParcelable(KEY_INTENT_EXTRA_COUNTRY_LIST));
             mTravelNameEditText.setText(mCurrentTravelName);
@@ -105,15 +108,15 @@ public class InsertTravelFormActivity extends AppCompatActivity {
             mCurrencySpinner.setSelection(mCurrentCurrencyPosition);
             mStartDateEditText.setText(Converters.dateToString(mCurrentTravelStartDate));
             mEndDateEditText.setText(Converters.dateToString(mCurrentTravelEndDate));
-        }else{
+        } else {
 //            Query countries and load destination spinners
             RestCountriesUtils.getAllCountries().enqueue(new Callback<List<Country>>() {
                 @Override
                 public void onResponse(Call<List<Country>> call, Response<List<Country>> response) {
-                    if(response.isSuccessful()) {
+                    if (response.isSuccessful()) {
                         mCountries = response.body();
                         populateDestinationSpinner(mCountries);
-                    }else {
+                    } else {
                         mCountries = Collections.emptyList();
                         Log.e(TAG, "Country API returned empty list");
                     }
@@ -127,13 +130,16 @@ public class InsertTravelFormActivity extends AppCompatActivity {
             });
         }
 
-//        Save last clicked position for destination recovery
+//        Listen to selections on destination spinner
         mDestinationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//              Save last clicked position for destination recovery
                 mCurrentDestinationPosition = position;
                 mCurrentCurrencyPosition = 0;
                 populateCurrencySpinner(position);
+//              Change the current budget currency format
+                updateCurrentBudgetCurrency(0);
             }
 
             @Override
@@ -142,11 +148,13 @@ public class InsertTravelFormActivity extends AppCompatActivity {
             }
         });
 
-//        Save last clicked position for currency recovery
         mCurrencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//              Save last clicked position for currency recovery
                 mCurrentCurrencyPosition = position;
+//              Change the current budget currency format
+                updateCurrentBudgetCurrency(position);
             }
 
             @Override
@@ -165,9 +173,9 @@ public class InsertTravelFormActivity extends AppCompatActivity {
         final DatePickerDialog.OnDateSetListener startDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                minDate.set(Calendar.YEAR,year);
-                minDate.set(Calendar.MONTH,month);
-                minDate.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                minDate.set(Calendar.YEAR, year);
+                minDate.set(Calendar.MONTH, month);
+                minDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 mStartDateEditText.setText(SimpleDateFormat.getDateInstance().format(minDate.getTime()));
             }
         };
@@ -175,9 +183,9 @@ public class InsertTravelFormActivity extends AppCompatActivity {
         final DatePickerDialog.OnDateSetListener endDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                maxDate.set(Calendar.YEAR,year);
-                maxDate.set(Calendar.MONTH,month);
-                maxDate.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                maxDate.set(Calendar.YEAR, year);
+                maxDate.set(Calendar.MONTH, month);
+                maxDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 mEndDateEditText.setText(SimpleDateFormat.getDateInstance().format(maxDate.getTime()));
             }
         };
@@ -232,8 +240,8 @@ public class InsertTravelFormActivity extends AppCompatActivity {
         mTotalBudgetEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                NumberFormat format = TravelUtils.getCurrencyNumberFormat();
-                if(hasFocus){
+                NumberFormat format = TravelUtils.getCurrencyNumberFormat(getCurrentSelectedCurrency().getCode());
+                if (hasFocus) {
                     try {
                         mTotalBudgetEditText.setText(
                                 format.parse(mTotalBudgetEditText.getText().toString().trim()).toString());
@@ -241,11 +249,12 @@ public class InsertTravelFormActivity extends AppCompatActivity {
                         e.printStackTrace();
                         mTotalBudgetEditText.setText("");
                     }
-                }else{
-                    if(!mTotalBudgetEditText.getText().toString().trim().equals("")) {
+                } else {
+                    if (!mTotalBudgetEditText.getText().toString().trim().equals("")) {
                         try {
                             mTotalBudgetEditText.setText(TravelUtils.getCurrencyFormattedValue(
-                                    new BigDecimal((mTotalBudgetEditText.getText().toString().trim()))
+                                    new BigDecimal((mTotalBudgetEditText.getText().toString().trim())),
+                                    getCurrentSelectedCurrency().getCode()
                             ));
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -259,98 +268,140 @@ public class InsertTravelFormActivity extends AppCompatActivity {
 
 //        Check if there is an incoming travel object for edit mode
         Intent intent = getIntent();
-        if(intent.hasExtra(KEY_INTENT_EXTRA_TRAVEL)){
+        if (intent.hasExtra(KEY_INTENT_EXTRA_TRAVEL)) {
             mEditMode = true;
             mEditTravel = Parcels.unwrap(intent.getParcelableExtra(KEY_INTENT_EXTRA_TRAVEL));
             enableEditMode(mEditTravel);
-        }else{
+        } else {
             mEditMode = false;
             disableEditMode();
         }
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null)
+        if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    private void enableEditMode(Travel travel){
+    private void updateCurrentBudgetCurrency(int currencySpinnerPosition) {
+        if (!mTotalBudgetEditText.getText().toString().isEmpty()) {
+//            Get new currency code
+            Currency currentCurrency = (Currency) mCurrencySpinner.getItemAtPosition(currencySpinnerPosition);
+            try {
+//                Extract numbers from current budget
+                Pattern pattern = Pattern.compile("[\\d\\.\\,]+");
+                Matcher matcher = pattern.matcher(mTotalBudgetEditText.getText().toString());
+                if (matcher.find()) {
+//                    Set new currency on budget
+                    String number = matcher.group(0);
+                    BigDecimal currentBudget = new BigDecimal(number);
+                    mTotalBudgetEditText.setText(TravelUtils.getCurrencyFormattedValue(
+                            currentBudget, currentCurrency.getCode()));
+                } else {
+                    mTotalBudgetEditText.setText("");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                mTotalBudgetEditText.setText("");
+            }
+        }
+    }
+
+    private void enableEditMode(Travel travel) {
         mTravelNameEditText.setText(travel.getName());
-        mTotalBudgetEditText.setText(TravelUtils.getCurrencyFormattedValue(travel.getBudget()));
+        mTotalBudgetEditText.setText(TravelUtils.getCurrencyFormattedValue(travel.getBudget(), travel.getCurrencyCode()));
         mDestinationSpinner.setSelection(findItemPositionOnDestinationSpinner(travel.getDestination()));
+        mCurrencySpinner.setSelection(findItemPositionOnCurrencySpinner(travel.getCurrencyCode()));
         mStartDateEditText.setText(Converters.dateToString(travel.getStartDate()));
         mEndDateEditText.setText(Converters.dateToString(travel.getEndDate()));
         mAddTravelButton.setText(R.string.button_edit_travel);
     }
 
-    private void disableEditMode(){
+    private void disableEditMode() {
         mTravelNameEditText.setText("");
         mTotalBudgetEditText.setText("");
         mDestinationSpinner.setSelection(0);
+        mCurrencySpinner.setSelection(0);
         mStartDateEditText.setText("");
         mEndDateEditText.setText("");
         mAddTravelButton.setText(R.string.button_add_travel);
     }
 
-    private void populateDestinationSpinner(List<Country> countries){
+    private void populateDestinationSpinner(List<Country> countries) {
         mDestinationSpinner.setAdapter(new CountryArrayAdapter(this,
                 R.layout.support_simple_spinner_dropdown_item,
                 countries));
     }
 
-    private void populateCurrencySpinner(int selectedCountryPosition){
-        mCurrencySpinner.setAdapter(new CurrencyArrayAdapter(this,
-                R.layout.support_simple_spinner_dropdown_item,
-                mCountries.get(selectedCountryPosition).getCurrencies()));
-    }
-
-    private int findItemPositionOnDestinationSpinner(String item){
-        for(int i = 0; i < mDestinationSpinner.getCount(); i++){
-            if(mDestinationSpinner.getItemAtPosition(i).equals(item))
+    private int findItemPositionOnDestinationSpinner(String item) {
+        for (int i = 0; i < mDestinationSpinner.getCount(); i++) {
+            if (mDestinationSpinner.getItemAtPosition(i).equals(item))
                 return i;
         }
         return -1;
     }
 
+    private Country getCurrentSelectedDestination() {
+        return (Country) mDestinationSpinner.getSelectedItem();
+    }
+
+    private void populateCurrencySpinner(int selectedCountryPosition) {
+        mCurrencySpinner.setAdapter(new CurrencyArrayAdapter(this,
+                R.layout.support_simple_spinner_dropdown_item,
+                mCountries.get(selectedCountryPosition).getCurrencies()));
+    }
+
+    private int findItemPositionOnCurrencySpinner(String item) {
+        for (int i = 0; i < mCurrencySpinner.getCount(); i++) {
+            if (mCurrencySpinner.getItemAtPosition(i).equals(item))
+                return i;
+        }
+        return -1;
+    }
+
+    private Currency getCurrentSelectedCurrency() {
+        return (Currency) mCurrencySpinner.getSelectedItem();
+    }
+
     @OnClick(R.id.bt_create_travel)
-    public void AddOrEditTravel(){
-        if(getCurrentFocus() != null)
+    public void AddOrEditTravel() {
+        if (getCurrentFocus() != null)
             getCurrentFocus().clearFocus();
 
 //        Check if form was filled correctly
         boolean flagError = false;
-        if(mTravelNameEditText.getText().toString().trim().equals("")){
+        if (mTravelNameEditText.getText().toString().trim().equals("")) {
             mTravelNameEditText.setError(getString(R.string.error_travel_name_required));
             flagError = true;
         }
 
-        if(mTotalBudgetEditText.getText().toString().trim().equals("")){
+        if (mTotalBudgetEditText.getText().toString().trim().equals("")) {
             mTotalBudgetEditText.setError(getString(R.string.error_travel_budget_required));
             flagError = true;
         }
 
-        if(mStartDateEditText.getText().toString().trim().equals("")){
+        if (mStartDateEditText.getText().toString().trim().equals("")) {
             mStartDateEditText.setError(getString(R.string.error_travel_start_date_required));
             flagError = true;
         }
 
-        if(mEndDateEditText.getText().toString().trim().equals("")){
+        if (mEndDateEditText.getText().toString().trim().equals("")) {
             mEndDateEditText.setError(getString(R.string.error_travel_end_date_required));
             flagError = true;
         }
 
-        if(flagError) return;
+        if (flagError) return;
 
 //        Get view model instances
         TravelViewModel travelViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())
                 .create(TravelViewModel.class);
 
 //        Check form mode
-        if(mEditMode){
+        if (mEditMode) {
 //            Save changes to travel if form is correct
             mEditTravel.setName(mTravelNameEditText.getText().toString().trim());
             try {
                 mEditTravel.setBudget(
-                        new BigDecimal(TravelUtils.getCurrencyNumberFormat().parse(
+                        new BigDecimal(TravelUtils.getCurrencyNumberFormat(getCurrentSelectedCurrency().getCode()).parse(
                                 mTotalBudgetEditText.getText().toString().trim()).toString()));
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -358,25 +409,27 @@ public class InsertTravelFormActivity extends AppCompatActivity {
                 return;
             }
 
-            mEditTravel.setDestination(((Country) mDestinationSpinner.getSelectedItem()).getName());
+            mEditTravel.setDestination(getCurrentSelectedDestination().getName());
+            mEditTravel.setCurrencyCode(getCurrentSelectedCurrency().getCode());
             mEditTravel.setStartDate(
                     Converters.stringToDate(mStartDateEditText.getText().toString().trim()));
             mEditTravel.setEndDate(
                     Converters.stringToDate(mEndDateEditText.getText().toString().trim()));
             travelViewModel.update(mEditTravel);
-        }else{
+        } else {
 //            Insert travel if form is correct
-            try{
+            try {
                 Travel travel = new Travel(
-                    mTravelNameEditText.getText().toString().trim(),
-                    ((Country) mDestinationSpinner.getSelectedItem()).getName(),
-                    new BigDecimal(TravelUtils.getCurrencyNumberFormat().parse(
-                            mTotalBudgetEditText.getText().toString().trim()).toString()),
-                    Converters.stringToDate(mStartDateEditText.getText().toString().trim()),
-                    Converters.stringToDate(mEndDateEditText.getText().toString().trim()));
+                        mTravelNameEditText.getText().toString().trim(),
+                        getCurrentSelectedDestination().getName(),
+                        getCurrentSelectedCurrency().getCode(),
+                        new BigDecimal(TravelUtils.getCurrencyNumberFormat(getCurrentSelectedCurrency().getCode()).parse(
+                                mTotalBudgetEditText.getText().toString().trim()).toString()),
+                        Converters.stringToDate(mStartDateEditText.getText().toString().trim()),
+                        Converters.stringToDate(mEndDateEditText.getText().toString().trim()));
 
                 travelViewModel.insert(travel);
-            }catch (ParseException e){
+            } catch (ParseException e) {
                 e.printStackTrace();
                 mTotalBudgetEditText.setError(getString(R.string.error_travel_budget_invalid));
                 return;
@@ -384,7 +437,7 @@ public class InsertTravelFormActivity extends AppCompatActivity {
         }
 
 //        Toast to tell user about success
-        if(mEditMode)
+        if (mEditMode)
             Toast.makeText(this,
                     getString(R.string.toast_confirm_successful_travel_change),
                     Toast.LENGTH_LONG).show();
@@ -400,12 +453,12 @@ public class InsertTravelFormActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int selectedID = item.getItemId();
-        switch (selectedID){
+        switch (selectedID) {
             case android.R.id.home:
                 onBackPressed();
                 break;
             default:
-                throw  new UnsupportedOperationException();
+                throw new UnsupportedOperationException();
         }
         return super.onOptionsItemSelected(item);
     }

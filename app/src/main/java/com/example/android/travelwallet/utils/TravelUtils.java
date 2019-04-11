@@ -8,10 +8,12 @@ import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.model.ExpenseViewModel;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelValues;
+import com.example.android.travelwallet.model.TravelViewModel;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.Locale;
 
 public abstract class TravelUtils {
@@ -37,6 +39,12 @@ public abstract class TravelUtils {
         return 0;
     }
 
+    public static Travel getCurrentTravel(long travelID, Application application) {
+        TravelViewModel travelViewModel = ViewModelProvider.AndroidViewModelFactory
+                .getInstance(application).create(TravelViewModel.class);
+        return travelViewModel.getTravel(travelID);
+    }
+
     public static String getBudgetExpenseComparison(Application application, Travel travel){
         ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(application).create(ExpenseViewModel.class);
@@ -45,8 +53,8 @@ public abstract class TravelUtils {
         if(expenses == null) return "";
 
         return String.format("%s - %s",
-                getCurrencyFormattedValue(expenses.total),
-                getCurrencyFormattedValue(travel.getBudget()));
+                getCurrencyFormattedValue(expenses.total, travel.getCurrencyCode()),
+                getCurrencyFormattedValue(travel.getBudget(),travel.getCurrencyCode()));
     }
 
     public static float getBudgetSpentPercentage(Application application, Travel travel){
@@ -59,15 +67,15 @@ public abstract class TravelUtils {
         return expenses.total.divide(travel.getBudget(),2,RoundingMode.HALF_EVEN).floatValue();
     }
 
-    public static String getCurrencyFormattedValue(BigDecimal value){
-//        TODO: Create preferences screen to select desired currency
-        NumberFormat format = getCurrencyNumberFormat();
-//        format.setCurrency(Currency.getInstance("USD"));
+    public static String getCurrencyFormattedValue(BigDecimal value, String currencyCode){
+        NumberFormat format = getCurrencyNumberFormat(currencyCode);
         if (value == null) return format.format(0);
         return format.format(value);
     }
 
-    public static NumberFormat getCurrencyNumberFormat() {
-        return NumberFormat.getCurrencyInstance(Locale.getDefault());
+    public static NumberFormat getCurrencyNumberFormat(String currencyCode) {
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        format.setCurrency(Currency.getInstance(currencyCode));
+        return format;
     }
 }

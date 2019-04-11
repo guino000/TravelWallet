@@ -1,5 +1,6 @@
 package com.example.android.travelwallet.adapters;
 
+import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -28,16 +29,16 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
     private List<TravelExpense> mExpenses;
     private final CardPopupMenuListener mPopupListener;
 
-    public ExpenseAdapter(Context context, CardPopupMenuListener popupMenuListener){
+    public ExpenseAdapter(Context context, CardPopupMenuListener popupMenuListener) {
         mContext = context;
         mPopupListener = popupMenuListener;
     }
 
-    public List<TravelExpense> getData(){
+    public List<TravelExpense> getData() {
         return mExpenses;
     }
 
-    public void setData(List<TravelExpense> newData){
+    public void setData(List<TravelExpense> newData) {
         mExpenses = newData;
         notifyDataSetChanged();
     }
@@ -57,7 +58,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         expenseViewHolder.mExpenseCategoryTextView.setText(expense.getCategory());
         expenseViewHolder.mExpenseDateTextView.setText(Converters.dateToString(expense.getExpenseDate()));
         expenseViewHolder.mExpenseAmountTextView.setText(
-                String.valueOf(TravelUtils.getCurrencyFormattedValue(expense.getExpenseTotal())));
+                String.valueOf(TravelUtils.getCurrencyFormattedValue(expense.getExpenseTotal(), TravelUtils.getCurrentTravel(
+                        expense.getTravelID(), (Application) mContext.getApplicationContext()).getCurrencyCode())));
         expenseViewHolder.mPopupMenuImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,12 +75,12 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         });
 
         int categoryIconID = TravelUtils.getExpenseIconIDByCategory(expense.getCategory(), mContext);
-        if(categoryIconID != 0) {
+        if (categoryIconID != 0) {
             Glide.with(mContext.getApplicationContext())
                     .load(mContext.getResources().getDrawable(categoryIconID))
                     .apply(RequestOptions.circleCropTransform())
                     .into(expenseViewHolder.mCategoryIconImageView);
-        }else{
+        } else {
             Glide.with(mContext.getApplicationContext())
                     .load(mContext.getResources().getDrawable(R.drawable.ic_error_red_24dp))
                     .apply(RequestOptions.circleCropTransform())
@@ -94,7 +96,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
     }
 
     @SuppressWarnings("WeakerAccess")
-    class ExpenseViewHolder extends RecyclerView.ViewHolder{
+    class ExpenseViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_expense_description)
         TextView mExpenseDescriptionTextView;
         @BindView(R.id.tv_expense_category)

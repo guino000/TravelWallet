@@ -17,6 +17,7 @@ public class Travel {
     private long mId;
     private String mName;
     private String mDestination;
+    private String mCurrencyCode;
     private BigDecimal mBudget;
     private Date mStartDate;
     private Date mEndDate;
@@ -24,10 +25,11 @@ public class Travel {
     public Travel(){}
 
     @Ignore
-    public Travel(String name, String destination, BigDecimal budget,
+    public Travel(String name, String destination, String currencyCode, BigDecimal budget,
                   Date startDate, Date endDate){
         mName = name;
         mDestination = destination;
+        mCurrencyCode = currencyCode;
         mBudget = budget;
         mStartDate = startDate;
         mEndDate = endDate;
@@ -39,6 +41,8 @@ public class Travel {
     public void setName(String name){mName = name;}
     public String getDestination(){return mDestination;}
     public void setDestination(String dest){mDestination = dest;}
+    public String getCurrencyCode(){return mCurrencyCode;}
+    public void setCurrencyCode(String currencyCode){mCurrencyCode = currencyCode;}
     public BigDecimal getBudget(){return mBudget;}
     public void setBudget(BigDecimal budget){mBudget = budget;}
     public Date getStartDate(){return mStartDate;}

@@ -73,7 +73,7 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
         setContentView(R.layout.activity_insert_expense_form);
         ButterKnife.bind(this);
         Icepick.restoreInstanceState(this, savedInstanceState);
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             mEditExpense = Parcels.unwrap(savedInstanceState.getParcelable(KEY_INTENT_EXTRA_EXPENSE_EDIT));
             mExpenseDescriptionEditText.setText(mCurrentExpenseDescr);
             mExpenseAmountEditText.setText(mCurrentExpenseAmount);
@@ -92,9 +92,9 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
         final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                selectedDate.set(Calendar.YEAR,year);
-                selectedDate.set(Calendar.MONTH,month);
-                selectedDate.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                selectedDate.set(Calendar.YEAR, year);
+                selectedDate.set(Calendar.MONTH, month);
+                selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 mExpenseDateEditText.setText(Converters.dateToString(calendar.getTime()));
             }
         };
@@ -127,8 +127,9 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
         mExpenseAmountEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                NumberFormat format = TravelUtils.getCurrencyNumberFormat();
-                if(hasFocus){
+                NumberFormat format = TravelUtils.getCurrencyNumberFormat(TravelUtils.getCurrentTravel(
+                        mTravelID, getApplication()).getCurrencyCode());
+                if (hasFocus) {
                     try {
                         mExpenseAmountEditText.setText(
                                 format.parse(mExpenseAmountEditText.getText().toString().trim()).toString());
@@ -136,11 +137,12 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
                         e.printStackTrace();
                         mExpenseAmountEditText.setText("");
                     }
-                }else{
-                    if(!mExpenseAmountEditText.getText().toString().trim().equals("")) {
+                } else {
+                    if (!mExpenseAmountEditText.getText().toString().trim().equals("")) {
                         try {
                             mExpenseAmountEditText.setText(TravelUtils.getCurrencyFormattedValue(
-                                    new BigDecimal((mExpenseAmountEditText.getText().toString().trim()))
+                                    new BigDecimal((mExpenseAmountEditText.getText().toString().trim())),
+                                    TravelUtils.getCurrentTravel(mTravelID, getApplication()).getCurrencyCode()
                             ));
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -153,26 +155,27 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
         });
 
 //        Check if there is an incoming travel object for edit mode
-        if(intent.hasExtra(KEY_INTENT_EXTRA_EXPENSE_EDIT)){
+        if (intent.hasExtra(KEY_INTENT_EXTRA_EXPENSE_EDIT)) {
             mEditMode = true;
             mEditExpense = Parcels.unwrap(intent.getParcelableExtra(KEY_INTENT_EXTRA_EXPENSE_EDIT));
             enableEditMode(mEditExpense);
-        }else{
+        } else {
             mEditMode = false;
             disableEditMode();
         }
 
 //        Configure back button
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null)
+        if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    private void enableEditMode(TravelExpense expense){
+    private void enableEditMode(TravelExpense expense) {
         mExpenseDescriptionEditText.setText(expense.getExpenseDescription());
-        mExpenseAmountEditText.setText(TravelUtils.getCurrencyFormattedValue(expense.getExpenseTotal()));
+        mExpenseAmountEditText.setText(TravelUtils.getCurrencyFormattedValue(expense.getExpenseTotal(),
+                TravelUtils.getCurrentTravel(mTravelID, getApplication()).getCurrencyCode()));
         int categoryPosition = findItemPositionOnCategorySpinner(expense.getCategory());
-        if(categoryPosition > 0)
+        if (categoryPosition > 0)
             mExpenseCategorySpinner.setSelection(categoryPosition);
         else
             mExpenseCategorySpinner.setSelection(0);
@@ -180,7 +183,7 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
         mCreateExpenseButton.setText(getString(R.string.edit_expense_button_label));
     }
 
-    private void disableEditMode(){
+    private void disableEditMode() {
         mExpenseDescriptionEditText.setText("");
         mExpenseAmountEditText.setText("");
         mExpenseCategorySpinner.setSelection(0);
@@ -188,34 +191,34 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
         mCreateExpenseButton.setText(getString(R.string.insert_expense_button_label));
     }
 
-    private int findItemPositionOnCategorySpinner(String item){
-        for(int i = 0; i < mExpenseCategorySpinner.getCount(); i++){
-            if(mExpenseCategorySpinner.getItemAtPosition(i).equals(item))
+    private int findItemPositionOnCategorySpinner(String item) {
+        for (int i = 0; i < mExpenseCategorySpinner.getCount(); i++) {
+            if (mExpenseCategorySpinner.getItemAtPosition(i).equals(item))
                 return i;
         }
         return -1;
     }
 
     @OnClick(R.id.bt_create_expense)
-    public void createExpense(){
-        if(getCurrentFocus() != null)
+    public void createExpense() {
+        if (getCurrentFocus() != null)
             getCurrentFocus().clearFocus();
 //        Check if inputs are OK
         boolean flagError = false;
-        if(mExpenseDescriptionEditText.getText().toString().trim().equals("")){
+        if (mExpenseDescriptionEditText.getText().toString().trim().equals("")) {
             mExpenseDescriptionEditText.setError(getString(R.string.error_expense_description_required));
             flagError = true;
         }
-        if(mExpenseAmountEditText.getText().toString().trim().equals("")){
+        if (mExpenseAmountEditText.getText().toString().trim().equals("")) {
             mExpenseAmountEditText.setError(getString(R.string.error_expense_amount_required));
             flagError = true;
         }
-        if(mExpenseDateEditText.getText().toString().trim().equals("")){
+        if (mExpenseDateEditText.getText().toString().trim().equals("")) {
             mExpenseDateEditText.setError(getString(R.string.error_expense_date_required));
             flagError = true;
         }
 
-        if(flagError) return;
+        if (flagError) return;
 
 //        Get expense ViewModel instances
         ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
@@ -225,16 +228,16 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
                 .getInstance(getApplication()).create(TravelViewModel.class);
 
 //        Check form mode
-        if(mEditMode){
+        if (mEditMode) {
 //            Save changes to expense if form is correct
             mEditExpense.setExpenseDescription(mExpenseDescriptionEditText.getText().toString().trim());
             mEditExpense.setExpenseDate(Converters.stringToDate(mExpenseDateEditText.getText().toString().trim()));
             mEditExpense.setCategory(mExpenseCategorySpinner.getSelectedItem().toString());
             try {
                 mEditExpense.setExpenseTotal(
-                        new BigDecimal(TravelUtils.getCurrencyNumberFormat().parse(
+                        new BigDecimal(TravelUtils.getCurrencyNumberFormat("USA").parse(
                                 mExpenseAmountEditText.getText().toString().trim()).toString()));
-            }catch (ParseException e){
+            } catch (ParseException e) {
                 e.printStackTrace();
                 mExpenseAmountEditText.setError(getString(R.string.error_expense_amount_invalid));
                 return;
@@ -243,21 +246,21 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
             expenseViewModel.update(mEditExpense);
             Travel travel = travelViewModel.getTravel(mEditExpense.getTravelID());
             travelViewModel.update(travel);
-        }else{
+        } else {
 //        Insert expense if form is correct
             try {
+                Travel travel = travelViewModel.getTravel(mTravelID);
                 TravelExpense expense = new TravelExpense(
                         mExpenseDescriptionEditText.getText().toString().trim(),
-                        new BigDecimal(TravelUtils.getCurrencyNumberFormat().parse(
+                        new BigDecimal(TravelUtils.getCurrencyNumberFormat(travel.getCurrencyCode()).parse(
                                 mExpenseAmountEditText.getText().toString().trim()).toString()),
                         mExpenseCategorySpinner.getSelectedItem().toString(),
                         Converters.stringToDate(mExpenseDateEditText.getText().toString().trim()),
                         mTravelID);
 
                 expenseViewModel.insert(expense);
-                Travel travel = travelViewModel.getTravel(expense.getTravelID());
                 travelViewModel.update(travel);
-            }catch (ParseException e){
+            } catch (ParseException e) {
                 e.printStackTrace();
                 mExpenseAmountEditText.setError(getString(R.string.error_expense_amount_invalid));
                 return;
@@ -265,7 +268,7 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
         }
 
 //        Toast to tell user about success
-        if(mEditMode)
+        if (mEditMode)
             Toast.makeText(this,
                     getString(R.string.toast_confirm_successful_expense_change),
                     Toast.LENGTH_LONG).show();
@@ -281,12 +284,12 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int selectedID = item.getItemId();
-        switch (selectedID){
+        switch (selectedID) {
             case android.R.id.home:
                 onBackPressed();
                 break;
             default:
-                throw  new UnsupportedOperationException();
+                throw new UnsupportedOperationException();
         }
         return super.onOptionsItemSelected(item);
     }

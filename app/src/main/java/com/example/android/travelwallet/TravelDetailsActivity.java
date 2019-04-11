@@ -111,14 +111,14 @@ public class TravelDetailsActivity extends AppCompatActivity
         ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(ExpenseViewModel.class);
 //        Update Total Budget and Total Expenses text views
-        mTotalBudgetTextView.setText(TravelUtils.getCurrencyFormattedValue(travel.getBudget()));
+        mTotalBudgetTextView.setText(TravelUtils.getCurrencyFormattedValue(travel.getBudget(),travel.getCurrencyCode()));
         TravelValues totalExpenses = expenseViewModel.getTotalExpensesOfTravel(travel.getId());
         if(totalExpenses.getTotal() == null){
             totalExpenses = new TravelValues();
             totalExpenses.setTotal(new BigDecimal(0));
         }
         mTotalExpensesTextView.setText(
-                TravelUtils.getCurrencyFormattedValue(totalExpenses.total));
+                TravelUtils.getCurrencyFormattedValue(totalExpenses.total,travel.getCurrencyCode()));
 
 //        Update progress bar
         mBudgetSpentProgressBar.setProgress((int) (TravelUtils.getBudgetSpentPercentage(getApplication(),travel) * 100));

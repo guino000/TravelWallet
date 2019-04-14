@@ -18,9 +18,11 @@ import android.widget.Toast;
 
 import com.example.android.travelwallet.adapters.CountryArrayAdapter;
 import com.example.android.travelwallet.adapters.CurrencyArrayAdapter;
+import com.example.android.travelwallet.interfaces.AsyncTaskDelegate;
 import com.example.android.travelwallet.model.Converters;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
+import com.example.android.travelwallet.model.restcountries.CleanCountriesAsyncTask;
 import com.example.android.travelwallet.model.restcountries.Country;
 import com.example.android.travelwallet.model.restcountries.Currency;
 import com.example.android.travelwallet.utils.RestCountriesUtils;
@@ -48,7 +50,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class InsertTravelFormActivity extends AppCompatActivity {
+public class InsertTravelFormActivity extends AppCompatActivity implements AsyncTaskDelegate<List<Country>> {
     private static final String TAG = InsertTravelFormActivity.class.getSimpleName();
     public static final String KEY_INTENT_EXTRA_TRAVEL = "extra_travel";
     public static final String KEY_INTENT_EXTRA_COUNTRY_LIST = "extra_country_list";
@@ -115,7 +117,7 @@ public class InsertTravelFormActivity extends AppCompatActivity {
                 public void onResponse(Call<List<Country>> call, Response<List<Country>> response) {
                     if (response.isSuccessful()) {
                         mCountries = response.body();
-                        populateDestinationSpinner(mCountries);
+                        fireCleanCountriesTask();
                     } else {
                         mCountries = Collections.emptyList();
                         Log.e(TAG, "Country API returned empty list");
@@ -125,7 +127,8 @@ public class InsertTravelFormActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<List<Country>> call, Throwable t) {
                     mCountries = Collections.emptyList();
-                    Log.e(TAG, "Failed to get countries from API!");
+                    Log.e(TAG, String.format("Failed to get countries from API! %s",t.getMessage()));
+                    t.printStackTrace();
                 }
             });
         }
@@ -345,9 +348,10 @@ public class InsertTravelFormActivity extends AppCompatActivity {
     }
 
     private void populateCurrencySpinner(int selectedCountryPosition) {
+        List<Currency> currencies = mCountries.get(selectedCountryPosition).getCurrencies();
         mCurrencySpinner.setAdapter(new CurrencyArrayAdapter(this,
                 R.layout.support_simple_spinner_dropdown_item,
-                mCountries.get(selectedCountryPosition).getCurrencies()));
+                currencies));
     }
 
     private int findItemPositionOnCurrencySpinner(String item) {
@@ -469,5 +473,15 @@ public class InsertTravelFormActivity extends AppCompatActivity {
         outState.putParcelable(KEY_INTENT_EXTRA_COUNTRY_LIST, Parcels.wrap(mCountries));
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
+    }
+
+    private void fireCleanCountriesTask(){
+        new CleanCountriesAsyncTask(this).execute(mCountries);
+    }
+
+    @Override
+    public void processFinish(List<Country> output) {
+        mCountries = output;
+        populateDestinationSpinner(mCountries);
     }
 }

@@ -17,13 +17,14 @@ public class CleanCountriesAsyncTask extends AsyncTask<List<Country>, Void, List
 
     @Override
     protected List<Country> doInBackground(List<Country>... lists) {
-        mCountries = new ArrayList<>();
-        List<Country> countries = lists[0];
-        for (Country country : countries) {
+//        Treat country data retrieved from the API
+        mCountries = lists[0];
+        for (Country country : mCountries) {
             List<Currency> newCurrencies = new ArrayList<>();
             List<Currency> currencies = country.getCurrencies();
             if (currencies != null) {
                 if (!currencies.isEmpty()) {
+//                    Remove currencies that have no code (none)
                     for (Currency currency : currencies) {
                         if (currency.getCode() != null) {
                             if (!currency.getCode().equals("(none)")) {
@@ -32,10 +33,8 @@ public class CleanCountriesAsyncTask extends AsyncTask<List<Country>, Void, List
                         }
                     }
                 }
-
             }
             country.setCurrencies(newCurrencies);
-            mCountries.add(country);
         }
         return mCountries;
     }

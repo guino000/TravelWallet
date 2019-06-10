@@ -13,9 +13,11 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.android.travelwallet.adapters.CountryArrayAdapter;
 import com.example.android.travelwallet.adapters.CurrencyArrayAdapter;
 import com.example.android.travelwallet.interfaces.AsyncTaskDelegate;
@@ -25,8 +27,10 @@ import com.example.android.travelwallet.model.TravelViewModel;
 import com.example.android.travelwallet.model.restcountries.CleanCountriesAsyncTask;
 import com.example.android.travelwallet.model.restcountries.Country;
 import com.example.android.travelwallet.model.restcountries.Currency;
+import com.example.android.travelwallet.model.unsplash.UnsplashPhoto;
 import com.example.android.travelwallet.utils.RestCountriesUtils;
 import com.example.android.travelwallet.utils.TravelUtils;
+import com.example.android.travelwallet.utils.UnsplashUtils;
 
 import org.parceler.Parcels;
 
@@ -68,6 +72,8 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
     EditText mStartDateEditText;
     @BindView(R.id.et_end_date)
     EditText mEndDateEditText;
+    @BindView(R.id.iv_destination_photo)
+    ImageView mDestinationPhotoImageView;
     @BindView(R.id.bt_create_travel)
     Button mAddTravelButton;
 
@@ -143,6 +149,35 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
                 populateCurrencySpinner(position);
 //              Change the current budget currency format
                 updateCurrentBudgetCurrency(0);
+//              Change the destination photo
+                UnsplashUtils.getRandomPhoto(getCurrentSelectedDestination().getName()).enqueue(new Callback<UnsplashPhoto>() {
+                    @Override
+                    public void onResponse(Call<UnsplashPhoto> call, Response<UnsplashPhoto> response) {
+                        if (response.isSuccessful()) {
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().getUrls().getSmall())
+                                    .into(mDestinationPhotoImageView);
+                        } else {
+                            Glide.with(getApplicationContext())
+                                    .load(R.drawable.img_placeholder)
+                                    .into(mDestinationPhotoImageView);
+                            try {
+                                Log.e(TAG, String.format("Failed to load unsplash photo into ImageView! %s", response.errorBody().string()));
+                            } catch (Exception e) {
+                                Log.e(TAG, "Failed to load unsplash photo into ImageView!");
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UnsplashPhoto> call, Throwable t) {
+                        Glide.with(getApplicationContext())
+                                .load(R.drawable.img_placeholder)
+                                .into(mDestinationPhotoImageView);
+                        Log.e(TAG, String.format("Failed to load unsplash photo into ImageView! %s", t.getMessage()));
+                    }
+                });
             }
 
             @Override

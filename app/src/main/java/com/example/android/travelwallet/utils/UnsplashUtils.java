@@ -1,6 +1,5 @@
 package com.example.android.travelwallet.utils;
 
-import com.example.android.travelwallet.BuildConfig;
 import com.example.android.travelwallet.interfaces.UnsplashService;
 import com.example.android.travelwallet.model.unsplash.UnsplashPhoto;
 import com.google.gson.GsonBuilder;
@@ -15,7 +14,7 @@ public abstract class UnsplashUtils {
     private static final String QUERY_ORIENTATION = "landscape";
 
     public static Call<UnsplashPhoto> getRandomPhoto(String query){
-        return getService().getRandomPhoto(query, BuildConfig.UnsplashAccessKey, QUERY_ORIENTATION, QUERY_FEATURED);
+        return getService().getRandomPhoto(query, "", QUERY_ORIENTATION, QUERY_FEATURED);
     }
 
     private static UnsplashService getService(){

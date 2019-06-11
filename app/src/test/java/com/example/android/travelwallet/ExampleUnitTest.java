@@ -1,7 +1,9 @@
 package com.example.android.travelwallet;
 
+import com.example.android.travelwallet.model.GooglePlaces.Candidate;
 import com.example.android.travelwallet.model.restcountries.Country;
 import com.example.android.travelwallet.model.unsplash.UnsplashPhoto;
+import com.example.android.travelwallet.utils.GooglePlacesUtils;
 import com.example.android.travelwallet.utils.RestCountriesUtils;
 import com.example.android.travelwallet.utils.UnsplashUtils;
 
@@ -11,7 +13,8 @@ import java.util.List;
 
 import retrofit2.Response;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -37,9 +40,20 @@ public class ExampleUnitTest {
     }
 
     @Test
-    public void getRandomPhotoFromUnsplash_isCorrect(){
-        try{
+    public void getRandomPhotoFromUnsplash_isCorrect() {
+        try {
             Response<UnsplashPhoto> response = UnsplashUtils.getRandomPhoto("Brazil panorama").execute();
+            assert response.body() != null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            assert false;
+        }
+    }
+
+    @Test
+    public void getPlaceFromGooglePlaces_isCorrect() {
+        try{
+            Response<Candidate> response = GooglePlacesUtils.findPlaceFromText("Brazil").execute();
             assert response.body() != null;
         }catch (Exception e){
             e.printStackTrace();

@@ -35,7 +35,7 @@ android {
 
     buildTypes.each{
         it.resValue 'string', 'GoogleAdMobAppID', 'ca-app-pub-1869529352770109~7425714329'
-        it.buildConfigField 'String', 'GooglePlacesAPIKey', '"AIzaSyBJEuLZvMVXbbIupwJ36goAa0IHzjiMFdE"'
+        it.buildConfigField 'String', 'GooglePlacesAPIKey', '"AIzaSyBXXUXfKALgA_IjymMIGS5Zfi6i9les9dw"'
     }
 }
 
@@ -68,6 +68,8 @@ dependencies {
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
 //    Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+// Retrofit Scalars Converter
+    implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
 //    Gson
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'

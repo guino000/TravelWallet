@@ -19,26 +19,6 @@ public class Photo {
     @Expose
     private Integer width;
 
-    /**
-     * No args constructor for use in serialization
-     */
-    public Photo() {
-    }
-
-    /**
-     * @param height
-     * @param width
-     * @param htmlAttributions
-     * @param photoReference
-     */
-    public Photo(Integer height, List<String> htmlAttributions, String photoReference, Integer width) {
-        super();
-        this.height = height;
-        this.htmlAttributions = htmlAttributions;
-        this.photoReference = photoReference;
-        this.width = width;
-    }
-
     public Integer getHeight() {
         return height;
     }

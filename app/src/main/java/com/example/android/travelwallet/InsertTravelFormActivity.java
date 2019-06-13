@@ -22,15 +22,17 @@ import com.example.android.travelwallet.adapters.CountryArrayAdapter;
 import com.example.android.travelwallet.adapters.CurrencyArrayAdapter;
 import com.example.android.travelwallet.interfaces.AsyncTaskDelegate;
 import com.example.android.travelwallet.model.Converters;
+import com.example.android.travelwallet.model.GooglePlaces.Candidate;
+import com.example.android.travelwallet.model.GooglePlaces.Photo;
+import com.example.android.travelwallet.model.GooglePlaces.PlacesResponse;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
 import com.example.android.travelwallet.model.restcountries.CleanCountriesAsyncTask;
 import com.example.android.travelwallet.model.restcountries.Country;
 import com.example.android.travelwallet.model.restcountries.Currency;
-import com.example.android.travelwallet.model.unsplash.UnsplashPhoto;
+import com.example.android.travelwallet.utils.GooglePlacesUtils;
 import com.example.android.travelwallet.utils.RestCountriesUtils;
 import com.example.android.travelwallet.utils.TravelUtils;
-import com.example.android.travelwallet.utils.UnsplashUtils;
 
 import org.parceler.Parcels;
 
@@ -142,7 +144,7 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
 //        Listen to selections on destination spinner
         mDestinationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
 //              Save last clicked position for destination recovery
                 mCurrentDestinationPosition = position;
                 mCurrentCurrencyPosition = 0;
@@ -150,32 +152,27 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
 //              Change the current budget currency format
                 updateCurrentBudgetCurrency(0);
 //              Change the destination photo
-                UnsplashUtils.getRandomPhoto(getCurrentSelectedDestination().getName()).enqueue(new Callback<UnsplashPhoto>() {
+                GooglePlacesUtils.findPlaceFromText(getCurrentSelectedDestination().getName()).enqueue(new Callback<PlacesResponse>() {
                     @Override
-                    public void onResponse(Call<UnsplashPhoto> call, Response<UnsplashPhoto> response) {
+                    public void onResponse(Call<PlacesResponse> call, Response<PlacesResponse> response) {
                         if (response.isSuccessful()) {
-                            Glide.with(getApplicationContext())
-                                    .load(response.body().getUrls().getSmall())
-                                    .into(mDestinationPhotoImageView);
-                        } else {
-                            Glide.with(getApplicationContext())
-                                    .load(R.drawable.img_placeholder)
-                                    .into(mDestinationPhotoImageView);
                             try {
-                                Log.e(TAG, String.format("Failed to load unsplash photo into ImageView! %s", response.errorBody().string()));
+                                List<Candidate> candidates = response.body().getCandidates();
+                                List<Photo> photos = candidates.get(0).getPhotos();
+                                String photoRef = photos.get(0).getPhotoReference();
+                                String photoUrl = GooglePlacesUtils.getPhotoFromPhotoReference(photoRef, 900);
+                                Glide.with(getApplicationContext())
+                                        .load(photoUrl)
+                                        .into(mDestinationPhotoImageView);
                             } catch (Exception e) {
-                                Log.e(TAG, "Failed to load unsplash photo into ImageView!");
                                 e.printStackTrace();
                             }
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<UnsplashPhoto> call, Throwable t) {
-                        Glide.with(getApplicationContext())
-                                .load(R.drawable.img_placeholder)
-                                .into(mDestinationPhotoImageView);
-                        Log.e(TAG, String.format("Failed to load unsplash photo into ImageView! %s", t.getMessage()));
+                    public void onFailure(Call<PlacesResponse> call, Throwable t) {
+
                     }
                 });
             }

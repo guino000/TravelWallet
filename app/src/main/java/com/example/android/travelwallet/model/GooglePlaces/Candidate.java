@@ -15,29 +15,6 @@ public class Candidate {
     @SerializedName("photos")
     @Expose
     private List<Photo> photos = null;
-    @SerializedName("rating")
-    @Expose
-    private Double rating;
-
-    /**
-     * No args constructor for use in serialization
-     */
-    public Candidate() {
-    }
-
-    /**
-     * @param photos
-     * @param name
-     * @param formattedAddress
-     * @param rating
-     */
-    public Candidate(String formattedAddress, String name, List<Photo> photos, Double rating) {
-        super();
-        this.formattedAddress = formattedAddress;
-        this.name = name;
-        this.photos = photos;
-        this.rating = rating;
-    }
 
     public String getFormattedAddress() {
         return formattedAddress;
@@ -75,19 +52,6 @@ public class Candidate {
 
     public Candidate withPhotos(List<Photo> photos) {
         this.photos = photos;
-        return this;
-    }
-
-    public Double getRating() {
-        return rating;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
-    }
-
-    public Candidate withRating(Double rating) {
-        this.rating = rating;
         return this;
     }
 }

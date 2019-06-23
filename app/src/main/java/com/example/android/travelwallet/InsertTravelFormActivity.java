@@ -100,6 +100,8 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
     @State
     int mCurrentDestinationPosition;
     List<Country> mCountries;
+    @State
+    String mCurrentGooglePlaceID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +120,7 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
             mCurrencySpinner.setSelection(mCurrentCurrencyPosition);
             mStartDateEditText.setText(Converters.dateToString(mCurrentTravelStartDate));
             mEndDateEditText.setText(Converters.dateToString(mCurrentTravelEndDate));
+            loadPlacePhotoIntoImageView(mCurrentGooglePlaceID);
         } else {
 //            Query countries and load destination spinners
             RestCountriesUtils.getAllCountries().enqueue(new Callback<List<Country>>() {
@@ -160,10 +163,7 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
                                 List<Candidate> candidates = response.body().getCandidates();
                                 List<Photo> photos = candidates.get(0).getPhotos();
                                 String photoRef = photos.get(0).getPhotoReference();
-                                String photoUrl = GooglePlacesUtils.getPhotoFromPhotoReference(photoRef, 900);
-                                Glide.with(getApplicationContext())
-                                        .load(photoUrl)
-                                        .into(mDestinationPhotoImageView);
+                                loadPlacePhotoIntoImageView(photoRef);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -362,9 +362,15 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
     }
 
     private void populateDestinationSpinner(List<Country> countries) {
-        mDestinationSpinner.setAdapter(new CountryArrayAdapter(this,
+        CountryArrayAdapter countryArrayAdapter = new CountryArrayAdapter(this,
                 R.layout.support_simple_spinner_dropdown_item,
-                countries));
+                countries);
+        mDestinationSpinner.setAdapter(countryArrayAdapter);
+        if (mEditMode) {
+            countryArrayAdapter.notifyDataSetChanged();
+            mDestinationSpinner.setSelection(
+                    findItemPositionOnDestinationSpinner(mEditTravel.getDestination()));
+        }
     }
 
     private int findItemPositionOnDestinationSpinner(String item) {
@@ -381,9 +387,16 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
 
     private void populateCurrencySpinner(int selectedCountryPosition) {
         List<Currency> currencies = mCountries.get(selectedCountryPosition).getCurrencies();
-        mCurrencySpinner.setAdapter(new CurrencyArrayAdapter(this,
+        CurrencyArrayAdapter currencyAdapter = new CurrencyArrayAdapter(this,
                 R.layout.support_simple_spinner_dropdown_item,
-                currencies));
+                currencies);
+        mCurrencySpinner.setAdapter(currencyAdapter);
+//        TODO: The list views are still not being set after loading on edit mode
+        if (mEditMode) {
+            currencyAdapter.notifyDataSetChanged();
+            mCurrencySpinner.setSelection(
+                    findItemPositionOnCurrencySpinner(mEditTravel.getCurrencyCode()));
+        }
     }
 
     private int findItemPositionOnCurrencySpinner(String item) {
@@ -396,6 +409,14 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
 
     private Currency getCurrentSelectedCurrency() {
         return (Currency) mCurrencySpinner.getSelectedItem();
+    }
+
+    private void loadPlacePhotoIntoImageView(String photoRef) {
+        String photoUrl = GooglePlacesUtils.getPhotoFromPhotoReference(photoRef, mDestinationPhotoImageView.getMaxWidth());
+        mCurrentGooglePlaceID = photoRef;
+        Glide.with(getApplicationContext())
+                .load(photoUrl)
+                .into(mDestinationPhotoImageView);
     }
 
     @OnClick(R.id.bt_create_travel)
@@ -452,6 +473,7 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
             mEditTravel.setEndDate(
                     Converters.stringToDate(mEndDateEditText.getText().toString().trim()));
             travelViewModel.update(mEditTravel);
+            mEditTravel.setGooglePlaceID(mCurrentGooglePlaceID);
         } else {
 //            Insert travel if form is correct
             try {
@@ -463,6 +485,7 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
                                 mTotalBudgetEditText.getText().toString().trim()).toString()),
                         Converters.stringToDate(mStartDateEditText.getText().toString().trim()),
                         Converters.stringToDate(mEndDateEditText.getText().toString().trim()));
+                travel.setGooglePlaceID(mCurrentGooglePlaceID);
 
                 travelViewModel.insert(travel);
             } catch (ParseException e) {

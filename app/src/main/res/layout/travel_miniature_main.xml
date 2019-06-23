@@ -89,6 +89,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/img_miniature_travel_miniature"
                 app:srcCompat="@drawable/ic_more_vert_black_24dp" />
 
+            <ImageView
+                android:id="@+id/iv_powered_google"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha=".8"
+                android:background="#FAFAFA"
+                app:layout_constraintBottom_toBottomOf="@+id/img_miniature_travel_miniature"
+                app:layout_constraintEnd_toEndOf="@+id/img_miniature_travel_miniature"
+                app:srcCompat="@drawable/powered_by_google_on_white" />
+
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>

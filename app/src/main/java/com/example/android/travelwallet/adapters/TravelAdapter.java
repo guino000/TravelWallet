@@ -2,7 +2,6 @@ package com.example.android.travelwallet.adapters;
 
 import android.app.Application;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,8 +15,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
-import com.example.android.travelwallet.interfaces.LoadPlacePhotoListener;
 import com.example.android.travelwallet.model.Travel;
+import com.example.android.travelwallet.utils.GooglePlacesUtils;
 import com.example.android.travelwallet.utils.TravelUtils;
 
 import java.util.List;
@@ -69,6 +68,15 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
                 return true;
             }
         });
+
+        if (!travel.getGooglePlaceID().isEmpty()) {
+            Glide.with(mContext)
+                    .load(GooglePlacesUtils.getPhotoFromPhotoReference(travel.getGooglePlaceID(), travelViewHolder.mTravelPhotoImageView.getMaxWidth()))
+                    .apply(RequestOptions.placeholderOf(mContext.getResources().getDrawable(R.drawable.img_placeholder)))
+                    .apply(RequestOptions.noTransformation())
+                    .apply(RequestOptions.noAnimation())
+                    .into(travelViewHolder.mTravelPhotoImageView);
+        }
     }
 
     @Override
@@ -94,8 +102,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
     }
 
     class TravelViewHolder extends RecyclerView.ViewHolder implements
-            View.OnClickListener,
-            LoadPlacePhotoListener {
+            View.OnClickListener {
         @BindView(R.id.tv_miniature_travel_name)
         TextView mTravelNameTextView;
 
@@ -121,16 +128,6 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
         public void onClick(View v) {
             int position = getAdapterPosition();
             mClickHandler.onClick(mTravels.get(position));
-        }
-
-        @Override
-        public void onLoadPlacePhoto(Bitmap bitmap) {
-            Glide.with(mContext.getApplicationContext())
-                    .load(bitmap)
-                    .apply(RequestOptions.placeholderOf(mContext.getResources().getDrawable(R.drawable.img_placeholder)))
-                    .apply(RequestOptions.noTransformation())
-                    .apply(RequestOptions.noAnimation())
-                    .into(mTravelPhotoImageView);
         }
     }
 }

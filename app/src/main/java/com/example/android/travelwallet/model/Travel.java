@@ -21,6 +21,7 @@ public class Travel {
     private BigDecimal mBudget;
     private Date mStartDate;
     private Date mEndDate;
+    private String mGooglePlaceID;
 
     public Travel(){}
 
@@ -49,4 +50,12 @@ public class Travel {
     public void setStartDate(Date startDate){mStartDate = startDate;}
     public Date getEndDate(){return mEndDate;}
     public void setEndDate(Date endDate){mEndDate = endDate;}
+
+    public String getGooglePlaceID() {
+        return mGooglePlaceID;
+    }
+
+    public void setGooglePlaceID(String mPlaceID) {
+        this.mGooglePlaceID = mPlaceID;
+    }
 }

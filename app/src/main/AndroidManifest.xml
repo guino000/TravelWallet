@@ -21,7 +21,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".InsertTravelFormActivity" />
-        <activity android:name=".TravelDetailsActivity" />
+        <activity
+            android:name=".TravelDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".InsertExpenseFormActivity" />
 
         <receiver android:name=".TravelBudgetWidget">

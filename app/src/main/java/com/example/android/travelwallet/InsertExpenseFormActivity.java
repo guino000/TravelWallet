@@ -4,8 +4,8 @@ import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.model.Converters;
 import com.example.android.travelwallet.model.ExpenseViewModel;
 import com.example.android.travelwallet.model.Travel;
@@ -234,8 +233,9 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
             mEditExpense.setExpenseDate(Converters.stringToDate(mExpenseDateEditText.getText().toString().trim()));
             mEditExpense.setCategory(mExpenseCategorySpinner.getSelectedItem().toString());
             try {
+                Travel travel = travelViewModel.getTravel(mTravelID);
                 mEditExpense.setExpenseTotal(
-                        new BigDecimal(TravelUtils.getCurrencyNumberFormat("USA").parse(
+                        new BigDecimal(TravelUtils.getCurrencyNumberFormat(travel.getCurrencyCode()).parse(
                                 mExpenseAmountEditText.getText().toString().trim()).toString()));
             } catch (ParseException e) {
                 e.printStackTrace();

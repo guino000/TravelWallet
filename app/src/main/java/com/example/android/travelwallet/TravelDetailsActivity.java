@@ -3,25 +3,30 @@ package com.example.android.travelwallet;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.android.travelwallet.adapters.ExpenseAdapter;
 import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
 import com.example.android.travelwallet.model.ExpenseViewModel;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelExpense;
 import com.example.android.travelwallet.model.TravelValues;
+import com.example.android.travelwallet.utils.GooglePlacesUtils;
 import com.example.android.travelwallet.utils.TravelUtils;
 
 import org.parceler.Parcels;
@@ -38,8 +43,6 @@ public class TravelDetailsActivity extends AppCompatActivity
     implements CardPopupMenuListener {
     public static final String KEY_INTENT_EXTRA_TRAVEL = "extra_travel";
 
-    @BindView(R.id.tv_detail_travel_name)
-    TextView mTravelNameTextView;
     @BindView(R.id.tv_detail_total_expenses)
     TextView mTotalExpensesTextView;
     @BindView(R.id.tv_detail_total_budget)
@@ -52,6 +55,10 @@ public class TravelDetailsActivity extends AppCompatActivity
     RecyclerView mExpensesRecyclerView;
     @BindView(R.id.fab_add_expense)
     FloatingActionButton mAddExpenseFAB;
+    @BindView(R.id.iv_travel_details_header)
+    ImageView mTravelDetailsHeaderImageView;
+    @BindView(R.id.travel_details_collapsible_toolbar)
+    CollapsingToolbarLayout mTravelDetailsCT;
 
     ExpenseAdapter mExpenseAdapter;
     ExpenseViewModel mExpenseViewModel;
@@ -90,13 +97,13 @@ public class TravelDetailsActivity extends AppCompatActivity
         });
 
 //        Configure Activity
-        mTravelNameTextView.setText(travel.getName());
         updateBudgetOverview(travel);
-
-//        Configure Back Button
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null)
-            actionBar.setDisplayHomeAsUpEnabled(true);
+        Glide.with(this)
+                .load(GooglePlacesUtils.getPhotoFromPhotoReference(travel.getGooglePlaceID(), mTravelDetailsHeaderImageView.getMaxWidth()))
+                .into(mTravelDetailsHeaderImageView);
+        mTravelDetailsCT.setTitle(travel.getName());
+        setSupportActionBar((Toolbar) findViewById(R.id.travel_details_toolbar));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @OnClick(R.id.fab_add_expense)
@@ -149,6 +156,7 @@ public class TravelDetailsActivity extends AppCompatActivity
 
     public void startExpenseFormActivityAsEditMode(TravelExpense expense){
         Intent intent = new Intent(this, InsertExpenseFormActivity.class);
+        intent.putExtra(InsertExpenseFormActivity.KEY_INTENT_EXTRA_TRAVEL_ID, mTravelID);
         intent.putExtra(InsertExpenseFormActivity.KEY_INTENT_EXTRA_EXPENSE_EDIT, Parcels.wrap(expense));
         startActivity(intent);
     }

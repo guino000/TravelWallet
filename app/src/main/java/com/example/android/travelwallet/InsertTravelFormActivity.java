@@ -344,8 +344,6 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
     private void enableEditMode(Travel travel) {
         mTravelNameEditText.setText(travel.getName());
         mTotalBudgetEditText.setText(TravelUtils.getCurrencyFormattedValue(travel.getBudget(), travel.getCurrencyCode()));
-        mDestinationSpinner.setSelection(findItemPositionOnDestinationSpinner(travel.getDestination()));
-        mCurrencySpinner.setSelection(findItemPositionOnCurrencySpinner(travel.getCurrencyCode()));
         mStartDateEditText.setText(Converters.dateToString(travel.getStartDate()));
         mEndDateEditText.setText(Converters.dateToString(travel.getEndDate()));
         mAddTravelButton.setText(R.string.button_edit_travel);
@@ -367,15 +365,20 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
                 countries);
         mDestinationSpinner.setAdapter(countryArrayAdapter);
         if (mEditMode) {
-            countryArrayAdapter.notifyDataSetChanged();
-            mDestinationSpinner.setSelection(
-                    findItemPositionOnDestinationSpinner(mEditTravel.getDestination()));
+//        Set selection to the same as the travel being edited
+            mDestinationSpinner.post(new Runnable() {
+                @Override
+                public void run() {
+                    mDestinationSpinner.setSelection(
+                            findItemPositionOnDestinationSpinner(mEditTravel.getDestination()), true);
+                }
+            });
         }
     }
 
     private int findItemPositionOnDestinationSpinner(String item) {
         for (int i = 0; i < mDestinationSpinner.getCount(); i++) {
-            if (mDestinationSpinner.getItemAtPosition(i).equals(item))
+            if (((Country) mDestinationSpinner.getItemAtPosition(i)).getName().equals(item))
                 return i;
         }
         return -1;
@@ -391,17 +394,20 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
                 R.layout.support_simple_spinner_dropdown_item,
                 currencies);
         mCurrencySpinner.setAdapter(currencyAdapter);
-//        TODO: The list views are still not being set after loading on edit mode
         if (mEditMode) {
-            currencyAdapter.notifyDataSetChanged();
-            mCurrencySpinner.setSelection(
-                    findItemPositionOnCurrencySpinner(mEditTravel.getCurrencyCode()));
+//        Set selection to the same as the travel being edited
+            mCurrencySpinner.post(new Runnable() {
+                public void run() {
+                    mCurrencySpinner.setSelection(
+                            findItemPositionOnCurrencySpinner(mEditTravel.getCurrencyCode()), true);
+                }
+            });
         }
     }
 
     private int findItemPositionOnCurrencySpinner(String item) {
         for (int i = 0; i < mCurrencySpinner.getCount(); i++) {
-            if (mCurrencySpinner.getItemAtPosition(i).equals(item))
+            if (((Currency) mCurrencySpinner.getItemAtPosition(i)).getCode().equals(item))
                 return i;
         }
         return -1;

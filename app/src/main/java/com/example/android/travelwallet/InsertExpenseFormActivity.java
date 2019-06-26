@@ -200,8 +200,12 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
 
     @OnClick(R.id.bt_create_expense)
     public void createExpense() {
-        if (getCurrentFocus() != null)
+        if (getCurrentFocus() != null) {
             getCurrentFocus().clearFocus();
+            mExpenseAmountEditText.clearFocus();
+            mExpenseDescriptionEditText.requestFocus();
+        }
+
 //        Check if inputs are OK
         boolean flagError = false;
         if (mExpenseDescriptionEditText.getText().toString().trim().equals("")) {
@@ -236,7 +240,8 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
                 Travel travel = travelViewModel.getTravel(mTravelID);
                 mEditExpense.setExpenseTotal(
                         new BigDecimal(TravelUtils.getCurrencyNumberFormat(travel.getCurrencyCode()).parse(
-                                mExpenseAmountEditText.getText().toString().trim()).toString()));
+                                mExpenseAmountEditText.getText().toString().trim()).toString()
+                        ));
             } catch (ParseException e) {
                 e.printStackTrace();
                 mExpenseAmountEditText.setError(getString(R.string.error_expense_amount_invalid));

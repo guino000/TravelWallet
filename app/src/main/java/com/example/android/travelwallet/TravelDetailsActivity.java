@@ -16,8 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.android.travelwallet.adapters.ExpenseAdapter;
@@ -28,11 +26,15 @@ import com.example.android.travelwallet.model.TravelExpense;
 import com.example.android.travelwallet.model.TravelValues;
 import com.example.android.travelwallet.utils.GooglePlacesUtils;
 import com.example.android.travelwallet.utils.TravelUtils;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 
 import org.parceler.Parcels;
 
 import java.math.BigDecimal;
-import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -43,14 +45,8 @@ public class TravelDetailsActivity extends AppCompatActivity
     implements CardPopupMenuListener {
     public static final String KEY_INTENT_EXTRA_TRAVEL = "extra_travel";
 
-    @BindView(R.id.tv_detail_total_expenses)
-    TextView mTotalExpensesTextView;
-    @BindView(R.id.tv_detail_total_budget)
-    TextView mTotalBudgetTextView;
-    @BindView(R.id.tv_current_percentage)
-    TextView mCurrentPercentageTextView;
-    @BindView(R.id.pb_budget_spent)
-    ProgressBar mBudgetSpentProgressBar;
+    @BindView(R.id.pie_chart_budget)
+    PieChart mPieChartBudget;
     @BindView(R.id.rv_detail_expenses)
     RecyclerView mExpensesRecyclerView;
     @BindView(R.id.fab_add_expense)
@@ -117,28 +113,26 @@ public class TravelDetailsActivity extends AppCompatActivity
     public void updateBudgetOverview(Travel travel){
         ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(ExpenseViewModel.class);
-//        Update Total Budget and Total Expenses text views
-        mTotalBudgetTextView.setText(TravelUtils.getCurrencyFormattedValue(travel.getBudget(),travel.getCurrencyCode()));
+
         TravelValues totalExpenses = expenseViewModel.getTotalExpensesOfTravel(travel.getId());
         if(totalExpenses.getTotal() == null){
             totalExpenses = new TravelValues();
             totalExpenses.setTotal(new BigDecimal(0));
         }
-        mTotalExpensesTextView.setText(
-                TravelUtils.getCurrencyFormattedValue(totalExpenses.total,travel.getCurrencyCode()));
 
-//        Update progress bar
-        mBudgetSpentProgressBar.setProgress((int) (TravelUtils.getBudgetSpentPercentage(getApplication(),travel) * 100));
-        if(travel.getBudget().compareTo(totalExpenses.total) >= 0){
-            mBudgetSpentProgressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_green));
-        }else{
-            mBudgetSpentProgressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_red));
-        }
+        float spentPercent = TravelUtils.getBudgetSpentPercentage(getApplication(), travel);
+        float remainingPercent = 1f - spentPercent;
 
-//        Update progress bar percentage text view
-        NumberFormat numberFormat = NumberFormat.getPercentInstance();
-        numberFormat.setMinimumFractionDigits(1);
-        mCurrentPercentageTextView.setText(numberFormat.format(TravelUtils.getBudgetSpentPercentage(getApplication(),travel)));
+        List<PieEntry> entries = new ArrayList<>();
+        entries.add(new PieEntry(spentPercent, "Spent"));
+        entries.add(new PieEntry(remainingPercent, "Remaining"));
+        PieDataSet pieDataSet = new PieDataSet(entries, "Travel Budget");
+        pieDataSet.setColors(R.color.red, R.color.blue);
+        PieData pieData = new PieData();
+        pieData.setDataSet(pieDataSet);
+        mPieChartBudget.setUsePercentValues(true);
+        mPieChartBudget.setData(pieData);
+        mPieChartBudget.invalidate();
     }
 
     @Override

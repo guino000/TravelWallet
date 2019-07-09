@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -127,10 +128,12 @@ public class TravelDetailsActivity extends AppCompatActivity
         entries.add(new PieEntry(spentPercent, "Spent"));
         entries.add(new PieEntry(remainingPercent, "Remaining"));
         PieDataSet pieDataSet = new PieDataSet(entries, "Travel Budget");
-        pieDataSet.setColors(R.color.red, R.color.blue);
+        pieDataSet.setColors(ContextCompat.getColor(this, R.color.red),
+                ContextCompat.getColor(this, R.color.blue));
         PieData pieData = new PieData();
         pieData.setDataSet(pieDataSet);
         mPieChartBudget.setUsePercentValues(true);
+        mPieChartBudget.getLegend().setEnabled(false);
         mPieChartBudget.setData(pieData);
         mPieChartBudget.invalidate();
     }

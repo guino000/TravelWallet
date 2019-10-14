@@ -98,13 +98,42 @@
                                 app:layout_constraintTop_toTopOf="parent"
                                 tools:text="Budget Overview" />
 
-                            <com.anychart.AnyChartView
-                                android:id="@+id/budget_circular_gauge"
-                                android:layout_width="0dp"
+                            <TextView
+                                android:id="@+id/tvBudgetProgressLabel"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginBottom="8dp"
-                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:layout_marginBottom="40dp"
+                                android:text="@string/travel_detail_total_expenses_label"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                                app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+                                app:layout_constraintEnd_toEndOf="@+id/progressBar"
+                                app:layout_constraintStart_toStartOf="@+id/progressBar"
+                                app:layout_constraintTop_toTopOf="@+id/progressBar"
+                                tools:text="Spent" />
+
+                            <TextView
+                                android:id="@+id/tvBudgetProgressData"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="40dp"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                                app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+                                app:layout_constraintEnd_toEndOf="@+id/progressBar"
+                                app:layout_constraintStart_toStartOf="@+id/progressBar"
+                                app:layout_constraintTop_toTopOf="@+id/progressBar"
+                                tools:text="50%" />
+
+                            <ProgressBar
+                                android:id="@+id/progressBar"
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                android:layout_width="0dp"
+                                android:layout_height="300dp"
+                                android:layout_alignParentBottom="true"
+                                android:layout_centerHorizontal="true"
+                                android:max="100"
+                                android:progress="50"
+                                android:progressDrawable="@drawable/circular"
+                                android:rotation="180"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/tv_budget_overview_title" />

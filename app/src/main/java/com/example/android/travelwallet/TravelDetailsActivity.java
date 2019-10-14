@@ -16,11 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import com.anychart.AnyChart;
-import com.anychart.AnyChartView;
-import com.anychart.chart.common.dataentry.SingleValueDataSet;
-import com.anychart.charts.CircularGauge;
 import com.bumptech.glide.Glide;
 import com.example.android.travelwallet.adapters.ExpenseAdapter;
 import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
@@ -44,8 +42,8 @@ public class TravelDetailsActivity extends AppCompatActivity
     implements CardPopupMenuListener {
     public static final String KEY_INTENT_EXTRA_TRAVEL = "extra_travel";
 
-    @BindView(R.id.budget_circular_gauge)
-    AnyChartView mPieChartBudget;
+    @BindView(R.id.progressBar)
+    ProgressBar mPieChartBudget;
     @BindView(R.id.rv_detail_expenses)
     RecyclerView mExpensesRecyclerView;
     @BindView(R.id.fab_add_expense)
@@ -54,6 +52,8 @@ public class TravelDetailsActivity extends AppCompatActivity
     ImageView mTravelDetailsHeaderImageView;
     @BindView(R.id.travel_details_collapsible_toolbar)
     CollapsingToolbarLayout mTravelDetailsCT;
+    @BindView(R.id.tvBudgetProgressData)
+    TextView mBudgetProgressData;
 
     ExpenseAdapter mExpenseAdapter;
     ExpenseViewModel mExpenseViewModel;
@@ -120,13 +120,9 @@ public class TravelDetailsActivity extends AppCompatActivity
         }
 
         float spentPercent = TravelUtils.getBudgetSpentPercentage(getApplication(), travel);
-        int remainingPercent = (int) Math.abs(100 - (spentPercent * 100));
-
-        // Configure pie chart
-        CircularGauge circularGauge = AnyChart.circular();
-        circularGauge.data(new SingleValueDataSet(new String[]{String.valueOf(remainingPercent)}));
-
-        mPieChartBudget.setChart(circularGauge);
+        int progress = Math.round(spentPercent * 100);
+        mPieChartBudget.setProgress(progress);
+        mBudgetProgressData.setText(progress + "%");
     }
 
     @Override

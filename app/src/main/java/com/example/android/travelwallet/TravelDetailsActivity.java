@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +17,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 
+import com.anychart.AnyChart;
+import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.SingleValueDataSet;
+import com.anychart.charts.CircularGauge;
 import com.bumptech.glide.Glide;
 import com.example.android.travelwallet.adapters.ExpenseAdapter;
 import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
@@ -27,15 +30,10 @@ import com.example.android.travelwallet.model.TravelExpense;
 import com.example.android.travelwallet.model.TravelValues;
 import com.example.android.travelwallet.utils.GooglePlacesUtils;
 import com.example.android.travelwallet.utils.TravelUtils;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
 
 import org.parceler.Parcels;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -46,8 +44,8 @@ public class TravelDetailsActivity extends AppCompatActivity
     implements CardPopupMenuListener {
     public static final String KEY_INTENT_EXTRA_TRAVEL = "extra_travel";
 
-    @BindView(R.id.pie_chart_budget)
-    PieChart mPieChartBudget;
+    @BindView(R.id.budget_circular_gauge)
+    AnyChartView mPieChartBudget;
     @BindView(R.id.rv_detail_expenses)
     RecyclerView mExpensesRecyclerView;
     @BindView(R.id.fab_add_expense)
@@ -122,20 +120,13 @@ public class TravelDetailsActivity extends AppCompatActivity
         }
 
         float spentPercent = TravelUtils.getBudgetSpentPercentage(getApplication(), travel);
-        float remainingPercent = 1f - spentPercent;
+        int remainingPercent = (int) Math.abs(100 - (spentPercent * 100));
 
-        List<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(spentPercent, "Spent"));
-        entries.add(new PieEntry(remainingPercent, "Remaining"));
-        PieDataSet pieDataSet = new PieDataSet(entries, "Travel Budget");
-        pieDataSet.setColors(ContextCompat.getColor(this, R.color.red),
-                ContextCompat.getColor(this, R.color.blue));
-        PieData pieData = new PieData();
-        pieData.setDataSet(pieDataSet);
-        mPieChartBudget.setUsePercentValues(true);
-        mPieChartBudget.getLegend().setEnabled(false);
-        mPieChartBudget.setData(pieData);
-        mPieChartBudget.invalidate();
+        // Configure pie chart
+        CircularGauge circularGauge = AnyChart.circular();
+        circularGauge.data(new SingleValueDataSet(new String[]{String.valueOf(remainingPercent)}));
+
+        mPieChartBudget.setChart(circularGauge);
     }
 
     @Override

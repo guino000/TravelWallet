@@ -43,7 +43,7 @@ public class TravelDetailsActivity extends AppCompatActivity
     implements CardPopupMenuListener {
     public static final String KEY_INTENT_EXTRA_TRAVEL = "extra_travel";
 
-    @BindView(R.id.progressBar)
+    @BindView(R.id.pb_budget_circular_gauge)
     ProgressBar mPieChartBudget;
     @BindView(R.id.rv_detail_expenses)
     RecyclerView mExpensesRecyclerView;

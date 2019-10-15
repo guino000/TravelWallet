@@ -10,17 +10,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.PopupMenu;
 
 import com.example.android.travelwallet.adapters.TravelAdapter;
@@ -98,6 +96,8 @@ public class MainActivity extends AppCompatActivity implements
         mTravelAdapter = new TravelAdapter(this, this, this);
         mTravelAdapter.setHasStableIds(true);
         mTravelsRecyclerView.setAdapter(mTravelAdapter);
+
+//        Check how many columns the grid will have
         if(getResources().getConfiguration().screenWidthDp < 600) {
 //            If screen width is small, the travel cards occupy the entire screen
             mTravelsRecyclerView.setLayoutManager(new GridLayoutManager(this, 1,
@@ -106,18 +106,11 @@ public class MainActivity extends AppCompatActivity implements
 //            If screen width is big, the travel cards occupy half the screen
             mTravelsRecyclerView.setLayoutManager(new GridLayoutManager(this, 2,
                     GridLayoutManager.VERTICAL, false));
-//            Automatically calculate how many cards fit into the screen
-            ViewTreeObserver viewTreeObserver = mTravelsRecyclerView.getViewTreeObserver();
-            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    calculateSize();
-                }
-            });
         }
         mTravelsRecyclerView.setHasFixedSize(true);
-        mTravelViewModel =
-                ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())
+
+//        Add an observer to update widget data on travel change
+        mTravelViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())
                 .create(TravelViewModel.class);
         mTravelViewModel.getAllTravels().observe(this, new Observer<List<Travel>>() {
             @Override
@@ -128,17 +121,40 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
+    public void startTravelFormActivityAsEditMode(Travel travel) {
+        Intent intent = new Intent(this, InsertTravelFormActivity.class);
+        intent.putExtra(InsertTravelFormActivity.KEY_INTENT_EXTRA_TRAVEL, Parcels.wrap(travel));
+        startActivity(intent);
+    }
+
     @OnClick(R.id.bt_add_travel)
     public void callAddTravelActivity(){
         Intent intent = new Intent(this, InsertTravelFormActivity.class);
         startActivity(intent);
     }
 
-    private void calculateSize() {
-        int spanCount = (int) Math.ceil(mTravelsRecyclerView.getWidth() /
-                getResources().getDimension(R.dimen.travel_miniature_width));
-        //noinspection ConstantConditions
-        ((GridLayoutManager) mTravelsRecyclerView.getLayoutManager()).setSpanCount(spanCount);
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.travel_notification_channel_name);
+            String description = getString(R.string.travel_notification_channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
+    }
+
+    private void updateWidget() {
+        AppWidgetManager widgetManager = AppWidgetManager.getInstance(this);
+        int[] ids = widgetManager.getAppWidgetIds(
+                new ComponentName(this, TravelBudgetWidget.class));
+        Intent updateIntent = new Intent();
+        updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        updateIntent.putExtra(TravelBudgetWidget.WIDGET_EXTRA_IDS, ids);
+        sendBroadcast(updateIntent);
     }
 
     @Override
@@ -155,12 +171,6 @@ public class MainActivity extends AppCompatActivity implements
 //        Calls details activity
         Intent intent = new Intent(this, TravelDetailsActivity.class);
         intent.putExtra(TravelDetailsActivity.KEY_INTENT_EXTRA_TRAVEL, Parcels.wrap(clickedTravel));
-        startActivity(intent);
-    }
-
-    public void startTravelFormActivityAsEditMode(Travel travel){
-        Intent intent = new Intent(this, InsertTravelFormActivity.class);
-        intent.putExtra(InsertTravelFormActivity.KEY_INTENT_EXTRA_TRAVEL, Parcels.wrap(travel));
         startActivity(intent);
     }
 
@@ -188,27 +198,4 @@ public class MainActivity extends AppCompatActivity implements
         popupMenu.show();
     }
 
-    private void createNotificationChannel(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            CharSequence name = getString(R.string.travel_notification_channel_name);
-            String description = getString(R.string.travel_notification_channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            if (notificationManager != null) {
-                notificationManager.createNotificationChannel(channel);
-            }
-        }
-    }
-
-    private void updateWidget(){
-        AppWidgetManager widgetManager = AppWidgetManager.getInstance(this);
-        int[] ids = widgetManager.getAppWidgetIds(
-                new ComponentName(this, TravelBudgetWidget.class));
-        Intent updateIntent = new Intent();
-        updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        updateIntent.putExtra(TravelBudgetWidget.WIDGET_EXTRA_IDS, ids);
-        sendBroadcast(updateIntent);
-    }
 }

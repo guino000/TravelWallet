@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
 import com.example.android.travelwallet.model.Converters;
@@ -79,12 +78,10 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         if (categoryIconID != 0) {
             Glide.with(mContext.getApplicationContext())
                     .load(mContext.getResources().getDrawable(categoryIconID))
-                    .apply(RequestOptions.circleCropTransform())
                     .into(expenseViewHolder.mCategoryIconImageView);
         } else {
             Glide.with(mContext.getApplicationContext())
                     .load(mContext.getResources().getDrawable(R.drawable.ic_error_red_24dp))
-                    .apply(RequestOptions.circleCropTransform())
                     .into(expenseViewHolder.mCategoryIconImageView);
         }
     }

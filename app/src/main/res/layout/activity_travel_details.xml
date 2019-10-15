@@ -107,10 +107,10 @@
                                 android:layout_marginBottom="40dp"
                                 android:text="@string/travel_detail_total_expenses_label"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                                app:layout_constraintBottom_toBottomOf="@+id/progressBar"
-                                app:layout_constraintEnd_toEndOf="@+id/progressBar"
-                                app:layout_constraintStart_toStartOf="@+id/progressBar"
-                                app:layout_constraintTop_toTopOf="@+id/progressBar"
+                                app:layout_constraintBottom_toBottomOf="@+id/pb_budget_circular_gauge"
+                                app:layout_constraintEnd_toEndOf="@+id/pb_budget_circular_gauge"
+                                app:layout_constraintStart_toStartOf="@+id/pb_budget_circular_gauge"
+                                app:layout_constraintTop_toTopOf="@+id/pb_budget_circular_gauge"
                                 tools:text="Spent" />
 
                             <TextView
@@ -119,16 +119,16 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="40dp"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                                app:layout_constraintBottom_toBottomOf="@+id/progressBar"
-                                app:layout_constraintEnd_toEndOf="@+id/progressBar"
-                                app:layout_constraintStart_toStartOf="@+id/progressBar"
-                                app:layout_constraintTop_toTopOf="@+id/progressBar"
+                                app:layout_constraintBottom_toBottomOf="@+id/pb_budget_circular_gauge"
+                                app:layout_constraintEnd_toEndOf="@+id/pb_budget_circular_gauge"
+                                app:layout_constraintStart_toStartOf="@+id/pb_budget_circular_gauge"
+                                app:layout_constraintTop_toTopOf="@+id/pb_budget_circular_gauge"
                                 tools:text="50%" />
 
                             <ProgressBar
-                                android:id="@+id/progressBar"
+                                android:id="@+id/pb_budget_circular_gauge"
                                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                                android:layout_width="0dp"
+                                android:layout_width="300dp"
                                 android:layout_height="300dp"
                                 android:layout_alignParentBottom="true"
                                 android:layout_centerHorizontal="true"
@@ -148,9 +148,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:text="@string/travel_detail_total_budget_label"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                app:layout_constraintStart_toStartOf="@+id/progressBar"
-                                app:layout_constraintTop_toBottomOf="@+id/progressBar"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/pb_budget_circular_gauge"
                                 tools:text="Total Spent" />
 
                             <TextView
@@ -159,9 +159,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:gravity="end"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/progressBar"
+                                app:layout_constraintTop_toBottomOf="@+id/pb_budget_circular_gauge"
                                 tools:text="500" />
 
                             <TextView
@@ -170,7 +170,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="8dp"
                                 android:text="@string/travel_detail_total_budget_separator"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                                 app:layout_constraintEnd_toStartOf="@+id/tvOverviewTotalBudget"
                                 app:layout_constraintTop_toTopOf="@+id/tvOverviewTotalBudget"
                                 tools:text="/" />
@@ -181,8 +181,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="8dp"
                                 android:gravity="end"
-                                android:text="TextView"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                                 app:layout_constraintEnd_toStartOf="@+id/tvOverviewBudgetSeparator"
                                 app:layout_constraintTop_toTopOf="@+id/tvOverviewTotalBudget"
                                 tools:text="250" />

@@ -16,22 +16,22 @@ import java.math.RoundingMode;
 public abstract class TravelUtils {
     public static int getExpenseIconIDByCategory(String category, Context context){
         if(category.equals(context.getString(R.string.category_item_hotel)))
-            return R.drawable.ic_hotel_grey_24dp;
+            return R.drawable.ic_hotel_black_50dp;
 
         if(category.equals(context.getString(R.string.category_item_food_drink)))
-            return R.drawable.ic_local_dining_grey_24dp;
+            return R.drawable.ic_restaurant_black_50dp;
 
         if(category.equals(context.getString(R.string.category_item_shopping)))
-            return R.drawable.ic_local_mall_grey_24dp;
+            return R.drawable.ic_local_mall_black_50dp;
 
         if(category.equals(context.getString(R.string.category_item_transport)))
-            return R.drawable.ic_flight_grey_24dp;
+            return R.drawable.ic_airplanemode_active_black_50dp;
 
         if(category.equals(context.getString(R.string.category_item_entertainment)))
-            return R.drawable.ic_local_play_grey_24dp;
+            return R.drawable.ic_local_play_black_50dp;
 
         if(category.equals(context.getString(R.string.category_item_others)))
-            return R.drawable.ic_local_grocery_store_grey_24dp;
+            return R.drawable.ic_local_grocery_store_black_50dp;
 
         return 0;
     }

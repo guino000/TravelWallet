@@ -6,4 +6,6 @@
     <color name="primaryTextColor">#000000</color>
     <color name="red">#FF7043</color>
     <color name="blue">#26C6DA</color>
+    <color name="progress_green">#66BB6A</color>
+    <color name="progress_bg_gray">#E0E0E0</color>
 </resources>

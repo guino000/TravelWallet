@@ -33,8 +33,10 @@
     <string name="content_description_map_button">Google Maps Button</string>
 
     <!--Travel Details Activity-->
+    <string name="travel_details_header_description">Travel picture</string>
     <string name="travel_details_budget_overview_label">Budget Overview</string>
-    <string name="travel_detail_total_budget_label">Total Budget:</string>
+    <string name="travel_detail_total_budget_label">Total Spent:</string>
+    <string name="travel_detail_total_budget_separator">/</string>
     <string name="travel_detail_total_expenses_label">Spent</string>
     <string name="travel_detail_expense_category_icon_description">Expense Category Icon</string>
 

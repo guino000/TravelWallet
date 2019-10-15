@@ -16,9 +16,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
 import com.example.android.travelwallet.model.Travel;
+import com.example.android.travelwallet.utils.CurrencyUtils;
 import com.example.android.travelwallet.utils.GooglePlacesUtils;
 import com.example.android.travelwallet.utils.TravelUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import butterknife.BindView;
@@ -53,8 +55,12 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
         Travel travel = mTravels.get(i);
         travelViewHolder.mTravelNameTextView.setText(travel.getName());
         travelViewHolder.mDestinationTextView.setText(travel.getDestination());
-        travelViewHolder.mExpensesTextView.setText(
-                TravelUtils.getBudgetExpenseComparison((Application) mContext.getApplicationContext(),travel));
+
+        travelViewHolder.mTotalBudgetTextView.setText(CurrencyUtils.getCurrencyFormattedValue(travel.getBudget(), travel.getCurrencyCode()));
+
+        BigDecimal travelExpenses = TravelUtils.getTravelExpensesTotal((Application) mContext.getApplicationContext(), travel);
+        travelViewHolder.mTotalExpensesTextView.setText(CurrencyUtils.getCurrencyFormattedValue(travelExpenses, travel.getCurrencyCode()));
+
         travelViewHolder.mPopupImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,8 +112,11 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
         @BindView(R.id.tv_miniature_travel_name)
         TextView mTravelNameTextView;
 
-        @BindView(R.id.tv_miniature_expenses_overview)
-        TextView mExpensesTextView;
+        @BindView(R.id.tvTravelMiniatureTotalBudget)
+        TextView mTotalBudgetTextView;
+
+        @BindView(R.id.tvTravelMiniatureTotalSpent)
+        TextView mTotalExpensesTextView;
 
         @BindView(R.id.tv_miniature_travel_destination)
         TextView mDestinationTextView;

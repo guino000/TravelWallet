@@ -20,6 +20,7 @@ import com.example.android.travelwallet.model.ExpenseViewModel;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelExpense;
 import com.example.android.travelwallet.model.TravelViewModel;
+import com.example.android.travelwallet.utils.CurrencyUtils;
 import com.example.android.travelwallet.utils.TravelUtils;
 
 import org.parceler.Parcels;
@@ -126,7 +127,7 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
         mExpenseAmountEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                NumberFormat format = TravelUtils.getCurrencyNumberFormat(TravelUtils.getCurrentTravel(
+                NumberFormat format = CurrencyUtils.getCurrencyNumberFormat(TravelUtils.getCurrentTravel(
                         mTravelID, getApplication()).getCurrencyCode());
                 if (hasFocus) {
                     try {
@@ -139,7 +140,7 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
                 } else {
                     if (!mExpenseAmountEditText.getText().toString().trim().equals("")) {
                         try {
-                            mExpenseAmountEditText.setText(TravelUtils.getCurrencyFormattedValue(
+                            mExpenseAmountEditText.setText(CurrencyUtils.getCurrencyFormattedValue(
                                     new BigDecimal((mExpenseAmountEditText.getText().toString().trim())),
                                     TravelUtils.getCurrentTravel(mTravelID, getApplication()).getCurrencyCode()
                             ));
@@ -171,7 +172,7 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
 
     private void enableEditMode(TravelExpense expense) {
         mExpenseDescriptionEditText.setText(expense.getExpenseDescription());
-        mExpenseAmountEditText.setText(TravelUtils.getCurrencyFormattedValue(expense.getExpenseTotal(),
+        mExpenseAmountEditText.setText(CurrencyUtils.getCurrencyFormattedValue(expense.getExpenseTotal(),
                 TravelUtils.getCurrentTravel(mTravelID, getApplication()).getCurrencyCode()));
         int categoryPosition = findItemPositionOnCategorySpinner(expense.getCategory());
         if (categoryPosition > 0)
@@ -239,7 +240,7 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
             try {
                 Travel travel = travelViewModel.getTravel(mTravelID);
                 mEditExpense.setExpenseTotal(
-                        new BigDecimal(TravelUtils.getCurrencyNumberFormat(travel.getCurrencyCode()).parse(
+                        new BigDecimal(CurrencyUtils.getCurrencyNumberFormat(travel.getCurrencyCode()).parse(
                                 mExpenseAmountEditText.getText().toString().trim()).toString()
                         ));
             } catch (ParseException e) {
@@ -257,7 +258,7 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
                 Travel travel = travelViewModel.getTravel(mTravelID);
                 TravelExpense expense = new TravelExpense(
                         mExpenseDescriptionEditText.getText().toString().trim(),
-                        new BigDecimal(TravelUtils.getCurrencyNumberFormat(travel.getCurrencyCode()).parse(
+                        new BigDecimal(CurrencyUtils.getCurrencyNumberFormat(travel.getCurrencyCode()).parse(
                                 mExpenseAmountEditText.getText().toString().trim()).toString()),
                         mExpenseCategorySpinner.getSelectedItem().toString(),
                         Converters.stringToDate(mExpenseDateEditText.getText().toString().trim()),

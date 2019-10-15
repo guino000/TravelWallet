@@ -13,7 +13,7 @@ import android.widget.RemoteViews;
 import com.example.android.travelwallet.model.ExpenseViewModel;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
-import com.example.android.travelwallet.utils.TravelUtils;
+import com.example.android.travelwallet.utils.CurrencyUtils;
 
 /**
  * Implementation of App Widget functionality.
@@ -49,9 +49,9 @@ public class TravelBudgetWidget extends AppWidgetProvider {
             views.setViewVisibility(R.id.ll_budget, View.VISIBLE);
             views.setViewVisibility(R.id.ll_expenses, View.VISIBLE);
             views.setTextViewText(R.id.tv_widget_travel_name, lastViewTravel.getName());
-            views.setTextViewText(R.id.tv_widget_budget, TravelUtils.getCurrencyFormattedValue(lastViewTravel.getBudget(), lastViewTravel.getCurrencyCode()));
+            views.setTextViewText(R.id.tv_widget_budget, CurrencyUtils.getCurrencyFormattedValue(lastViewTravel.getBudget(), lastViewTravel.getCurrencyCode()));
             views.setTextViewText(R.id.tv_widget_expenses,
-                    TravelUtils.getCurrencyFormattedValue(expenseViewModel.getTotalExpensesOfTravel(lastViewTravelID).getTotal(), lastViewTravel.getCurrencyCode()));
+                    CurrencyUtils.getCurrencyFormattedValue(expenseViewModel.getTotalExpensesOfTravel(lastViewTravelID).getTotal(), lastViewTravel.getCurrencyCode()));
         }
 
         // Instruct the widget manager to update the widget

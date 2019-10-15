@@ -12,9 +12,6 @@ import com.example.android.travelwallet.model.TravelViewModel;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.NumberFormat;
-import java.util.Currency;
-import java.util.Locale;
 
 public abstract class TravelUtils {
     public static int getExpenseIconIDByCategory(String category, Context context){
@@ -45,18 +42,6 @@ public abstract class TravelUtils {
         return travelViewModel.getTravel(travelID);
     }
 
-    public static String getBudgetExpenseComparison(Application application, Travel travel){
-        ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
-                .getInstance(application).create(ExpenseViewModel.class);
-        TravelValues expenses = expenseViewModel.getTotalExpensesOfTravel(travel.getId());
-
-        if(expenses == null) return "";
-
-        return String.format("%s - %s",
-                getCurrencyFormattedValue(expenses.total, travel.getCurrencyCode()),
-                getCurrencyFormattedValue(travel.getBudget(),travel.getCurrencyCode()));
-    }
-
     public static float getBudgetSpentPercentage(Application application, Travel travel){
         ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(application).create(ExpenseViewModel.class);
@@ -67,15 +52,14 @@ public abstract class TravelUtils {
         return expenses.total.divide(travel.getBudget(),2,RoundingMode.HALF_EVEN).floatValue();
     }
 
-    public static String getCurrencyFormattedValue(BigDecimal value, String currencyCode){
-        NumberFormat format = getCurrencyNumberFormat(currencyCode);
-        if (value == null) return format.format(0);
-        return format.format(value);
-    }
+    public static BigDecimal getTravelExpensesTotal(Application application, Travel travel) {
+        ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
+                .getInstance(application).create(ExpenseViewModel.class);
+        TravelValues expenses = expenseViewModel.getTotalExpensesOfTravel(travel.getId());
 
-    public static NumberFormat getCurrencyNumberFormat(String currencyCode) {
-        NumberFormat format = NumberFormat.getCurrencyInstance();
-        format.setCurrency(Currency.getInstance(currencyCode));
-        return format;
+        if (expenses.getTotal() == null)
+            return new BigDecimal(0);
+        else
+            return expenses.getTotal();
     }
 }

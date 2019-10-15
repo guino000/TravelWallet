@@ -25,13 +25,14 @@ import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
 import com.example.android.travelwallet.model.ExpenseViewModel;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelExpense;
-import com.example.android.travelwallet.model.TravelValues;
+import com.example.android.travelwallet.utils.CurrencyUtils;
 import com.example.android.travelwallet.utils.GooglePlacesUtils;
 import com.example.android.travelwallet.utils.TravelUtils;
 
 import org.parceler.Parcels;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import butterknife.BindView;
@@ -54,6 +55,10 @@ public class TravelDetailsActivity extends AppCompatActivity
     CollapsingToolbarLayout mTravelDetailsCT;
     @BindView(R.id.tvBudgetProgressData)
     TextView mBudgetProgressData;
+    @BindView(R.id.tvOverviewTotalBudget)
+    TextView mTotalBudgetTextView;
+    @BindView(R.id.tvOverviewTotalSpent)
+    TextView mTotalSpentTextView;
 
     ExpenseAdapter mExpenseAdapter;
     ExpenseViewModel mExpenseViewModel;
@@ -110,19 +115,19 @@ public class TravelDetailsActivity extends AppCompatActivity
 
 //    Update budget overview components: Progress bar and text boxes
     public void updateBudgetOverview(Travel travel){
-        ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
-                .getInstance(getApplication()).create(ExpenseViewModel.class);
+        // Get Budget Data
+        BigDecimal totalExpenses = TravelUtils.getTravelExpensesTotal(getApplication(), travel);
 
-        TravelValues totalExpenses = expenseViewModel.getTotalExpensesOfTravel(travel.getId());
-        if(totalExpenses.getTotal() == null){
-            totalExpenses = new TravelValues();
-            totalExpenses.setTotal(new BigDecimal(0));
-        }
-
+        // Update Budget Chart
         float spentPercent = TravelUtils.getBudgetSpentPercentage(getApplication(), travel);
-        int progress = Math.round(spentPercent * 100);
-        mPieChartBudget.setProgress(progress);
-        mBudgetProgressData.setText(progress + "%");
+        DecimalFormat percentFormat = new DecimalFormat("##%");
+        String progressText = percentFormat.format(spentPercent);
+        mPieChartBudget.setProgress(Math.round(spentPercent * 100));
+        mBudgetProgressData.setText(progressText);
+
+        //Update Budget Overview Text
+        mTotalSpentTextView.setText(CurrencyUtils.getCurrencyFormattedValue(totalExpenses, travel.getCurrencyCode()));
+        mTotalBudgetTextView.setText(CurrencyUtils.getCurrencyFormattedValue(travel.getBudget(), travel.getCurrencyCode()));
     }
 
     @Override

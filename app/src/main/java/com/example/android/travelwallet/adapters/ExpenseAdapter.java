@@ -17,6 +17,7 @@ import com.example.android.travelwallet.R;
 import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
 import com.example.android.travelwallet.model.Converters;
 import com.example.android.travelwallet.model.TravelExpense;
+import com.example.android.travelwallet.utils.CurrencyUtils;
 import com.example.android.travelwallet.utils.TravelUtils;
 
 import java.util.List;
@@ -58,7 +59,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         expenseViewHolder.mExpenseCategoryTextView.setText(expense.getCategory());
         expenseViewHolder.mExpenseDateTextView.setText(Converters.dateToString(expense.getExpenseDate()));
         expenseViewHolder.mExpenseAmountTextView.setText(
-                String.valueOf(TravelUtils.getCurrencyFormattedValue(expense.getExpenseTotal(), TravelUtils.getCurrentTravel(
+                String.valueOf(CurrencyUtils.getCurrencyFormattedValue(expense.getExpenseTotal(), TravelUtils.getCurrentTravel(
                         expense.getTravelID(), (Application) mContext.getApplicationContext()).getCurrencyCode())));
         expenseViewHolder.mPopupMenuImageButton.setOnClickListener(new View.OnClickListener() {
             @Override

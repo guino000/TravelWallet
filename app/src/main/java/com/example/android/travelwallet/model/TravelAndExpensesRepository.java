@@ -4,14 +4,20 @@ import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
+import java.util.List;
+
 public class TravelAndExpensesRepository {
     private final TravelAndExpenseDao mTravelAndExpenseDao;
-    private final LiveData<TravelAndExpenses> mTravelAndExpenses;
+    private final LiveData<List<TravelAndExpenses>> mTravelAndExpenses;
 
     TravelAndExpensesRepository(Application application) {
         TravelDatabase db = TravelDatabase.getInstance(application);
         mTravelAndExpenseDao = db.travelAndExpenseDao();
-        mTravelAndExpenses = null;
+        mTravelAndExpenses = mTravelAndExpenseDao.getAllTravelsAndExpenses();
+    }
+
+    LiveData<List<TravelAndExpenses>> getAllTravelsAndExpenses() {
+        return mTravelAndExpenses;
     }
 
     LiveData<TravelAndExpenses> getTravelAndExpenses(long mTravelID) {

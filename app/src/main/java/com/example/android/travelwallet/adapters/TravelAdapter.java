@@ -68,9 +68,11 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
         if (travelExpenses.compareTo(travelBudget) > 0) {
             travelViewHolder.mTotalBudgetTextView.setTextColor(mContext.getResources().getColor(R.color.red));
             travelViewHolder.mTotalExpensesTextView.setTextColor(mContext.getResources().getColor(R.color.red));
+            travelViewHolder.mOverspentWarningImageView.setVisibility(View.VISIBLE);
         } else {
             travelViewHolder.mTotalBudgetTextView.setTextColor(mContext.getResources().getColor(R.color.progress_green));
             travelViewHolder.mTotalExpensesTextView.setTextColor(mContext.getResources().getColor(R.color.progress_green));
+            travelViewHolder.mOverspentWarningImageView.setVisibility(View.INVISIBLE);
         }
 
         travelViewHolder.mPopupImageButton.setOnClickListener(new View.OnClickListener() {
@@ -138,6 +140,9 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
 
         @BindView(R.id.img_popup_menu_button)
         ImageButton mPopupImageButton;
+
+        @BindView(R.id.img_overspent)
+        ImageView mOverspentWarningImageView;
 
         public TravelViewHolder(@NonNull View itemView) {
             super(itemView);

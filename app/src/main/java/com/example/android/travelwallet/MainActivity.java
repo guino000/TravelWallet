@@ -24,6 +24,7 @@ import android.widget.PopupMenu;
 import com.example.android.travelwallet.adapters.TravelAdapter;
 import com.example.android.travelwallet.firebase.NotificationJobService;
 import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
+import com.example.android.travelwallet.model.ExpenseViewModel;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements
     AdView mAdView;
 
     TravelViewModel mTravelViewModel;
+    ExpenseViewModel mExpenseViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements
 //        Add an observer to update widget data on travel change
         mTravelViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())
                 .create(TravelViewModel.class);
+
         mTravelViewModel.getAllTravels().observe(this, new Observer<List<Travel>>() {
             @Override
             public void onChanged(@Nullable List<Travel> travels) {

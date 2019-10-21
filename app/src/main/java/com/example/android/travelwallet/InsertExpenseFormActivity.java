@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.android.travelwallet.model.Converters;
 import com.example.android.travelwallet.model.ExpenseViewModel;
+import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelExpense;
 import com.example.android.travelwallet.model.TravelViewModel;
 import com.example.android.travelwallet.utils.CurrencyUtils;
@@ -247,6 +248,10 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
                     getString(R.string.toast_confirm_successful_expense_creation),
                     Toast.LENGTH_LONG).show();
         }
+
+//        Update travel to trigger an update on observers
+        Travel travel = travelViewModel.getTravel(mTravelID);
+        travelViewModel.update(travel);
 
 //        Return to previous activity
         finish();

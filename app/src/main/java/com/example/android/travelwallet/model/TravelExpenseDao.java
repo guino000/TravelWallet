@@ -32,4 +32,10 @@ public interface TravelExpenseDao {
 
     @Query("SELECT SUM(mExpenseTotal) as total FROM TravelExpense WHERE mTravelID = :travelID")
     TravelValues getTotalExpensesOfTravel(long travelID);
+
+    @Query("SELECT SUM(te.mExpenseTotal) > t.mBudget as total " +
+            "FROM TravelExpense te, Travel t " +
+            "WHERE te.mTravelID = :travelID AND t.mId = :travelID " +
+            "GROUP BY t.mId")
+    Boolean isOverspent(long travelID);
 }

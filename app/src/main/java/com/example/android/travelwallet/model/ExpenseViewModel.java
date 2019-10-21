@@ -22,6 +22,10 @@ public class ExpenseViewModel extends AndroidViewModel {
 
     public TravelValues getTotalExpensesOfTravel(long travelID){return mRepository.getTotalExpenses(travelID);}
 
+    public Boolean isOverspent(long travelID) {
+        return mRepository.isOverspent(travelID);
+    }
+
     public void insert(TravelExpense expense){mRepository.insert(expense);}
 
     public void update(TravelExpense expense){mRepository.update(expense);}

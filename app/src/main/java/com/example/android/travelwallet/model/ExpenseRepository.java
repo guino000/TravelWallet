@@ -50,6 +50,15 @@ public class ExpenseRepository {
         }
     }
 
+    public boolean isOverspent(long travelID) {
+        try {
+            return new queryIsOverspentAsyncTask(mExpenseDao).execute(travelID).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private static class insertAsyncTask extends AsyncTask<TravelExpense, Void, Void> {
         private final TravelExpenseDao mAsyncTaskDao;
 
@@ -115,6 +124,19 @@ public class ExpenseRepository {
         @Override
         protected TravelValues doInBackground(Long... longs) {
             return mAsyncTaskDao.getTotalExpensesOfTravel (longs[0]);
+        }
+    }
+
+    private static class queryIsOverspentAsyncTask extends AsyncTask<Long, Void, Boolean> {
+        private final TravelExpenseDao mAsyncTaskDao;
+
+        queryIsOverspentAsyncTask(TravelExpenseDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Boolean doInBackground(Long... longs) {
+            return mAsyncTaskDao.isOverspent(longs[0]);
         }
     }
 }

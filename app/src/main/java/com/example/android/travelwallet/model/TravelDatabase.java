@@ -6,12 +6,14 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
-@Database(entities = {Travel.class, TravelExpense.class}, version = 10)
+@Database(entities = {Travel.class, TravelExpense.class}, version = 11)
 @TypeConverters({Converters.class})
 public abstract class TravelDatabase extends RoomDatabase {
     private static volatile TravelDatabase INSTANCE;
     public abstract TravelDao travelDao();
     public abstract TravelExpenseDao expenseDao();
+
+    public abstract TravelAndExpenseDao travelAndExpenseDao();
 
     public static TravelDatabase getInstance(Context context){
         synchronized (TravelDatabase.class){

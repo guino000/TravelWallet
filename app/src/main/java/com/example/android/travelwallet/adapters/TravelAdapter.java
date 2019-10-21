@@ -56,10 +56,22 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
         travelViewHolder.mTravelNameTextView.setText(travel.getName());
         travelViewHolder.mDestinationTextView.setText(travel.getDestination());
 
-        travelViewHolder.mTotalBudgetTextView.setText(CurrencyUtils.getCurrencyFormattedValue(travel.getBudget(), travel.getCurrencyCode()));
-
+//        Get budget data
+        BigDecimal travelBudget = travel.getBudget();
         BigDecimal travelExpenses = TravelUtils.getTravelExpensesTotal((Application) mContext.getApplicationContext(), travel);
+
+//        Set budget values
+        travelViewHolder.mTotalBudgetTextView.setText(CurrencyUtils.getCurrencyFormattedValue(travelBudget, travel.getCurrencyCode()));
         travelViewHolder.mTotalExpensesTextView.setText(CurrencyUtils.getCurrencyFormattedValue(travelExpenses, travel.getCurrencyCode()));
+
+//        Set budget color coding
+        if (travelExpenses.compareTo(travelBudget) > 0) {
+            travelViewHolder.mTotalBudgetTextView.setTextColor(mContext.getResources().getColor(R.color.red));
+            travelViewHolder.mTotalExpensesTextView.setTextColor(mContext.getResources().getColor(R.color.red));
+        } else {
+            travelViewHolder.mTotalBudgetTextView.setTextColor(mContext.getResources().getColor(R.color.progress_green));
+            travelViewHolder.mTotalExpensesTextView.setTextColor(mContext.getResources().getColor(R.color.progress_green));
+        }
 
         travelViewHolder.mPopupImageButton.setOnClickListener(new View.OnClickListener() {
             @Override

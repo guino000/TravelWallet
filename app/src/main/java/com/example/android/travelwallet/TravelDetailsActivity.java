@@ -3,6 +3,7 @@ package com.example.android.travelwallet;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -122,12 +123,27 @@ public class TravelDetailsActivity extends AppCompatActivity
         float spentPercent = TravelUtils.getBudgetSpentPercentage(getApplication(), travel);
         DecimalFormat percentFormat = new DecimalFormat("##%");
         String progressText = percentFormat.format(spentPercent);
-        mPieChartBudget.setProgress(Math.round(spentPercent * 100));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mPieChartBudget.setProgress(Math.round(spentPercent * 100), true);
+        } else {
+            mPieChartBudget.setProgress(Math.round(spentPercent * 100));
+        }
         mBudgetProgressData.setText(progressText);
 
         //Update Budget Overview Text
         mTotalSpentTextView.setText(CurrencyUtils.getCurrencyFormattedValue(totalExpenses, travel.getCurrencyCode()));
         mTotalBudgetTextView.setText(CurrencyUtils.getCurrencyFormattedValue(travel.getBudget(), travel.getCurrencyCode()));
+
+        //Update Budget Overview color coding
+        if (totalExpenses.compareTo(travel.getBudget()) > 0) {
+            mTotalBudgetTextView.setTextColor(getResources().getColor(R.color.red));
+            mTotalSpentTextView.setTextColor(getResources().getColor(R.color.red));
+            mPieChartBudget.setProgressTintList(getResources().getColorStateList(R.color.red));
+        } else {
+            mTotalBudgetTextView.setTextColor(getResources().getColor(R.color.progress_green));
+            mTotalSpentTextView.setTextColor(getResources().getColor(R.color.progress_green));
+            mPieChartBudget.setProgressTintList(getResources().getColorStateList(R.color.progress_green));
+        }
     }
 
     @Override

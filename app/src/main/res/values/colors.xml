@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryColor">#2196f3</color>
-    <color name="primaryDarkColor">#0068bf</color>
-    <color name="secondaryColor">#ffb300</color>
+    <color name="primaryColor">#00acc1</color>
+    <color name="primaryDarkColor">#007c91</color>
+    <color name="secondaryColor">#f9a825</color>
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#000000</color>
-    <color name="app_icon_background">#00acc1</color>
     <color name="red">#FF7043</color>
     <color name="progress_green">#66BB6A</color>
     <color name="progress_bg_gray">#E0E0E0</color>

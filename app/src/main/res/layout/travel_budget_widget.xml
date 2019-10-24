@@ -2,81 +2,106 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light"
     android:orientation="vertical"
-    android:padding="@dimen/widget_margin"
     tools:ignore="Overdraw">
 
-    <TextView
-        android:id="@+id/tv_widget_empty_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/widget_empty_string"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/tv_widget_travel_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:textColor="@color/primaryTextColor"
-        tools:text="Travel Name" />
-
     <LinearLayout
-        android:id="@+id/ll_budget"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="@color/primaryColor"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@string/travel_detail_total_budget_label"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/primaryTextColor" />
-
-        <TextView
-            android:id="@+id/tv_widget_budget"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:gravity="end"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/primaryTextColor"
-            tools:text="$0.00" />
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/app_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ll_expenses"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="visible">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_widget_empty_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/travel_detail_total_expenses_label"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/primaryTextColor" />
+            android:text="@string/widget_empty_string"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:visibility="gone" />
 
         <TextView
-            android:id="@+id/tv_widget_expenses"
+            android:id="@+id/tv_widget_travel_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:gravity="end"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="@color/primaryTextColor"
-            tools:text="$0.00" />
+            tools:text="Travel Name" />
+
+        <LinearLayout
+            android:id="@+id/ll_budget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_widget_label_budget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/widget_label_total_budget"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/primaryTextColor" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_widget_budget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/primaryTextColor"
+                tools:text="$0.00" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_expenses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_widget_label_expenses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/widget_label_total_expenses"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/primaryTextColor" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_widget_expenses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/primaryTextColor"
+                tools:text="$0.00" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

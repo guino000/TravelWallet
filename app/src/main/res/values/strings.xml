@@ -64,6 +64,8 @@
 
     <!--Widget-->
     <string name="widget_empty_string">No travels yet!</string>
+    <string name="widget_label_total_budget">Total Budget:</string>
+    <string name="widget_label_total_expenses">Total Spent:</string>
 
     <!--Notification-->
     <string name="travel_notification_title">Let\'s Travel!</string>

@@ -31,7 +31,7 @@ public class CurrencyArrayAdapter extends ArrayAdapter<Currency> {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View listItem = convertView;
         if (listItem == null)
-            listItem = inflater.inflate(R.layout.currency_spinner_list_item, parent);
+            listItem = inflater.inflate(R.layout.currency_spinner_list_item, null);
 
         TextView currencyName = listItem.findViewById(R.id.tv_currency_name);
         currencyName.setText(String.format("%s (%s)", currency.getName(), currency.getCode()));
@@ -45,7 +45,7 @@ public class CurrencyArrayAdapter extends ArrayAdapter<Currency> {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View listItem = convertView;
         if (listItem == null)
-            listItem = inflater.inflate(R.layout.currency_spinner_list_item, parent);
+            listItem = inflater.inflate(R.layout.currency_spinner_list_item, null);
 
         TextView currencyName = listItem.findViewById(R.id.tv_currency_name);
         currencyName.setText(String.format("%s (%s)", currency.getName(), currency.getCode()));

@@ -37,7 +37,7 @@ public class CountryArrayAdapter extends ArrayAdapter<Country>{
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View viewItem = convertView;
         if(viewItem == null)
-            viewItem = inflater.inflate(R.layout.country_spinner_list_item, parent);
+            viewItem = inflater.inflate(R.layout.country_spinner_list_item, null);
 
         TextView countryName = viewItem.findViewById(R.id.tv_country_name);
         countryName.setText(country.getName());
@@ -61,7 +61,7 @@ public class CountryArrayAdapter extends ArrayAdapter<Country>{
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View viewItem = convertView;
         if(viewItem == null)
-            viewItem = inflater.inflate(R.layout.country_spinner_list_item, parent);
+            viewItem = inflater.inflate(R.layout.country_spinner_list_item, null);
 
         TextView countryName = viewItem.findViewById(R.id.tv_country_name);
         countryName.setText(country.getName());

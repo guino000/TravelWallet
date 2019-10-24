@@ -2,8 +2,6 @@ package com.example.android.travelwallet.utils;
 
 import com.example.android.travelwallet.interfaces.RestCountriesService;
 import com.example.android.travelwallet.model.restcountries.Country;
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;

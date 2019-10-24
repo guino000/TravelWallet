@@ -92,7 +92,6 @@
             android:layout_marginEnd="16dp"
             android:dropDownWidth="wrap_content"
             android:spinnerMode="dropdown"
-            android:tooltipText="Test"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/et_total_budget"
             app:layout_constraintTop_toTopOf="@+id/et_total_budget"
@@ -120,7 +119,6 @@
             tools:text="Destination" />
 
         <TextView
-            android:id="@+id/tv_currency_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/currency_label"
@@ -184,16 +182,17 @@
             app:layout_constraintEnd_toEndOf="@+id/et_end_date"
             app:layout_constraintStart_toStartOf="@+id/et_end_date"
             app:layout_constraintTop_toBottomOf="@+id/et_end_date"
+            android:contentDescription="TODO"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <ImageView
-            android:id="@+id/iv_powered_google"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha=".8"
             android:background="#FAFAFA"
             app:layout_constraintBottom_toBottomOf="@+id/iv_destination_photo"
             app:layout_constraintEnd_toEndOf="@+id/iv_destination_photo"
+            android:contentDescription="TODO"
             app:srcCompat="@drawable/powered_by_google_on_white" />
 
     </android.support.constraint.ConstraintLayout>

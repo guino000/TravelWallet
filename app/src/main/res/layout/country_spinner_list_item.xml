@@ -12,7 +12,8 @@
         android:id="@+id/img_country_flag"
         android:layout_width="@dimen/country_spinner_flag_width"
         android:layout_height="@dimen/country_spinner_flag_height"
-        android:scaleType="centerCrop"/>
+        android:contentDescription="TODO"
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/tv_country_name"

@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -119,7 +120,7 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
 //            Query countries and load destination spinners
             RestCountriesUtils.getAllCountries().enqueue(new Callback<List<Country>>() {
                 @Override
-                public void onResponse(Call<List<Country>> call, Response<List<Country>> response) {
+                public void onResponse(@NonNull Call<List<Country>> call, @NonNull Response<List<Country>> response) {
                     if (response.isSuccessful()) {
                         mCountries = response.body();
                         fireCleanCountriesTask();
@@ -130,7 +131,7 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
                 }
 
                 @Override
-                public void onFailure(Call<List<Country>> call, Throwable t) {
+                public void onFailure(@NonNull Call<List<Country>> call, @NonNull Throwable t) {
                     mCountries = Collections.emptyList();
                     Log.e(TAG, String.format("Failed to get countries from API! %s", t.getMessage()));
                     t.printStackTrace();
@@ -149,7 +150,7 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
 //              Change the destination photo
                 GooglePlacesUtils.findPlaceFromText(getCurrentSelectedDestination().getName()).enqueue(new Callback<PlacesResponse>() {
                     @Override
-                    public void onResponse(Call<PlacesResponse> call, Response<PlacesResponse> response) {
+                    public void onResponse(@NonNull Call<PlacesResponse> call, @NonNull Response<PlacesResponse> response) {
                         if (response.isSuccessful()) {
                             try {
                                 List<Candidate> candidates = response.body().getCandidates();
@@ -163,7 +164,7 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
                     }
 
                     @Override
-                    public void onFailure(Call<PlacesResponse> call, Throwable t) {
+                    public void onFailure(@NonNull Call<PlacesResponse> call, @NonNull Throwable t) {
 
                     }
                 });

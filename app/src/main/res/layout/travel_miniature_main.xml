@@ -100,7 +100,6 @@
                 tools:text="Destination" />
 
             <TextView
-                android:id="@+id/tv_miniature_travel_destination2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -123,13 +122,13 @@
                 app:srcCompat="@drawable/ic_more_vert_black_24dp" />
 
             <ImageView
-                android:id="@+id/iv_powered_google"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha=".8"
                 android:background="#FAFAFA"
                 app:layout_constraintBottom_toBottomOf="@+id/img_miniature_travel_miniature"
                 app:layout_constraintEnd_toEndOf="@+id/img_miniature_travel_miniature"
+                android:contentDescription="TODO"
                 app:srcCompat="@drawable/powered_by_google_on_white" />
 
             <ImageView
@@ -141,6 +140,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/tvTravelMiniatureTotalSpent"
                 app:layout_constraintEnd_toStartOf="@+id/tvTravelMiniatureTotalSpent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTravelMiniatureTotalSpent"
+                android:contentDescription="TODO"
                 app:srcCompat="@drawable/ic_error_red_24dp" />
 
         </android.support.constraint.ConstraintLayout>

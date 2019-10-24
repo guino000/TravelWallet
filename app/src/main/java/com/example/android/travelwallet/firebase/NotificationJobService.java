@@ -54,7 +54,7 @@ public class NotificationJobService extends JobService {
 
         Log.v(TAG, "Notification showed!");
 
-        return false;
+        return true;
     }
 
     @Override

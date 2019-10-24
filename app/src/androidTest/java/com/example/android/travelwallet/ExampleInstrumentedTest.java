@@ -1,27 +1,15 @@
 package com.example.android.travelwallet;
 
-import android.app.Application;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-
-import com.example.android.travelwallet.model.ExpenseViewModel;
-import com.example.android.travelwallet.model.Travel;
-import com.example.android.travelwallet.model.TravelExpense;
-import com.example.android.travelwallet.model.TravelViewModel;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.math.BigDecimal;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Instrumented test, which will execute on an Android device.

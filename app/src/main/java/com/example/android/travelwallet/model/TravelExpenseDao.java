@@ -38,4 +38,7 @@ public interface TravelExpenseDao {
             "WHERE te.mTravelID = :travelID AND t.mId = :travelID " +
             "GROUP BY t.mId")
     Boolean isOverspent(long travelID);
+
+    @Query("SELECT * FROM TravelExpense WHERE mExpenseDate = :expenseDate")
+    LiveData<List<TravelExpense>> getExpensesOfDate(String expenseDate);
 }

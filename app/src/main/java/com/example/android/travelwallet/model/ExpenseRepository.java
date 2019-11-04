@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ExpenseRepository {
@@ -56,6 +57,24 @@ public class ExpenseRepository {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public LiveData<List<TravelExpense>> getExpensesOfDate(String date){
+        try{
+            return new queryExpensesOfDateAsyncTask(mExpenseDao).execute(date).get();
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public BigDecimal getTotalExpensesOfDate(String date){
+        try {
+            return new queryTotalExpensesOfDateAsyncTask(mExpenseDao).execute(date).get();
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -137,6 +156,32 @@ public class ExpenseRepository {
         @Override
         protected Boolean doInBackground(Long... longs) {
             return mAsyncTaskDao.isOverspent(longs[0]);
+        }
+    }
+
+    private static class queryExpensesOfDateAsyncTask extends AsyncTask<String, Void, LiveData<List<TravelExpense>>>{
+        private final TravelExpenseDao mAsyncTaskDao;
+
+        queryExpensesOfDateAsyncTask(TravelExpenseDao dao){
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected LiveData<List<TravelExpense>> doInBackground(String... strings) {
+            return mAsyncTaskDao.getExpensesOfDate(strings[0]);
+        }
+    }
+
+    private static class queryTotalExpensesOfDateAsyncTask extends AsyncTask<String, Void, BigDecimal>{
+        private final TravelExpenseDao mAsyncTaskDao;
+
+        queryTotalExpensesOfDateAsyncTask(TravelExpenseDao dao){
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected BigDecimal doInBackground(String... strings) {
+            return mAsyncTaskDao.getTotalExpensesOfDate(strings[0]);
         }
     }
 }

@@ -1,0 +1,163 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 9,
+    "identityHash": "c35c925bab2a272dd1a3762e405ac849",
+    "entities": [
+      {
+        "tableName": "Travel",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `mName` TEXT, `mDestination` TEXT, `mCurrencyCode` TEXT, `mBudget` REAL, `mStartDate` TEXT, `mEndDate` TEXT, `mGooglePlaceID` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "mId",
+            "columnName": "mId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mName",
+            "columnName": "mName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mDestination",
+            "columnName": "mDestination",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mCurrencyCode",
+            "columnName": "mCurrencyCode",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mBudget",
+            "columnName": "mBudget",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mStartDate",
+            "columnName": "mStartDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mEndDate",
+            "columnName": "mEndDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mGooglePlaceID",
+            "columnName": "mGooglePlaceID",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "mId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_Travel_mId",
+            "unique": false,
+            "columnNames": [
+              "mId"
+            ],
+            "createSql": "CREATE  INDEX `index_Travel_mId` ON `${TABLE_NAME}` (`mId`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "TravelExpense",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `mTravelID` INTEGER NOT NULL, `mExpenseDescription` TEXT, `mExpenseTotal` REAL, `mCategory` TEXT, `mExpenseDate` TEXT, FOREIGN KEY(`mTravelID`) REFERENCES `Travel`(`mId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "mID",
+            "columnName": "mID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mTravelID",
+            "columnName": "mTravelID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mExpenseDescription",
+            "columnName": "mExpenseDescription",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mExpenseTotal",
+            "columnName": "mExpenseTotal",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mCategory",
+            "columnName": "mCategory",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mExpenseDate",
+            "columnName": "mExpenseDate",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "mID"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_TravelExpense_mID",
+            "unique": false,
+            "columnNames": [
+              "mID"
+            ],
+            "createSql": "CREATE  INDEX `index_TravelExpense_mID` ON `${TABLE_NAME}` (`mID`)"
+          },
+          {
+            "name": "index_TravelExpense_mTravelID",
+            "unique": false,
+            "columnNames": [
+              "mTravelID"
+            ],
+            "createSql": "CREATE  INDEX `index_TravelExpense_mTravelID` ON `${TABLE_NAME}` (`mTravelID`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Travel",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "mTravelID"
+            ],
+            "referencedColumns": [
+              "mId"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c35c925bab2a272dd1a3762e405ac849\")"
+    ]
+  }
+}

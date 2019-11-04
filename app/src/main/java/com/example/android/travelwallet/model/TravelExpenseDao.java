@@ -8,6 +8,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Dao
@@ -41,4 +42,9 @@ public interface TravelExpenseDao {
 
     @Query("SELECT * FROM TravelExpense WHERE mExpenseDate = :expenseDate")
     LiveData<List<TravelExpense>> getExpensesOfDate(String expenseDate);
+
+    @Query("SELECT SUM(mExpenseTotal) FROM TravelExpense " +
+            "WHERE mExpenseDate = :expenseDate " +
+            "GROUP BY mExpenseDate")
+    BigDecimal getTotalExpensesOfDate(String expenseDate);
 }

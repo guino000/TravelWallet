@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public class ExpenseRepository {
@@ -60,18 +61,29 @@ public class ExpenseRepository {
         }
     }
 
-    public LiveData<List<TravelExpense>> getExpensesOfDate(String date){
+    public LiveData<List<Date>> getAllDates(long travelID){
         try{
-            return new queryExpensesOfDateAsyncTask(mExpenseDao).execute(date).get();
+            return new queryGetAllDatesAsyncTask(mExpenseDao).execute(travelID).get();
         }catch (Exception e){
             e.printStackTrace();
             return null;
         }
     }
 
-    public BigDecimal getTotalExpensesOfDate(String date){
+    public LiveData<List<TravelExpense>> getExpensesOfDate(Date date, long travelID){
+        try{
+            QueryExpensesOfDateParameters params = new QueryExpensesOfDateParameters(date, travelID);
+            return new queryExpensesOfDateAsyncTask(mExpenseDao).execute(params).get();
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public BigDecimal getTotalExpensesOfDate(Date date, long travelID){
         try {
-            return new queryTotalExpensesOfDateAsyncTask(mExpenseDao).execute(date).get();
+            QueryExpensesOfDateParameters params = new QueryExpensesOfDateParameters(date, travelID);
+            return new queryTotalExpensesOfDateAsyncTask(mExpenseDao).execute(params).get();
         }catch (Exception e){
             e.printStackTrace();
             return null;
@@ -159,7 +171,20 @@ public class ExpenseRepository {
         }
     }
 
-    private static class queryExpensesOfDateAsyncTask extends AsyncTask<String, Void, LiveData<List<TravelExpense>>>{
+    private static class queryGetAllDatesAsyncTask extends AsyncTask<Long, Void, LiveData<List<Date>>>{
+        private final TravelExpenseDao mAsyncTaskDao;
+
+        queryGetAllDatesAsyncTask(TravelExpenseDao dao){
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected LiveData<List<Date>> doInBackground(Long... longs) {
+            return mAsyncTaskDao.getAllDates(longs[0]);
+        }
+    }
+
+    private static class queryExpensesOfDateAsyncTask extends AsyncTask<QueryExpensesOfDateParameters, Void, LiveData<List<TravelExpense>>>{
         private final TravelExpenseDao mAsyncTaskDao;
 
         queryExpensesOfDateAsyncTask(TravelExpenseDao dao){
@@ -167,12 +192,12 @@ public class ExpenseRepository {
         }
 
         @Override
-        protected LiveData<List<TravelExpense>> doInBackground(String... strings) {
-            return mAsyncTaskDao.getExpensesOfDate(strings[0]);
+        protected LiveData<List<TravelExpense>> doInBackground(QueryExpensesOfDateParameters... params) {
+            return mAsyncTaskDao.getExpensesOfDate(params[0].date, params[0].travelID);
         }
     }
 
-    private static class queryTotalExpensesOfDateAsyncTask extends AsyncTask<String, Void, BigDecimal>{
+    private static class queryTotalExpensesOfDateAsyncTask extends AsyncTask<QueryExpensesOfDateParameters, Void, BigDecimal>{
         private final TravelExpenseDao mAsyncTaskDao;
 
         queryTotalExpensesOfDateAsyncTask(TravelExpenseDao dao){
@@ -180,8 +205,18 @@ public class ExpenseRepository {
         }
 
         @Override
-        protected BigDecimal doInBackground(String... strings) {
-            return mAsyncTaskDao.getTotalExpensesOfDate(strings[0]);
+        protected BigDecimal doInBackground(QueryExpensesOfDateParameters... params) {
+            return mAsyncTaskDao.getTotalExpensesOfDate(params[0].date, params[0].travelID);
+        }
+    }
+
+    private static class QueryExpensesOfDateParameters{
+        public Date date;
+        public long travelID;
+
+        public QueryExpensesOfDateParameters(Date newDate, long newTravelID){
+            date = newDate;
+            travelID = newTravelID;
         }
     }
 }

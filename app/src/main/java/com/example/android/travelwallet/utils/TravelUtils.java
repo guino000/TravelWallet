@@ -12,6 +12,7 @@ import com.example.android.travelwallet.model.TravelViewModel;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Date;
 
 public abstract class TravelUtils {
     public static int getExpenseIconIDByCategory(String category, Context context){
@@ -61,5 +62,11 @@ public abstract class TravelUtils {
             return new BigDecimal(0);
         else
             return expenses.getTotal();
+    }
+
+    public static BigDecimal getTotalExpensesOfDate(Application application, Date date, long travelID){
+        ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory
+                .getInstance(application).create(ExpenseViewModel.class);
+        return  expenseViewModel.getTotalExpensesOfDate(date, travelID);
     }
 }

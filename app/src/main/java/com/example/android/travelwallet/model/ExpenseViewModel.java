@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public class ExpenseViewModel extends AndroidViewModel {
@@ -27,12 +28,16 @@ public class ExpenseViewModel extends AndroidViewModel {
         return mRepository.isOverspent(travelID);
     }
 
-    public LiveData<List<TravelExpense>> getExpensesOfDate(String date){
-        return mRepository.getExpensesOfDate(date);
+    public LiveData<List<Date>> getAllDates(long travelID){
+        return mRepository.getAllDates(travelID);
     }
 
-    public BigDecimal getTotalExpensesOfDate(String date){
-        return mRepository.getTotalExpensesOfDate(date);
+    public LiveData<List<TravelExpense>> getExpensesOfDate(Date date, long travelID){
+        return mRepository.getExpensesOfDate(date, travelID);
+    }
+
+    public BigDecimal getTotalExpensesOfDate(Date date, long travelID){
+        return mRepository.getTotalExpensesOfDate(date, travelID);
     }
 
     public void insert(TravelExpense expense){mRepository.insert(expense);}

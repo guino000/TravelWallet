@@ -9,6 +9,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Dao
@@ -40,11 +41,14 @@ public interface TravelExpenseDao {
             "GROUP BY t.mId")
     Boolean isOverspent(long travelID);
 
-    @Query("SELECT * FROM TravelExpense WHERE mExpenseDate = :expenseDate")
-    LiveData<List<TravelExpense>> getExpensesOfDate(String expenseDate);
+    @Query("SELECT DISTINCT mExpenseDate FROM TravelExpense WHERE mTravelID = :travelID")
+    LiveData<List<Date>> getAllDates(long travelID);
+
+    @Query("SELECT * FROM TravelExpense WHERE mExpenseDate = :expenseDate AND mTravelID = :travelID")
+    LiveData<List<TravelExpense>> getExpensesOfDate(Date expenseDate, long travelID);
 
     @Query("SELECT SUM(mExpenseTotal) FROM TravelExpense " +
-            "WHERE mExpenseDate = :expenseDate " +
+            "WHERE mExpenseDate = :expenseDate AND mTravelID = :travelID " +
             "GROUP BY mExpenseDate")
-    BigDecimal getTotalExpensesOfDate(String expenseDate);
+    BigDecimal getTotalExpensesOfDate(Date expenseDate, long travelID);
 }

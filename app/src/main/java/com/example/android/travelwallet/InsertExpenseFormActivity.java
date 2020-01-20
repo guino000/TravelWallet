@@ -140,7 +140,7 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
                 selectedDate.set(Calendar.YEAR, year);
                 selectedDate.set(Calendar.MONTH, month);
                 selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                mExpenseDateEditText.setText(Converters.dateToString(calendar.getTime()));
+                mExpenseDateEditText.setText(Converters.dateToString(selectedDate.getTime()));
             }
         };
 

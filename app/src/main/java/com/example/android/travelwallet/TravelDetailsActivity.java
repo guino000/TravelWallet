@@ -1,5 +1,6 @@
 package com.example.android.travelwallet;
 
+import android.animation.ObjectAnimator;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.android.travelwallet.adapters.DailyExpensesAdapter;
 import com.example.android.travelwallet.adapters.ExpenseAdapter;
 import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
 import com.example.android.travelwallet.model.ExpenseViewModel;
@@ -34,6 +36,7 @@ import org.parceler.Parcels;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -61,7 +64,7 @@ public class TravelDetailsActivity extends AppCompatActivity
     @BindView(R.id.tvOverviewTotalSpent)
     TextView mTotalSpentTextView;
 
-    ExpenseAdapter mExpenseAdapter;
+    DailyExpensesAdapter mExpenseAdapter;
     ExpenseViewModel mExpenseViewModel;
 
     private long mTravelID;
@@ -72,8 +75,14 @@ public class TravelDetailsActivity extends AppCompatActivity
         setContentView(R.layout.activity_travel_details);
         ButterKnife.bind(this);
 
+//        Get incoming intent
+        Intent intent = getIntent();
+        final Travel travel = Parcels.unwrap(intent.getParcelableExtra(KEY_INTENT_EXTRA_TRAVEL));
+        mTravelID = travel.getId();
+
+//        TODO: Sometimes when new expenses are created, they disappear from recycler view
 //        Configure Recycler View
-        mExpenseAdapter = new ExpenseAdapter(this, this);
+        mExpenseAdapter = new DailyExpensesAdapter(this, mTravelID);
         mExpensesRecyclerView.setAdapter(mExpenseAdapter);
         mExpensesRecyclerView.setLayoutManager(new LinearLayoutManager(
                 this, LinearLayoutManager.VERTICAL,
@@ -81,18 +90,13 @@ public class TravelDetailsActivity extends AppCompatActivity
         ));
         mExpensesRecyclerView.setHasFixedSize(true);
 
-//        Get incoming intent
-        Intent intent = getIntent();
-        final Travel travel = Parcels.unwrap(intent.getParcelableExtra(KEY_INTENT_EXTRA_TRAVEL));
-        mTravelID = travel.getId();
-
 //        Get LiveData for expenses
         mExpenseViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(ExpenseViewModel.class);
-        mExpenseViewModel.getAllExpensesOfTravel(travel.getId()).observe(this, new Observer<List<TravelExpense>>() {
+        mExpenseViewModel.getAllDates(travel.getId()).observe(this, new Observer<List<Date>>() {
             @Override
-            public void onChanged(@Nullable List<TravelExpense> travelExpenses) {
-                mExpenseAdapter.setData(travelExpenses);
+            public void onChanged(@Nullable List<Date> dates) {
+                mExpenseAdapter.setData(dates);
                 updateBudgetOverview(travel);
             }
         });
@@ -159,34 +163,8 @@ public class TravelDetailsActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void startExpenseFormActivityAsEditMode(TravelExpense expense){
-        Intent intent = new Intent(this, InsertExpenseFormActivity.class);
-        intent.putExtra(InsertExpenseFormActivity.KEY_INTENT_EXTRA_TRAVEL_ID, mTravelID);
-        intent.putExtra(InsertExpenseFormActivity.KEY_INTENT_EXTRA_EXPENSE_EDIT, Parcels.wrap(expense));
-        startActivity(intent);
-    }
-
     @Override
     public void onPopupMenuClick(View view, final int pos) {
-        //        Create Card popup menu
-        PopupMenu popupMenu = new PopupMenu(this, view);
-        MenuInflater menuInflater = popupMenu.getMenuInflater();
-        menuInflater.inflate(R.menu.expense_miniature_menu, popupMenu.getMenu());
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.item_delete :
-                        mExpenseViewModel.delete(mExpenseAdapter.getData().get(pos));
-                        return true;
-                    case R.id.item_edit :
-                        startExpenseFormActivityAsEditMode(mExpenseAdapter.getData().get(pos));
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
-        popupMenu.show();
+
     }
 }

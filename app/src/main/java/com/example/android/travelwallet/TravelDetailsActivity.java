@@ -16,6 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
@@ -80,7 +82,6 @@ public class TravelDetailsActivity extends AppCompatActivity
         final Travel travel = Parcels.unwrap(intent.getParcelableExtra(KEY_INTENT_EXTRA_TRAVEL));
         mTravelID = travel.getId();
 
-//        TODO: Sometimes when new expenses are created, they disappear from recycler view
 //        Configure Recycler View
         mExpenseAdapter = new DailyExpensesAdapter(this, mTravelID);
         mExpensesRecyclerView.setAdapter(mExpenseAdapter);
@@ -128,7 +129,11 @@ public class TravelDetailsActivity extends AppCompatActivity
         DecimalFormat percentFormat = new DecimalFormat("##%");
         String progressText = percentFormat.format(spentPercent);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            mPieChartBudget.setProgress(Math.round(spentPercent * 100), true);
+            int progress = Math.round(spentPercent * 100);
+            ObjectAnimator animator = ObjectAnimator.ofInt(mPieChartBudget, "progress", mPieChartBudget.getProgress(), progress*100);
+            animator.setDuration(500);
+            animator.setInterpolator(new DecelerateInterpolator());
+            animator.start();
         } else {
             mPieChartBudget.setProgress(Math.round(spentPercent * 100));
         }

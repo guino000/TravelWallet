@@ -129,7 +129,7 @@
                                 android:layout_height="300dp"
                                 android:layout_alignParentBottom="true"
                                 android:layout_centerHorizontal="true"
-                                android:max="100"
+                                android:max="10000"
                                 android:progress="50"
                                 android:progressBackgroundTint="@color/progress_bg_gray"
                                 android:progressDrawable="@drawable/circular"

@@ -69,7 +69,6 @@ public class DailyExpensesAdapter extends RecyclerView.Adapter<DailyExpensesAdap
     @Override
     public void onBindViewHolder(@NonNull DailyExpenseViewHolder dailyExpenseViewHolder, int i) {
         Date date = mExpenseDates.get(i);
-        dailyExpenseViewHolder.setDate(date);
 
 //        Get total expenses of date
         BigDecimal expensesOfDate = TravelUtils.getTotalExpensesOfDate((Application) mContext.getApplicationContext(),date, mTravelID);
@@ -80,6 +79,16 @@ public class DailyExpensesAdapter extends RecyclerView.Adapter<DailyExpensesAdap
 //        Set date text and total amount of day
         dailyExpenseViewHolder.mGroupDateTextView.setText(DateFormat.getDateInstance(DateFormat.FULL).format(date));
         dailyExpenseViewHolder.mGroupTotalTextView.setText(CurrencyUtils.getCurrencyFormattedValue(expensesOfDate, travel.getCurrencyCode()));
+
+        //        Configure adapter and recycler view
+        ExpenseAdapter expenseAdapter = new ExpenseAdapter(mContext, dailyExpenseViewHolder);
+        expenseAdapter.setHasStableIds(true);
+        dailyExpenseViewHolder.mExpensesGroupRecyclerView.setAdapter(expenseAdapter);
+        dailyExpenseViewHolder.mExpensesGroupRecyclerView.setLayoutManager(new LinearLayoutManager(
+                dailyExpenseViewHolder.mExpensesGroupRecyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
+        dailyExpenseViewHolder.mExpensesGroupRecyclerView.setHasFixedSize(true);
+
+        dailyExpenseViewHolder.setDate(date);
     }
 
     @Override
@@ -106,33 +115,22 @@ public class DailyExpensesAdapter extends RecyclerView.Adapter<DailyExpensesAdap
         @BindView(R.id.rv_expenses_group)
         RecyclerView mExpensesGroupRecyclerView;
         private Date mDate;
-        private ExpenseViewModel mExpenseViewModel;
-        private ExpenseAdapter mExpenseAdapter;
 
         public DailyExpenseViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
-//        Configure adapter and recycler view
-            mExpenseAdapter = new ExpenseAdapter(mContext, this);
-            mExpenseAdapter.setHasStableIds(true);
-            mExpensesGroupRecyclerView.setAdapter(mExpenseAdapter);
-            mExpensesGroupRecyclerView.setLayoutManager(new LinearLayoutManager(
-                    mContext, LinearLayoutManager.VERTICAL, false));
-            mExpensesGroupRecyclerView.setHasFixedSize(true);
-
-//        Instantiate view model
-            mExpenseViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance((Application) mContext.getApplicationContext())
-                    .create(ExpenseViewModel.class);
         }
 
         public void setDate(Date date){
             mDate = date;
+//        Instantiate view model
+            ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance((Application) mContext.getApplicationContext())
+                    .create(ExpenseViewModel.class);
 //        Observe changes to expenses
-            mExpenseViewModel.getExpensesOfDate(mDate, mTravelID).observe((AppCompatActivity) mContext, new Observer<List<TravelExpense>>() {
+            expenseViewModel.getExpensesOfDate(mDate, mTravelID).observe((AppCompatActivity) mContext, new Observer<List<TravelExpense>>() {
                 @Override
                 public void onChanged(@Nullable List<TravelExpense> travelExpenses) {
-                    mExpenseAdapter.setData(travelExpenses);
+                    ((ExpenseAdapter) mExpensesGroupRecyclerView.getAdapter()).setData(travelExpenses);
                 }
             });
         }
@@ -156,10 +154,12 @@ public class DailyExpensesAdapter extends RecyclerView.Adapter<DailyExpensesAdap
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()){
                         case R.id.item_delete :
-                            mExpenseViewModel.delete(mExpenseAdapter.getData().get(pos));
+                            ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance((Application) mContext.getApplicationContext())
+                                    .create(ExpenseViewModel.class);
+                            expenseViewModel.delete(((ExpenseAdapter) mExpensesGroupRecyclerView.getAdapter()).getData().get(pos));
                             return true;
                         case R.id.item_edit :
-                            startExpenseFormActivityAsEditMode(mExpenseAdapter.getData().get(pos));
+                            startExpenseFormActivityAsEditMode(((ExpenseAdapter) mExpensesGroupRecyclerView.getAdapter()).getData().get(pos));
                             return true;
                         default:
                             return false;

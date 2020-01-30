@@ -32,7 +32,7 @@ public class NotificationJobService extends JobService {
 //        Check if there are travels ongoing on the current date
         mTravelViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(TravelViewModel.class);
-        List<Travel> mCurrentTravels = mTravelViewModel.getCurrentTravels(Converters.fromTimestamp(System.currentTimeMillis()));
+        List<Travel> mCurrentTravels = mTravelViewModel.getCurrentTravels(Converters.toDate(System.currentTimeMillis()));
         if(mCurrentTravels == null) return false;
         if(mCurrentTravels.size() == 0) return false;
 

@@ -20,12 +20,12 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         indices = {@Index("mID"), @Index("mTravelID")})
 public class TravelExpense {
     @PrimaryKey(autoGenerate = true)
-    private long mID;
-    private long mTravelID;
-    private String mExpenseDescription;
-    private BigDecimal mExpenseTotal;
-    private String mCategory;
-    private Date mExpenseDate;
+    public long mID;
+    public long mTravelID;
+    public String mExpenseDescription;
+    public BigDecimal mExpenseTotal;
+    public String mCategory;
+    public Date mExpenseDate;
 
     public TravelExpense(){
 

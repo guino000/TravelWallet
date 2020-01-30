@@ -25,14 +25,14 @@ public class Converters {
         }
     }
 
-    @TypeConverter
     public static String dateToString(Date value) {
         return value == null ? "" : df.format(value);
     }
 
-    @TypeConverter
     public static Date stringToDate(String value) {
         try {
+            Date date = df.parse(value);
+            assert date.getYear() > 2020;
             return value.equals("") ? null : df.parse(value);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -41,12 +41,12 @@ public class Converters {
     }
 
     @TypeConverter
-    public static Date fromTimestamp(Long value) {
-        return value == null ? null : new Date(value);
+    public static Date toDate(Long dateLong){
+        return dateLong == null ? null: new Date(dateLong);
     }
 
     @TypeConverter
-    public static Long dateToTimestamp(Date date) {
+    public static Long fromDate(Date date){
         return date == null ? null : date.getTime();
     }
 }

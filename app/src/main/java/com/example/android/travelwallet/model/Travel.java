@@ -14,14 +14,14 @@ import java.util.Date;
 @Entity(indices = {@Index("mId")})
 public class Travel {
     @PrimaryKey(autoGenerate = true)
-    private long mId;
-    private String mName;
-    private String mDestination;
-    private String mCurrencyCode;
-    private BigDecimal mBudget;
-    private Date mStartDate;
-    private Date mEndDate;
-    private String mGooglePlaceID;
+    public long mId;
+    public String mName;
+    public String mDestination;
+    public String mCurrencyCode;
+    public BigDecimal mBudget;
+    public Date mStartDate;
+    public Date mEndDate;
+    public String mGooglePlaceID;
 
     public Travel(){}
 

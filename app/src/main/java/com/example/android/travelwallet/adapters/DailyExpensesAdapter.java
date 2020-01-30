@@ -49,10 +49,12 @@ public class DailyExpensesAdapter extends RecyclerView.Adapter<DailyExpensesAdap
     private final Context mContext;
     private long mTravelID;
     private List<Date> mExpenseDates;
+    private RecyclerView.RecycledViewPool mViewPool;
 
     public DailyExpensesAdapter(Context context, long travel){
         mContext = context;
         mTravelID = travel;
+        mViewPool = new RecyclerView.RecycledViewPool();
     }
 
     @NonNull
@@ -62,6 +64,7 @@ public class DailyExpensesAdapter extends RecyclerView.Adapter<DailyExpensesAdap
         View itemView = inflater.inflate(R.layout.travel_expenses_daily_group,viewGroup,false);
 
         DailyExpenseViewHolder dailyExpenseViewHolder = new DailyExpenseViewHolder(itemView);
+        dailyExpenseViewHolder.mExpensesGroupRecyclerView.setRecycledViewPool(mViewPool);
 
         return dailyExpenseViewHolder;
     }
@@ -80,7 +83,7 @@ public class DailyExpensesAdapter extends RecyclerView.Adapter<DailyExpensesAdap
         dailyExpenseViewHolder.mGroupDateTextView.setText(DateFormat.getDateInstance(DateFormat.FULL).format(date));
         dailyExpenseViewHolder.mGroupTotalTextView.setText(CurrencyUtils.getCurrencyFormattedValue(expensesOfDate, travel.getCurrencyCode()));
 
-        //        Configure adapter and recycler view
+//        Configure adapter and recycler view
         ExpenseAdapter expenseAdapter = new ExpenseAdapter(mContext, dailyExpenseViewHolder);
         expenseAdapter.setHasStableIds(true);
         dailyExpenseViewHolder.mExpensesGroupRecyclerView.setAdapter(expenseAdapter);

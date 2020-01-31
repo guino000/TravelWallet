@@ -6,6 +6,7 @@
     <string name="main_travel_image_content_description">Travel Image</string>
     <string name="menu_item_delete">Delete</string>
     <string name="menu_item_edit">Edit</string>
+    <string name="empty_view_message">No travels planned yet! Start planning your next travel.</string>
 
     <!--Insert Travel Activity-->
     <string name="travel_name_label">Travel Name</string>

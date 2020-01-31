@@ -19,7 +19,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import com.example.android.travelwallet.adapters.TravelAdapter;
 import com.example.android.travelwallet.firebase.NotificationJobService;
@@ -57,12 +59,14 @@ public class MainActivity extends AppCompatActivity implements
     @BindView(R.id.rv_travels)
     RecyclerView mTravelsRecyclerView;
     TravelAdapter mTravelAdapter;
-
     @BindView(R.id.bt_add_travel)
     FloatingActionButton mAddTravelButton;
-
     @BindView(R.id.adView)
     AdView mAdView;
+    @BindView(R.id.tvEmptyView)
+    TextView mEmptyTextView;
+    @BindView(R.id.imgEmpty)
+    ImageView mEmptyImageView;
 
     TravelViewModel mTravelViewModel;
     ExpenseViewModel mExpenseViewModel;
@@ -120,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements
             public void onChanged(@Nullable List<Travel> travels) {
                 mTravelAdapter.setData(travels);
                 updateWidget();
+                setEmptyViewVisibility(travels.isEmpty());
             }
         });
     }
@@ -128,6 +133,16 @@ public class MainActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, InsertTravelFormActivity.class);
         intent.putExtra(InsertTravelFormActivity.KEY_INTENT_EXTRA_TRAVEL, Parcels.wrap(travel));
         startActivity(intent);
+    }
+
+    private void setEmptyViewVisibility(boolean isVisible){
+        if(isVisible){
+            mEmptyTextView.setVisibility(View.VISIBLE);
+            mEmptyImageView.setVisibility(View.VISIBLE);
+        }else{
+            mEmptyTextView.setVisibility(View.GONE);
+            mEmptyImageView.setVisibility(View.GONE);
+        }
     }
 
     @OnClick(R.id.bt_add_travel)

@@ -8,4 +8,5 @@
     <color name="red">#FF7043</color>
     <color name="progress_green">#66BB6A</color>
     <color name="progress_bg_gray">#E0E0E0</color>
+    <color name="disabled_gray">#8E8E8E</color>
 </resources>

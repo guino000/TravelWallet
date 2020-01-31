@@ -41,5 +41,38 @@
         ads:layout_constraintBottom_toBottomOf="parent"
         ads:layout_constraintStart_toStartOf="parent" />
 
+    <ImageView
+        android:id="@+id/imgEmpty"
+        android:layout_width="190dp"
+        android:layout_height="159dp"
+        android:layout_marginTop="64dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/rv_travels"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="@+id/rv_travels"
+        app:layout_constraintTop_toTopOf="@+id/rv_travels"
+        app:srcCompat="@drawable/ic_beach_main_activity_empty_600dp" />
+
+    <TextView
+        android:id="@+id/tvEmptyView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:alpha="1"
+        android:foregroundTintMode="multiply"
+        android:freezesText="false"
+        android:gravity="center"
+        android:hapticFeedbackEnabled="false"
+        android:text="@string/empty_view_message"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/disabled_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgEmpty"
+        tools:text="@string/empty_view_message"
+        tools:visibility="gone" />
+
     <!--ads:adUnitId="ca-app-pub-1869529352770109/3458549156"/>-->
 </android.support.constraint.ConstraintLayout>

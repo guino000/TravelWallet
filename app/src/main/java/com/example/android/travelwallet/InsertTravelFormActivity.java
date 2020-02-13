@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -227,10 +229,20 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
             disableEditMode();
         }
 
-//        Setup Actionbar
+//        Setup
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(mEditMode) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.edit_menu, menu);
+        }
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void enableEditMode(Travel travel) {
@@ -465,10 +477,20 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
             case android.R.id.home:
                 onBackPressed();
                 break;
+            case R.id.action_delete:
+                OnDeletePressed();
+                break;
             default:
                 throw new UnsupportedOperationException();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void OnDeletePressed(){
+        TravelViewModel travelViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())
+                .create(TravelViewModel.class);
+        travelViewModel.delete(mEditTravel);
+        finish();
     }
 
     @Override

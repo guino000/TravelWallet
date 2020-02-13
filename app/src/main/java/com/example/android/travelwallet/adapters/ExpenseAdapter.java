@@ -2,7 +2,9 @@ package com.example.android.travelwallet.adapters;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +14,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.android.travelwallet.InsertExpenseFormActivity;
 import com.example.android.travelwallet.R;
-import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
 import com.example.android.travelwallet.model.Converters;
 import com.example.android.travelwallet.model.TravelExpense;
 import com.example.android.travelwallet.utils.CurrencyUtils;
 import com.example.android.travelwallet.utils.TravelUtils;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -27,11 +31,9 @@ import butterknife.ButterKnife;
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder> {
     private final Context mContext;
     private List<TravelExpense> mExpenses;
-    private final CardPopupMenuListener mPopupListener;
 
-    public ExpenseAdapter(Context context, CardPopupMenuListener popupMenuListener) {
+    public ExpenseAdapter(Context context) {
         mContext = context;
-        mPopupListener = popupMenuListener;
     }
 
     public List<TravelExpense> getData() {
@@ -60,16 +62,22 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         expenseViewHolder.mExpenseAmountTextView.setText(
                 String.valueOf(CurrencyUtils.getCurrencyFormattedValue(expense.getExpenseTotal(), TravelUtils.getCurrentTravel(
                         expense.getTravelID(), (Application) mContext.getApplicationContext()).getCurrencyCode())));
-        expenseViewHolder.mPopupMenuImageButton.setOnClickListener(new View.OnClickListener() {
+
+        //Configure click
+        expenseViewHolder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPopupListener.onPopupMenuClick(v, expenseViewHolder.getAdapterPosition());
+                int position = expenseViewHolder.getAdapterPosition();
+                TravelExpense travelExpense = mExpenses.get(position);
+                expenseViewHolder.startExpenseFormActivityAsEditMode(travelExpense);
             }
         });
-        expenseViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        expenseViewHolder.mLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                mPopupListener.onPopupMenuClick(v, expenseViewHolder.getAdapterPosition());
+                int position = expenseViewHolder.getAdapterPosition();
+                TravelExpense travelExpense = mExpenses.get(position);
+                expenseViewHolder.startExpenseFormActivityAsEditMode(travelExpense);
                 return true;
             }
         });
@@ -105,12 +113,19 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         TextView mExpenseAmountTextView;
         @BindView(R.id.img_category)
         ImageView mCategoryIconImageView;
-        @BindView(R.id.img_popup_menu_button)
-        ImageButton mPopupMenuImageButton;
+        @BindView(R.id.layout_expense_miniature)
+        ConstraintLayout mLayout;
 
         public ExpenseViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        public void startExpenseFormActivityAsEditMode(TravelExpense expense){
+            Intent intent = new Intent(mContext, InsertExpenseFormActivity.class);
+            intent.putExtra(InsertExpenseFormActivity.KEY_INTENT_EXTRA_TRAVEL_ID, expense.mTravelID);
+            intent.putExtra(InsertExpenseFormActivity.KEY_INTENT_EXTRA_EXPENSE_EDIT, Parcels.wrap(expense));
+            mContext.startActivity(intent);
         }
     }
 }

@@ -2,7 +2,9 @@ package com.example.android.travelwallet.adapters;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +15,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.android.travelwallet.InsertTravelFormActivity;
 import com.example.android.travelwallet.R;
-import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.utils.CurrencyUtils;
 import com.example.android.travelwallet.utils.GooglePlacesUtils;
 import com.example.android.travelwallet.utils.TravelUtils;
+
+import org.parceler.Parcels;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -30,16 +34,14 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
     private final Context mContext;
     private List<Travel> mTravels;
     private final TravelAdapterOnClickHandler mClickHandler;
-    private final CardPopupMenuListener mPopupListener;
 
     public interface TravelAdapterOnClickHandler{
         void onClick(Travel clickedTravel);
     }
 
-    public TravelAdapter(Context context, TravelAdapterOnClickHandler clickHandler, CardPopupMenuListener popupListener){
+    public TravelAdapter(Context context, TravelAdapterOnClickHandler clickHandler){
         mContext = context;
         mClickHandler = clickHandler;
-        mPopupListener = popupListener;
     }
 
     @NonNull
@@ -52,7 +54,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
 
     @Override
     public void onBindViewHolder(@NonNull final TravelViewHolder travelViewHolder, int i) {
-        Travel travel = mTravels.get(i);
+        final Travel travel = mTravels.get(i);
         travelViewHolder.mTravelNameTextView.setText(travel.getName());
         travelViewHolder.mDestinationTextView.setText(travel.getDestination());
 
@@ -75,16 +77,12 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
             travelViewHolder.mOverspentWarningImageView.setVisibility(View.INVISIBLE);
         }
 
-        travelViewHolder.mPopupImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPopupListener.onPopupMenuClick(travelViewHolder.itemView, travelViewHolder.getAdapterPosition());
-            }
-        });
-        travelViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        travelViewHolder.mLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                mPopupListener.onPopupMenuClick(travelViewHolder.itemView, travelViewHolder.getAdapterPosition());
+                int position = travelViewHolder.getAdapterPosition();
+                Travel travel = mTravels.get(position);
+                travelViewHolder.startTravelFormActivityAsEditMode(travel);
                 return true;
             }
         });
@@ -138,11 +136,11 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
         @BindView(R.id.img_miniature_travel_miniature)
         ImageView mTravelPhotoImageView;
 
-        @BindView(R.id.img_popup_menu_button)
-        ImageButton mPopupImageButton;
-
         @BindView(R.id.img_overspent)
         ImageView mOverspentWarningImageView;
+
+        @BindView(R.id.layout_travel_miniature)
+        ConstraintLayout mLayout;
 
         public TravelViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -154,6 +152,12 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
         public void onClick(View v) {
             int position = getAdapterPosition();
             mClickHandler.onClick(mTravels.get(position));
+        }
+
+        public void startTravelFormActivityAsEditMode(Travel travel) {
+            Intent intent = new Intent(mContext, InsertTravelFormActivity.class);
+            intent.putExtra(InsertTravelFormActivity.KEY_INTENT_EXTRA_TRAVEL, Parcels.wrap(travel));
+            mContext.startActivity(intent);
         }
     }
 }

@@ -25,7 +25,6 @@ import android.widget.TextView;
 
 import com.example.android.travelwallet.adapters.TravelAdapter;
 import com.example.android.travelwallet.firebase.NotificationJobService;
-import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
 import com.example.android.travelwallet.model.ExpenseViewModel;
 import com.example.android.travelwallet.model.Travel;
 import com.example.android.travelwallet.model.TravelViewModel;
@@ -47,8 +46,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements
-        TravelAdapter.TravelAdapterOnClickHandler,
-        CardPopupMenuListener {
+        TravelAdapter.TravelAdapterOnClickHandler{
 
     public static final String KEY_SHARED_PREFS_LAST_VIEWED_TRAVEL_ID = "last_viewed_travel";
     public static final String SHARED_PREFS_NAME = "com.example.android.travelwallet";
@@ -99,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements
         mAdView.loadAd(adRequest);
 
 //        Configure Travel Recycler View
-        mTravelAdapter = new TravelAdapter(this, this, this);
+        mTravelAdapter = new TravelAdapter(this, this);
         mTravelAdapter.setHasStableIds(true);
         mTravelsRecyclerView.setAdapter(mTravelAdapter);
 
@@ -127,12 +125,6 @@ public class MainActivity extends AppCompatActivity implements
                 setEmptyViewVisibility(travels.isEmpty());
             }
         });
-    }
-
-    public void startTravelFormActivityAsEditMode(Travel travel) {
-        Intent intent = new Intent(this, InsertTravelFormActivity.class);
-        intent.putExtra(InsertTravelFormActivity.KEY_INTENT_EXTRA_TRAVEL, Parcels.wrap(travel));
-        startActivity(intent);
     }
 
     private void setEmptyViewVisibility(boolean isVisible){
@@ -191,29 +183,4 @@ public class MainActivity extends AppCompatActivity implements
         intent.putExtra(TravelDetailsActivity.KEY_INTENT_EXTRA_TRAVEL, Parcels.wrap(clickedTravel));
         startActivity(intent);
     }
-
-    @Override
-    public void onPopupMenuClick(View view, final int pos) {
-        //        Create Card popup menu
-        PopupMenu popupMenu = new PopupMenu(this, view);
-        MenuInflater menuInflater = popupMenu.getMenuInflater();
-        menuInflater.inflate(R.menu.travel_miniature_menu, popupMenu.getMenu());
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.item_delete :
-                        mTravelViewModel.delete(mTravelAdapter.getData().get(pos));
-                        return true;
-                    case R.id.item_edit :
-                        startTravelFormActivityAsEditMode(mTravelAdapter.getData().get(pos));
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
-        popupMenu.show();
-    }
-
 }

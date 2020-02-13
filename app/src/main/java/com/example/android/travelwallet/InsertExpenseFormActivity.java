@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -164,6 +166,15 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(mEditMode) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.edit_menu, menu);
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
     private void enableEditMode(TravelExpense expense) {
         mExpenseDescriptionEditText.setText(expense.getExpenseDescription());
         mExpenseAmountEditText.setText(CurrencyUtils.FormatAsCurrencyWithoutSymbol(expense.getExpenseTotal().doubleValue()));
@@ -264,10 +275,20 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
             case android.R.id.home:
                 onBackPressed();
                 break;
+            case R.id.action_delete:
+                OnDeletePressed();
+                break;
             default:
                 throw new UnsupportedOperationException();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void OnDeletePressed(){
+        ExpenseViewModel expenseViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())
+                .create(ExpenseViewModel.class);
+        expenseViewModel.delete(mEditExpense);
+        finish();
     }
 
     @Override

@@ -2,9 +2,11 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_expense_miniature"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white">
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true">
 
     <TextView
         android:id="@+id/tv_expense_description"
@@ -43,7 +45,7 @@
         android:layout_marginEnd="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintBottom_toTopOf="@+id/tv_expense_description"
-        app:layout_constraintEnd_toStartOf="@+id/img_popup_menu_button"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_expense_description"
         tools:text="$0.00" />
 
@@ -61,19 +63,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@color/primaryColor"
         tools:ignore="RtlHardcoded" />
-
-    <ImageButton
-        android:id="@+id/img_popup_menu_button"
-        style="@style/Widget.AppCompat.ImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/content_description_popup_menu_button"
-        app:layout_constraintBottom_toTopOf="@+id/tv_expense_amount"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_expense_amount"
-        app:srcCompat="@drawable/ic_more_vert_black_24dp" />
 
     <View
         android:id="@+id/divider"

@@ -13,23 +13,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.android.travelwallet.adapters.DailyExpensesAdapter;
-import com.example.android.travelwallet.adapters.ExpenseAdapter;
-import com.example.android.travelwallet.interfaces.CardPopupMenuListener;
 import com.example.android.travelwallet.model.ExpenseViewModel;
 import com.example.android.travelwallet.model.Travel;
-import com.example.android.travelwallet.model.TravelExpense;
 import com.example.android.travelwallet.utils.CurrencyUtils;
 import com.example.android.travelwallet.utils.GooglePlacesUtils;
 import com.example.android.travelwallet.utils.TravelUtils;
@@ -45,8 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class TravelDetailsActivity extends AppCompatActivity
-    implements CardPopupMenuListener {
+public class TravelDetailsActivity extends AppCompatActivity{
     public static final String KEY_INTENT_EXTRA_TRAVEL = "extra_travel";
 
     @BindView(R.id.pb_budget_circular_gauge)
@@ -166,10 +159,5 @@ public class TravelDetailsActivity extends AppCompatActivity
                 throw  new UnsupportedOperationException();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onPopupMenuClick(View view, final int pos) {
-
     }
 }

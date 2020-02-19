@@ -446,7 +446,7 @@ public class InsertTravelFormActivity extends AppCompatActivity implements Async
 //        Create a new travel with values from the form
         Travel auxTravel = new Travel();
         auxTravel.setName(mTravelNameEditText.getText().toString().trim());
-        Double budgetNumber = Double.valueOf(mTotalBudgetEditText.getText().toString().replaceAll("\\D", "")) / 100;
+        double budgetNumber = Double.valueOf(mTotalBudgetEditText.getText().toString().replaceAll("\\D", "")) / 100;
         BigDecimal budget = new BigDecimal(budgetNumber);
         auxTravel.setBudget(budget);
         auxTravel.setCurrencyCode(getCurrentSelectedCurrency().getCode());

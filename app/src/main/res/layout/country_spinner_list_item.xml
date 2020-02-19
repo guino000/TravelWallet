@@ -12,7 +12,7 @@
         android:id="@+id/img_country_flag"
         android:layout_width="@dimen/country_spinner_flag_width"
         android:layout_height="@dimen/country_spinner_flag_height"
-        android:contentDescription="TODO"
+        android:contentDescription="@string/cd_country_flag"
         android:scaleType="centerCrop" />
 
     <TextView

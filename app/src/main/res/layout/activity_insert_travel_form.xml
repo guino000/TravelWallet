@@ -182,7 +182,7 @@
             app:layout_constraintEnd_toEndOf="@+id/et_end_date"
             app:layout_constraintStart_toStartOf="@+id/et_end_date"
             app:layout_constraintTop_toBottomOf="@+id/et_end_date"
-            android:contentDescription="TODO"
+            android:contentDescription="@string/content_description_travel_destination_picture"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <ImageView
@@ -192,7 +192,7 @@
             android:background="#FAFAFA"
             app:layout_constraintBottom_toBottomOf="@+id/iv_destination_photo"
             app:layout_constraintEnd_toEndOf="@+id/iv_destination_photo"
-            android:contentDescription="TODO"
+            android:contentDescription="@string/cd_powered_google"
             app:srcCompat="@drawable/powered_by_google_on_white" />
 
     </android.support.constraint.ConstraintLayout>

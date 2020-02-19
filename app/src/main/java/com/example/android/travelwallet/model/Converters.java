@@ -32,7 +32,6 @@ public class Converters {
     public static Date stringToDate(String value) {
         try {
             Date date = df.parse(value);
-            assert date.getYear() > 2020;
             return value.equals("") ? null : df.parse(value);
         } catch (ParseException e) {
             e.printStackTrace();

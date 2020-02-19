@@ -5,8 +5,9 @@
     <!--Main Activity-->
     <string name="main_travel_image_content_description">Travel Image</string>
     <string name="menu_item_delete">Delete</string>
-    <string name="menu_item_edit">Edit</string>
     <string name="empty_view_message">No travels planned yet! Start planning your next travel.</string>
+    <string name="cd_empty_view">Empty view</string>
+    <string name="cd_overspent">Overspent warning</string>
 
     <!--Insert Travel Activity-->
     <string name="travel_name_label">Travel Name</string>
@@ -27,6 +28,9 @@
     <string name="error_travel_end_date_required">Travel end date is required!</string>
     <string name="toast_confirm_successful_travel_change">Changes saved!</string>
     <string name="toast_confirm_successful_travel_creation">New travel created!</string>
+    <string name="content_description_travel_destination_picture">Travel destination picture</string>
+    <string name="cd_powered_google">Powered by Google</string>
+    <string name="cd_country_flag">Country Flag</string>
 
     <!--Travel Details Activity-->
     <string name="travel_details_header_description">Travel picture</string>
@@ -75,5 +79,4 @@
     <string name="travel_notification_channel_description">Notifications from Travel Wallet App</string>
 
     <!--Misc-->
-    <string name="content_description_popup_menu_button">Popup Menu</string>
 </resources>

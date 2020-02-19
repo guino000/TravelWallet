@@ -47,6 +47,7 @@
         android:layout_height="159dp"
         android:layout_marginTop="64dp"
         android:visibility="gone"
+        android:contentDescription="@string/cd_empty_view"
         app:layout_constraintEnd_toEndOf="@+id/rv_travels"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="@+id/rv_travels"

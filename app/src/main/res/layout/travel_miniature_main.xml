@@ -5,7 +5,8 @@
     android:id="@+id/layout_travel_miniature"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true">
+    android:clickable="true"
+    android:focusable="true">
 
     <android.support.v7.widget.CardView
         android:layout_width="0dp"
@@ -113,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:alpha=".8"
                 android:background="#FAFAFA"
-                android:contentDescription="TODO"
+                android:contentDescription="@string/cd_powered_google"
                 app:layout_constraintBottom_toBottomOf="@+id/img_miniature_travel_miniature"
                 app:layout_constraintEnd_toEndOf="@+id/img_miniature_travel_miniature"
                 app:srcCompat="@drawable/powered_by_google_on_white" />
@@ -123,7 +124,7 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_marginEnd="8dp"
-                android:contentDescription="TODO"
+                android:contentDescription="@string/cd_overspent"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toTopOf="@+id/tvTravelMiniatureTotalSpent"
                 app:layout_constraintEnd_toStartOf="@+id/tvTravelMiniatureTotalSpent"

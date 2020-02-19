@@ -242,7 +242,7 @@ public class InsertExpenseFormActivity extends AppCompatActivity {
         auxExpense.setExpenseDescription(mExpenseDescriptionEditText.getText().toString());
         auxExpense.setExpenseDate(Converters.stringToDate(mExpenseDateEditText.getText().toString()));
         auxExpense.setTravelID(mTravelID);
-        Double expenseNumber = Double.valueOf(mExpenseAmountEditText.getText().toString().replaceAll("\\D", "")) / 100;
+        double expenseNumber = Double.valueOf(mExpenseAmountEditText.getText().toString().replaceAll("\\D", "")) / 100;
         BigDecimal expenseAmount = new BigDecimal(expenseNumber);
         auxExpense.setExpenseTotal(expenseAmount);
 

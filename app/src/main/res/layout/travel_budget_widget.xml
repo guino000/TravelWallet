@@ -13,7 +13,6 @@
         android:padding="8dp">
 
         <TextView
-            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
@@ -51,7 +50,6 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_widget_label_budget"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/widget_label_total_budget"
@@ -81,7 +79,6 @@
             android:visibility="visible">
 
             <TextView
-                android:id="@+id/tv_widget_label_expenses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/widget_label_total_expenses"
